@@ -1,20 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
+import { Routes } from "react-router";
+import LandingPage from "./pages/LandingPage";
+const App = () => {
   return (
-    <>
-      <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 animate-bounce'>
-        Animate Bounce
+    <div>
+      {/* <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes> */}
+      <LandingPage></LandingPage>
+    </div>
+  );
+};
 
-      </div>
-        
-    </>
-  )
-}
-
-export default App
+export default App;
