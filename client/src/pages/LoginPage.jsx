@@ -11,7 +11,7 @@ export default function LoginPage() {
       }}
     >
       <div className="flex flex-col gap-1 items-center justify-center text-center mb-2">
-        <span className="absolute top-15 left-8 w-[200px] h-[2px] bg-white z-20"></span>
+        <span className="absolute top-15 left-8 w-[200px] h-[2px] bg-white z-20 sm- mb lg"></span>
         <span className="absolute top-8 left-15 h-[200px] w-[2px] bg-white z-10"></span>
         <span className="absolute bottom-15 right-8 w-[200px] h-[2px] bg-white z-20"></span>
         <span className="absolute bottom-8 right-15 h-[200px] w-[2px] bg-white z-10"></span>
@@ -39,7 +39,7 @@ export default function LoginPage() {
           <span>Rise.</span>
         </div>
       </div>
-      <div className="absolute top-8 right-8">
+      <div className="absolute top-15 right-15">
         <img src={Logo} alt="logo" className="w-[132px] h-[132px]" />
       </div>
 
