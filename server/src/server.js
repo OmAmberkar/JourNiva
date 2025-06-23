@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import express, { urlencoded } from "express"
-import connectToDb from './db/connect.db.js'
+import connectToDb from '../db/connect.db.js'
 import cors from "cors"
 
 dotenv.config();
