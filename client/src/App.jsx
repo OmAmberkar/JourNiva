@@ -10,7 +10,7 @@ const App = () => {
       {/* <Routes>
         <Route path="/" element={<LandingPage />} />
       </Routes> */}
-      <LandingPage />
+      <LoginPage />
     </div>
   );
 };
