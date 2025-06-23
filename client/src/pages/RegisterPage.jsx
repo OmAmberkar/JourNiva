@@ -1,3 +1,4 @@
+import Logo from "../assets/Logo.png";
 export default function RegisterPage() {
   return (
     <div
@@ -37,6 +38,9 @@ export default function RegisterPage() {
           <span>Reflect.</span>
           <span>Rise.</span>
         </div>
+      </div>
+      <div className="absolute top-8 right-8">
+        <img src={Logo} alt="logo" className="w-[132px] h-[132px]" />
       </div>
 
       {/* ✅ Black Form Box */}
