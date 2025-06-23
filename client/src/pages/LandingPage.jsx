@@ -88,10 +88,11 @@ const LandingPage = () => {
 
         {/* Title + Subtitle */}
         <div className="flex flex-col justify-center mt-10 mb-6 pl-8 sm:pl-16 md:pl-24 lg:pl-32">
-          <h1 className="text-white text-5xl sm:text-6xl font-bold mb-2">
-            JourNiva
-          </h1>
-          <div className="flex gap-6 text-lg sm:text-xl tracking-wide">
+          <h1 className="text-transparent bg-clip-text bg-gradient-to-b from-white to-[#bcbcbc] text-5xl sm:text-6xl font-bold mb-2">
+  JourNiva
+</h1>
+
+          <div className="flex gap-6 text-lg sm:text-xl tracking-wide text-transparent bg-clip-text bg-gradient-to-b from-white to-[#bcbcbc]  font-bold mb-2 ">
             <span>Write.</span>
             <span>Reflect.</span>
             <span>Rise.</span>

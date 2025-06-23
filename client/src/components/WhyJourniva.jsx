@@ -29,7 +29,7 @@ const WhyJourniva = () => {
       <div className="w-full max-w-6xl flex flex-col md:flex-row items-center justify-between gap-10 z-10 px-2 sm:px-4">
         {/* 📝 Text */}
         <div className="md:w-1/2 w-full text-left drop-shadow-md max-w-full">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 drop-shadow-lg">
+          <h2 className="text-transparent bg-clip-text bg-gradient-to-b from-white to-[#bcbcbc] text-5xl sm:text-6xl font-bold mb-2">
             Why <br className="hidden sm:block" /> JourNiva?
           </h2>
 
