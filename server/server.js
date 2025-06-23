@@ -4,10 +4,19 @@ import connectToDb from './db/connect.db.js'
 
 dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 4000 ;
 
 //middleware
 app.use(express.json())
 app.use(urlencoded({extended:false}))
+
+
+
+//routes
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+  console.log(`Server is running on ${process.env.PORT}`);
+});
 
 
 //controller routes 
@@ -24,8 +33,3 @@ connectToDb()
     (error) => console.log("MongoDB connection failed", error)
 )
 
-//routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-  console.log(`Server is running on ${process.env.PORT}`);
-});
