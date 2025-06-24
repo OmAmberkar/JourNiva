@@ -3,6 +3,8 @@ import express, { urlencoded } from "express"
 import connectToDb from '../db/connect.db.js'
 import cors from "cors"
 
+import userRoutes from "./routes/user.routes.js" 
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000 ;
@@ -15,10 +17,7 @@ app.use(urlencoded({extended:false}));
 
 
 //routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-  console.log(`Server is running on ${process.env.PORT}`);
-});
+app.use("/api/user", user.routes) ;
 
 
 //controller routes 
