@@ -17,7 +17,7 @@ app.use(urlencoded({extended:false}));
 
 
 //routes
-app.use("/api/user", user.routes) ;
+app.use("/api/user", userRoutes) ;
 
 
 //controller routes 
