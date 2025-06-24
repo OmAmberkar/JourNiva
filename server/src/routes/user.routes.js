@@ -1,5 +1,5 @@
 import express from "express"
-import { checkEmail, registerUser, loginUser, sendOTP, verifyOTP, forgetPasswordLink, validateToken, resetPassword } from "../controllers/user.controller.js" 
+import { checkEmail, registerUser, loginUser, sendOTP, verifyOTP, forgotPasswordLink, validateToken, resetPassword } from "../controllers/user.controller.js" 
 const router = express.Router();
 
 //Route 1 - Check Email
@@ -15,15 +15,15 @@ router.post("/login" , loginUser);
 router.post("/send-otp" , sendOTP);
 
 //Route 5 - Register : Email OTP Verification
-router.post("verify-otp" , verifyOTP);
+router.post("/verify-otp" , verifyOTP);
 
-//Route 6 - Forget Password : Link Generation
-router.post("/forget-password-link" , forgetPasswordLink);
+//Route 6 - Forgot Password : Link Generation
+router.post("/forgot-password-link" , forgotPasswordLink);
 
-//Route 7 - Forget Password : Validate Token
-router.get("validate-token/:token" , validateToken);
+//Route 7 - Forgot Password : Validate Token
+router.get("/validate-token/:token" , validateToken);
 
-//Route 8 - Forget Password : Reset Password
+//Route 8 - Forgot Password : Reset Password
 router.post("/reset-password" , resetPassword);
 
 export default router
