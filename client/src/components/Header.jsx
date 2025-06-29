@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import BackGround from "../assets/BackGround.png";
-import { HiMenu, HiX } from "react-icons/hi"; // Install react-icons if not already
+import { HiMenu, HiX } from "react-icons/hi";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,9 +12,7 @@ export default function Header() {
       <nav className="w-full flex items-center justify-between px-4 md:px-6 py-2 bg-[#DCEFFF] border-b-2 border-[#3E5973] relative">
         <div className="flex items-center space-x-2">
           <img src={Logo} alt="logo" className="h-14 w-14 object-contain" />
-          <h1 className="text-[#3E5973] text-2xl md:text-3xl ">
-            JourNiva
-          </h1>
+          <h1 className="text-[#3E5973] text-2xl md:text-3xl ">JourNiva</h1>
         </div>
 
         {/* Desktop Nav Links */}
@@ -24,12 +22,12 @@ export default function Header() {
           <li className="cursor-pointer">Ratings</li>
           <li className="cursor-pointer">About us</li>
           <li>
-            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60]">
+            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md !rounded-md hover:bg-[#324b60]">
               Sign up
             </button>
           </li>
           <li>
-            <button className="bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]">
+            <button className="bg-[#a8b4d0] text-white px-4 py-1 rounded-md !rounded-md hover:bg-[#9aa7c1]">
               Login
             </button>
           </li>
@@ -53,12 +51,12 @@ export default function Header() {
             <li className="cursor-pointer">Ratings</li>
             <li className="cursor-pointer">About us</li>
             <li>
-              <button className="bg-[#3E5973] text-white px-6 py-2 rounded-md hover:bg-[#324b60]">
+              <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md !rounded-md hover:bg-[#324b60]">
                 Sign up
               </button>
             </li>
             <li>
-              <button className="w-[104px] bg-[#a8b4d0] text-white px-6 py-2 rounded-md hover:bg-[#9aa7c1]">
+              <button className="w-[104px] bg-[#a8b4d0] text-white px-4 py-1 rounded-md !rounded-md hover:bg-[#9aa7c1]">
                 Login
               </button>
             </li>
@@ -79,10 +77,10 @@ export default function Header() {
               Your personal growth starts here
             </p>
             <div className="flex justify-center gap-4 flex-wrap">
-              <button className="w-[150px] mt-6 bg-[#3E5973] hover:bg-[#324b60] text-white px-6 py-2 rounded-full border border-[#a8b4d0]">
+              <button className="w-[150px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full !rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200">
                 Login
               </button>
-              <button className="w-[150px] mt-6 bg-[#a8b4d0] hover:bg-[#9aa7c1] text-white px-6 py-2 rounded-full border border-[#3E5973]">
+              <button className="w-[150px] bg-[#a8b4d0] hover:bg-[#9aa7c1] text-white px-8 py-2 rounded-full !rounded-full border border-[#3E5973] shadow-md transition-all duration-200">
                 Register
               </button>
             </div>
