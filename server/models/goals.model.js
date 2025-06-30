@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import User from "./user.model";
 
-const goalSchema = new mongoose.Schema({
+const goal = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: User,
@@ -27,10 +27,8 @@ const goalSchema = new mongoose.Schema({
     type: String
   },
   progress: {
-    type: Number,
-    min: 0,
-    max: 100,
-    default: 0
+    type: boolean, 
+    default: False
   },
   boardImages: {
     type: String,
@@ -41,7 +39,5 @@ const goalSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-const Goal = mongoose.model("Goal", goalSchema);
-
+const Goal = mongoose.model("Goal", goal);
 export default Goal;
