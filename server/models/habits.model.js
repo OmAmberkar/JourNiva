@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 import User from "./user.model";
-const checklistSchema = new mongoose.Schema({
+const checklist = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
@@ -11,7 +11,7 @@ const checklistSchema = new mongoose.Schema({
   }
 }, { _id: false });
 
-const habitSchema = new mongoose.Schema({
+const habit = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: User,
@@ -28,11 +28,11 @@ const habitSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  checklist: [checklistSchema],
+  checklist: [checklist],
   createdAt: {
     type: Date,
     default: Date.now
   }
-});  // ✅ _id will be created by default
+});
 
-module.exports = mongoose.model('Habit', habitSchema);
+module.exports = mongoose.model('Habit', habit);

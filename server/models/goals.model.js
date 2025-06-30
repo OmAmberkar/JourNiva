@@ -27,7 +27,7 @@ const goal = new mongoose.Schema({
     type: String
   },
   progress: {
-    type: boolean, 
+    type: Boolean, 
     default: False
   },
   boardImages: {
