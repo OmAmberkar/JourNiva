@@ -7,7 +7,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#DCEFFF] font-Livvic">
+   <div className="min-h-screen bg-[#DCEFFF] font-Livvic pb-20 sm:pb-24 md:pb-28 lg:pb-32">
+
       {/* Navbar */}
       <nav className="w-full flex items-center justify-between px-4 md:px-6 py-2 bg-[#DCEFFF] border-b-2 border-[#3E5973] relative">
         <div className="flex items-center space-x-2">
