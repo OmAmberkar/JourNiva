@@ -187,14 +187,3 @@ const DescriptionBox = () => {
 };
 
 export default DescriptionBox;
-
-
-
-
-
-
-
-
-
-
-
