@@ -5,3 +5,8 @@
 @theme {
   --font-Livvic: "Livvic", "sans-serif";
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* if navbar is fixed, adjust this */
+}

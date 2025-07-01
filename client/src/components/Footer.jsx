@@ -10,7 +10,7 @@ import {
 function Footer() {
   return (
     <footer className="bg-[#3C536B] text-[#D9E5F4] px-4 sm:px-6 md:px-10 py-24 font-Livvic relative z-0">
-      <div className="max-w-7xl mx-auto pt-40 px-6 md:px-10 flex flex-col gap-10 md:flex-row md:justify-between text-center md:text-left">
+      <div id="AboutUs" className="max-w-7xl mx-auto pt-40 px-6 md:px-10 flex flex-col gap-10 md:flex-row md:justify-between text-center md:text-left">
 
 
 
@@ -36,7 +36,7 @@ function Footer() {
           {/* About */}
           <div className="space-y-1">
             <h4 className="text-lg font-medium mb-2">About</h4>
-            <span className="block cursor-pointer leading-tight">About us</span>
+            <a href="/about#introduction" className="block cursor-pointer hover:underline">About us</a>
             <span className="block cursor-pointer leading-tight">
               Press kit
             </span>
@@ -48,12 +48,8 @@ function Footer() {
             <span className="block cursor-pointer leading-tight">
               Research on Journaling
             </span>
-            <span className="block cursor-pointer leading-tight">
-              Introduction to JourNiva
-            </span>
-            <span className="block cursor-pointer leading-tight">
-              How to Reflect
-            </span>
+            <a href="/about#introduction" className="block cursor-pointer hover:underline">Introduction to Journaling</a>
+            <a href="/about#howtoreflect" className="block cursor-pointer hover:underline">How to Reflect</a>
           </div>
 
           {/* Support */}

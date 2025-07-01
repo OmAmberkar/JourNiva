@@ -5,7 +5,7 @@ import BackGround from "../assets/BackGround.png";
 
 export default function Header() {
   return (
-    <div className="bg-[#DCEFFF] font-Livvic mt-15 pb-20 sm:pb-24 md:pb-28 lg:pb-32 ">
+    <div id="Home" className="bg-[#DCEFFF] font-Livvic mt-15 pb-20 sm:pb-24 md:pb-28 lg:pb-32 ">
 
       {/* Hero Section */}
       <div className="flex justify-center items-center px-4">

@@ -13,15 +13,26 @@ import "aos/dist/aos.css";
 const DescriptionBox = () => {
   
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: false, // ⬅️ allows animation on scroll up
-      mirror: true, // ⬅️ makes elements animate out when scrolling up
-    });
-  }, []);
+  AOS.init({
+    duration: 800,
+    once: false,
+    mirror: true,
+  });
+
+  const hash = window.location.hash;
+  if (hash) {
+    const element = document.querySelector(hash);
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }
+}, []);
+
 
   return (
-    <div className="bg-[#DCEFFF] text-[#3E5973] font-Livvic flex justify-center items-center px-4 pt-10 pb-10 relative z-10">
+    <div id="Features" className="bg-[#DCEFFF] text-[#3E5973] font-Livvic flex justify-center items-center px-4 pt-10 pb-10 relative z-10">
      
       <div className="relative z-10 w-full max-w-[1200px] mx-auto -mb-28 md:-mb-50">
 
@@ -133,7 +144,7 @@ const DescriptionBox = () => {
 
 {/* Title */}
 
-  <div className="relative overflow-hidden inline-block border-l-8 border-[#3E5973] pl-4 mb-20">
+  <div className="relative overflow-hidden inline-block border-l-8 border-[#3E5973] pl-4 mt-20 mb-20">
     <h1
       data-aos="slide-right"
       data-aos-duration="800"
@@ -154,7 +165,7 @@ const DescriptionBox = () => {
 
 {/* Section 5 Right Side  */}
 
-            <div className="w-full md:w-1/2 flex justify-center relative mt-10">
+            <div id="Colors" className="w-full md:w-1/2 flex justify-center relative mt-10">
 {/* Ring image */}
               <img
                 src={Ring}
