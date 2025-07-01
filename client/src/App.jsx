@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <div className="bg-[#DCEFFF] min-h-screen">
+    <div className="bg-[#DCEFFF] min-h-screen"> 
       <Navbar />
       <Header />
       <DescriptionBox />
