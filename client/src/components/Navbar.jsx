@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import Logo from "../assets/logo.png";
@@ -23,20 +22,36 @@ const Navbar = () => {
       {/* Desktop Nav */}
       <ul className="hidden md:flex gap-6 text-[#3E5973] text-sm md:text-base font-medium items-center">
         <li>
-          <Link to="/" className="hover:underline" onClick={handleLinkClick}>Home</Link>
+          <Link to="/" className="hover:underline" onClick={handleLinkClick}>
+            Home
+          </Link>
         </li>
         <li>
-          <Link to={{ pathname: "/", hash: "#Features" }} className="hover:underline" onClick={handleLinkClick}>
+          <Link
+            to={{ pathname: "/", hash: "#Features" }}
+            className="hover:underline"
+            onClick={handleLinkClick}
+          >
             Features
           </Link>
         </li>
         <li>
-          <Link to={{ pathname: "/", hash: "#Colors" }} className="hover:underline" onClick={handleLinkClick}>
+          <Link
+            to={{ pathname: "/", hash: "#Colors" }}
+            className="hover:underline"
+            onClick={handleLinkClick}
+          >
             About Theme
           </Link>
         </li>
         <li>
-          <Link to="/about" className="hover:underline" onClick={handleLinkClick}>About us</Link>
+          <Link
+            to="/about"
+            className="hover:underline"
+            onClick={handleLinkClick}
+          >
+            About us
+          </Link>
         </li>
         <li>
           <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60]">
@@ -52,7 +67,10 @@ const Navbar = () => {
 
       {/* Hamburger Icon */}
       <div className="md:hidden">
-        <button onClick={() => setMenuOpen(!menuOpen)} className="text-[#3E5973] text-3xl focus:outline-none">
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-[#3E5973] text-3xl focus:outline-none"
+        >
           {menuOpen ? <HiX /> : <HiMenu />}
         </button>
       </div>
@@ -61,20 +79,33 @@ const Navbar = () => {
       {menuOpen && (
         <ul className="absolute top-20 right-4 w-64 bg-[#dcefff]/80 backdrop-blur-md border border-[#3E5973] flex flex-col items-center text-[#3E5973] text-base font-medium gap-4 py-4 px-6 md:hidden z-50 shadow-xl rounded-xl">
           <li onClick={handleLinkClick}>
-            <Link to={{ pathname: "/", hash: "#Home" }}  className="w-full text-center block">Home</Link>
+            <Link
+              to={{ pathname: "/", hash: "#Home" }}
+              className="w-full text-center block"
+            >
+              Home
+            </Link>
           </li>
           <li onClick={handleLinkClick}>
-            <Link to={{ pathname: "/", hash: "#Features" }} className="w-full text-center block">
+            <Link
+              to={{ pathname: "/", hash: "#Features" }}
+              className="w-full text-center block"
+            >
               Features
             </Link>
           </li>
           <li onClick={handleLinkClick}>
-            <Link to={{ pathname: "/", hash: "#Colors" }} className="w-full text-center block">
+            <Link
+              to={{ pathname: "/", hash: "#Colors" }}
+              className="w-full text-center block"
+            >
               About Colors
             </Link>
           </li>
           <li onClick={handleLinkClick}>
-            <Link to="/about" className="w-full text-center block">About us</Link>
+            <Link to="/about" className="w-full text-center block">
+              About us
+            </Link>
           </li>
           <li>
             <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full">

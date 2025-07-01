@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-import LandingPage from "./Pages/LandingPage";
-
 import ScrollToTop from "./components/ScrollToTop"; // ✅
 import AboutUsPage from "./Pages/AboutUsPage";
+import LandingPage from "./pages/LandingPage";
 
 const App = () => {
   return (

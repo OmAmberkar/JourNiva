@@ -11,50 +11,65 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const DescriptionBox = () => {
-  
   useEffect(() => {
-  AOS.init({
-    duration: 800,
-    once: false,
-    mirror: true,
-  });
+    AOS.init({
+      duration: 800,
+      once: false,
+      mirror: true,
+    });
 
-  const hash = window.location.hash;
-  if (hash) {
-    const element = document.querySelector(hash);
-    if (element) {
-      setTimeout(() => {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 300);
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 300);
+      }
     }
-  }
-}, []);
-
+  }, []);
 
   return (
-    <div id="Features" className="bg-[#DCEFFF] text-[#3E5973] font-Livvic flex justify-center items-center px-4 pt-10 pb-10 relative z-10">
-     
+    <div
+      id="Features"
+      className="bg-[#DCEFFF] text-[#3E5973] font-Livvic flex justify-center items-center px-4 pt-10 pb-10 relative z-10"
+    >
       <div className="relative z-10 w-full max-w-[1200px] mx-auto -mb-28 md:-mb-50">
-
         <div className="border-2 border-[#3E5973] rounded-3xl p-6 sm:p-10 bg-[#DCEFFF] ">
           {/* Section 1 */}
-          <section
-            className="flex flex-col justify-center items-center px-4 py-20"
-            data-aos="fade-up"
-          >
+          <section className="flex flex-col justify-center items-center px-4 py-20">
             {/* Heading  */}
             <h1 className="text-3xl md:text-5xl text-center mb-5 pb-5">
               What can you do with JourNiva?
             </h1>
             <div className="h-[2px] w-3/4 bg-[#3E5973] rounded-full mx-auto mb-12" />
 
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 max-w-5xl mx-auto">
+            <div
+              className="flex flex-wrap justify-center gap-8 md:gap-12 max-w-5xl mx-auto "
+              data-aos="fade-up"
+            >
               {/* Image Array defined for multiple images */}
               {[
-                { img: WhiteBooks, label: "Journal Freely", link: "https://www.verywellhealth.com/journaling-7498123", },
-                { img: WhiteLight, label: "Daily Reflection", link: "https://medium.com/the-storm-of-words-un-said/the-power-of-daily-reflection-how-a-few-minutes-can-transform-your-day-b6312c0ec18e", },
-                { img: WhiteGraph, label: "Vision Board", link: "https://www.forbes.com/sites/traversmark/2024/03/29/a-psychologist-explains-the-power-of-vision-boarding-for-success/", },
-                { img: WhiteHabit, label: "Habit Tracker",  link: "https://jamesclear.com/habit-tracker", },
+                {
+                  img: WhiteBooks,
+                  label: "Journal Freely",
+                  link: "https://www.verywellhealth.com/journaling-7498123",
+                },
+                {
+                  img: WhiteLight,
+                  label: "Daily Reflection",
+                  link: "https://medium.com/the-storm-of-words-un-said/the-power-of-daily-reflection-how-a-few-minutes-can-transform-your-day-b6312c0ec18e",
+                },
+                {
+                  img: WhiteGraph,
+                  label: "Vision Board",
+                  link: "https://www.forbes.com/sites/traversmark/2024/03/29/a-psychologist-explains-the-power-of-vision-boarding-for-success/",
+                },
+                {
+                  img: WhiteHabit,
+                  label: "Habit Tracker",
+                  link: "https://jamesclear.com/habit-tracker",
+                },
               ].map((item, index) => {
                 const [word1, word2] = item.label.split(" ");
                 return (
@@ -89,7 +104,7 @@ const DescriptionBox = () => {
               })}
             </div>
           </section>
-{/* Section 2 */}
+          {/* Section 2 */}
           <section className="text-center px-4 py-24">
             <h1 className="text-3xl sm:text-4xl md:text-5xl  mb-10 text-[#3E5973]">
               Unfold your own narrative
@@ -99,7 +114,7 @@ const DescriptionBox = () => {
               struggles, and growth.
             </p>
           </section>
-{/* Section 3 Left side*/}
+          {/* Section 3 Left side*/}
           <section className="flex flex-col md:flex-row items-start justify-center gap-10 md:gap-20 px-4 py-20">
             <div className="w-full md:w-1/2 flex justify-center">
               <img
@@ -108,28 +123,27 @@ const DescriptionBox = () => {
                 className="w-[80%] sm:w-[90%] md:w-full h-auto object-contain"
               />
             </div>
- 
-           <div className="w-full md:w-1/2 text-right">
-  {/* Section 3 Right side*/}
-  <div className="relative overflow-hidden inline-block border-r-8 border-[#3E5973] pr-4 mb-4">
-    <h1
-      className="text-2xl md:text-4xl font-semibold whitespace-nowrap"
-      data-aos="slide-left"
-      data-aos-duration="700"
-     
-    >
-      Personalized <br className=" sm:block" /> experience
-    </h1>
-  </div>
 
-{/* Content  */}
-  <p className="text-base sm:text-lg md:text-2xl text-[#4A607A] leading-relaxed mt-4 pt-20">
-    JourNiva adjusts to your mood, pace, and style — making
-    journaling feel truly yours.
-  </p>
-</div>
+            <div className="w-full md:w-1/2 text-right">
+              {/* Section 3 Right side*/}
+              <div className="relative overflow-hidden inline-block border-r-8 border-[#3E5973] pr-4 mb-4">
+                <h1
+                  className="text-2xl md:text-4xl font-semibold whitespace-nowrap"
+                  data-aos="slide-left"
+                  data-aos-duration="700"
+                >
+                  Personalized <br className=" sm:block" /> experience
+                </h1>
+              </div>
+
+              {/* Content  */}
+              <p className="text-base sm:text-lg md:text-2xl text-[#4A607A] leading-relaxed mt-4 pt-20">
+                JourNiva adjusts to your mood, pace, and style — making
+                journaling feel truly yours.
+              </p>
+            </div>
           </section>
-{/* Section 4 */}
+          {/* Section 4 */}
           <div className="h-[2px] w-5/6 bg-[#3E5973] rounded-full mx-auto mb-12" />
 
           <section className="text-center px-4 pt-10 pb-20 md:pt-16 md:pb-24">
@@ -137,42 +151,44 @@ const DescriptionBox = () => {
               All you need to discover the magic of journaling
             </h1>
           </section>
-{/* Section 5 Left Side */}
+          {/* Section 5 Left Side */}
           <section className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 md:gap-20 px-4 py-20">
-           
             <div className="w-full md:w-1/2 text-left">
+              {/* Title */}
 
-{/* Title */}
+              <div className="relative overflow-hidden inline-block border-l-8 border-[#3E5973] pl-4 mt-20 mb-20">
+                <h1
+                  data-aos="slide-right"
+                  data-aos-duration="800"
+                  className="text-2xl md:text-4xl font-semibold whitespace-nowrap"
+                >
+                  Themes that reflect
+                  <br className="sm:block" /> your mood
+                </h1>
+              </div>
 
-  <div className="relative overflow-hidden inline-block border-l-8 border-[#3E5973] pl-4 mt-20 mb-20">
-    <h1
-      data-aos="slide-right"
-      data-aos-duration="800"
-      
-      className="text-2xl md:text-4xl font-semibold whitespace-nowrap"
-    >
-      Colors that match <br className="sm:block" /> how you feel
-    </h1> 
-  </div> 
+              {/* Content */}
 
-{/* Content */}
+              <p className="text-base sm:text-lg md:text-xl text-[#4A607A] leading-relaxed mt-4">
+                Choose your mood, and your journaling space adapts — calming
+                tones that reflect your emotions and set the right atmosphere
+                for reflection.
+              </p>
+            </div>
 
-  <p className="text-base sm:text-lg md:text-xl text-[#4A607A] leading-relaxed mt-4">
-    Choose your mood, and your journaling space adapts — calming tones
-    that reflect your emotions and set the right atmosphere for reflection.
-  </p>
-</div>
+            {/* Section 5 Right Side  */}
 
-{/* Section 5 Right Side  */}
-
-            <div id="Colors" className="w-full md:w-1/2 flex justify-center relative mt-10">
-{/* Ring image */}
+            <div
+              id="Colors"
+              className="w-full md:w-1/2 flex justify-center relative mt-10"
+            >
+              {/* Ring image */}
               <img
                 src={Ring}
                 alt="Background Layer"
                 className="absolute -top-[2%] md:-top-[10%] w-[90%] md:w-[36rem] lg:w-[40rem] h-auto object-contain opacity-80 z-0 animate-[spin_50s_linear_infinite]"
               />
-{/* Woman image */}
+              {/* Woman image */}
               <img
                 src={BookReadingWoman}
                 alt="Book Reading Woman"
@@ -180,7 +196,7 @@ const DescriptionBox = () => {
               />
             </div>
           </section>
-{/* Section 6 Quote */}
+          {/* Section 6 Quote */}
           <section className="text-center px-4 py-20">
             <h1 className="text-3xl md:text-4xl italic text-[#3E5973] mb-8">
               “Fill your paper with the breathings of your heart.”
