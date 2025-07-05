@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-import ScrollToTop from "./components/ScrollToTop"; // ✅
+import ScrollToTop from "./components/ScrollToTop"; 
 import AboutUsPage from "./Pages/AboutUsPage";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./Pages/LandingPage";
+import LoginPage from "./Pages/LoginPage"; 
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </div>
