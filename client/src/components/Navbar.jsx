@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import Logo from "../assets/logo.png";
 import { Link, useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLinkClick = () => {
     setMenuOpen(false);
@@ -59,7 +62,7 @@ const Navbar = () => {
           </button>
         </li>
         <li>
-          <button className="bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]">
+          <button className="bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => navigate('/login')}>
             Login
           </button>
         </li>
@@ -108,12 +111,12 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full">
+            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full" >
               Sign up
             </button>
           </li>
           <li>
-            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]">
+            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"  onClick={() => navigate('/login')}  >
               Login
             </button>
           </li>
