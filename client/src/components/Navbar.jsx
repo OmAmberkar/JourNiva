@@ -57,7 +57,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60]">
+          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60]" onClick={() => navigate('/register')}>
             Sign up
           </button>
         </li>
@@ -111,7 +111,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full" >
+            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full" onClick={() => navigate('/register')}>
               Sign up
             </button>
           </li>

@@ -17,7 +17,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center bg-[#DCEFFF] relative px-4 py-10">
+    <div className="flex flex-col min-h-screen items-center bg-[#DCEFFF] relative ">
       {/* Avatar */}
       <img
         src="/Logo.png"
@@ -105,6 +105,16 @@ function LoginPage() {
           >
             Login
           </button>
+          <div className="text-center text-[#3E5973] text-lg">
+            Already have an account?{" "}
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className=" text-[#3f76a9] px-2 py-1 cursor-pointer hover:underline transition"
+            >
+              Register
+            </button>
+          </div>
         </form>
       </div>
     </div>
