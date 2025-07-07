@@ -20,7 +20,7 @@ router.get("/today/:userID" , (req, res) => {
 
 
 // Route 3 - Get All Goals Checklist for a Week by User ID
-router.get("/week/:userID?date=yyyy-mm-dd" , (req, res) => {
+router.get("/week/:userID" , (req, res) => {
     const { userID } = req.params ;
     const { date } = req.query ;
     res.status(200).json({message : "All Goals Checklist for the Week Retrieved Successfully !"});
@@ -57,3 +57,5 @@ router.get("/analysis/:userID" , (req, res) => {
     
     res.status(200).json({message : "Goal Analysis Retrieved Successfully !"});
 });
+
+export default router ;

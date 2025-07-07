@@ -11,8 +11,9 @@ router.post("/create/:userID" , (req,res) => {
 });
 
 // Route 2 - Get Journal by Date
-router.get("/by-date/:userID?date=yyyy-mm-dd" , (req, res)=> {
-    const {userID, date} = req.params ;
+router.get("/by-date" , (req, res)=> {
+    const {userID} = req.params ;
+    const {date} = req.query ;
 
     res.status(200).json({message : "Journal Retrieved Successfully !"}) ;
 });
