@@ -11,9 +11,9 @@ router.post("/create/:userID" , (req,res) => {
 });
 
 // Route 2 - Get Journal by Date
-router.get("/by-date" , (req, res)=> {
-    const {userID} = req.params ;
-    const {date} = req.query ;
+router.get("/by-date/:userID" , (req, res)=> {
+    const { userID } = req.params ;
+    const { date } = req.query ;
 
     res.status(200).json({message : "Journal Retrieved Successfully !"}) ;
 });
@@ -29,7 +29,7 @@ router.get("/all/:userID" , (req, res) => {
 router.get("/view/:journalID" , (req, res) => {
     const {journalID} = req.params ;
 
-    res.status(200).json({messsage : "Journal Retrieved Successfully by ID !"});
+    res.status(200).json({message : "Journal Retrieved Successfully by ID !"});
 });
 
 // Route 5 - Update Journalby Date --> Not Needed 

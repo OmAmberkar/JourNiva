@@ -1,5 +1,5 @@
-import Users from "../../models/user.model.js" ;
-import bcrypt from "bcrypt" ;
+import Users from "../../models/user.model.js";
+import bcrypt from "bcrypt";
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -11,9 +11,9 @@ import bcrypt from "bcrypt" ;
     }
 
     try {
-        const existingUser = await Users.findOne({ email:temail }) ;
+        const existingUser = await Users.findOne({ email: temail }) ;
         if (existingUser) {
-            res.status(200).json({ 
+            return res.status(200).json({ 
                 status : 1,
                 message : "Existing User",
                 user : {
@@ -22,7 +22,7 @@ import bcrypt from "bcrypt" ;
                 },
             }) ;
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 status : 0,
                 message : "New User" 
             }) ;
@@ -84,7 +84,7 @@ export const registerUser = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" }) ;
     }
 } ;
-
+    
 
 //Route 3 Controller - Login Existing User
 export const loginUser = (req, res) => {
