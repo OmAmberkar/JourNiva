@@ -17,15 +17,15 @@
                 }
             });
         } else {
-            return res.status(200).json({ 
-                status: 0,
-                message: "New User",
+            res.status(200).json({
+                status : 0,
+                message : "New User" 
             });
-        }
+        };
     } catch (error) {
-        console.log("Error in Checking Email :".error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
+        console.error("Error Checking Email :", error);
+        res.status(500).json({message : "Internal Server Error"});
+    }; 
 
 };
 
