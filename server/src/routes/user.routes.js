@@ -26,4 +26,4 @@ router.get("/validate-token/:token" , validateToken);
 //Route 8 - Forgot Password : Reset Password
 router.post("/reset-password" , resetPassword);
 
-export default router
+export default router ;

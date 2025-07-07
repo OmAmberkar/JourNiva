@@ -1,14 +1,18 @@
+import Users from "../../models/user.model.js";
+import bcrypt from "bcrypt";
+
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
     const { email } = req.body ;
-    if (!email) {
+    const temail  = email.trim();
+    if (!temail) {
         return res.status(400).json({ message: "Email is required!" });
     }
 
     try {
-        const existingUser = await Users.findOne({ email });
+        const existingUser = await Users.findOne({ email : temail });
         if (existingUser) {
-            res.status(200).json({ 
+            return res.status(200).json({ 
                 status : 1,
                 message : "Existing User",
                 user : {
@@ -17,29 +21,72 @@
                 }
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 status : 0,
                 message : "New User" 
             });
         };
     } catch (error) {
         console.error("Error Checking Email :", error);
-        res.status(500).json({message : "Internal Server Error"});
+        return res.status(500).json({message : "Internal Server Error"});
     }; 
 
 };
 
 
 //Route 2 Controller - Register : Create New User & Store details
-export const registerUser = (req, res) => {
-    const { email} = req.body.email ;
-    const { password } = req.body.password ;
-    const { name } = req.body.name ;
-    const { avatarUrl } = req.body.avatarUrl ;
+export const registerUser = async (req, res) => {
+    // Access Input Data from Request Body
+    const { email, password, name, avatarUrl } = req.body ;
 
-    res.status(201).json({message : "User Registered Successfully"});
-};
+    // Validate Input Data
+    if ( !email || !password || !name || !avatarUrl) {
+        return res.status(400).json({message  : "All Fields are Required !"});
+    } 
 
+    if (password.length < 6) {
+        return res.status(400).json({message : "Password must be at least 6 Characters Long !"}) ;
+    }
+
+
+    try {
+        // Double Check for Existing User
+        const existingUser = await Users.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json({message : "User Already Exists with this Email !"}) ;
+        }
+
+        // Password Hashing
+        const saltRounds = 10 ;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Create and Save New User 
+        const newUser = new Users({
+            name,
+            email,
+            password: hashedPassword,
+            avatarUrl
+        });
+
+        await newUser.save();
+
+        // Response to Frontend
+        return res.status(201).json({
+            status : "success",
+            message : "User Registered Successfully!",
+            user : {
+                userid : newUser._id,
+                name : newUser.name,
+                avatarUrl : newUser.avatarUrl
+            }
+        }) ;
+    } catch (error) {
+        console.error("Error Registering User :", error);
+        return res.status(500).json({message : "Internal Server Error"}) ;
+    }
+
+}    
+    
 
 //Route 3 Controller - Login Existing User
 export const loginUser = (req, res) => {

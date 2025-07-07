@@ -20,7 +20,7 @@ router.get("/today/:userID" , (req, res) => {
 
 
 // Route 3 - Get All Habits Checklist for a Week by User ID
-router.get("/week/:userID?date=yyyy-mm-dd" , (req, res) => {
+router.get("/week/:userID" , (req, res) => {
     const { userID } = req.params ;
     const { date } = req.query ;
     res.status(200).json({message : "All Habits Checklist for the Week Retrieved Successfully !"});
@@ -58,4 +58,4 @@ router.get("/analysis/:userID" , (req, res) => {
     res.status(200).json({message : "Habit Analysis Retrieved Successfully !"});
 });
 
-
+export default router ;
