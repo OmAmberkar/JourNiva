@@ -87,10 +87,48 @@ export const registerUser = async (req, res) => {
     
 
 //Route 3 Controller - Login Existing User
-export const loginUser = (req, res) => {
-    const { password } = req.body ;
+export const loginUser = async (req, res) => {
+    // Access Email and Password from Request Body
+    const { email, password } = req.body ;
 
-    res.status(200).json({message : "User Logged in Successfully"}) ;
+    // Validate Email and Password
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and Password are Required!" }) ;
+    }
+
+  
+    try {
+        // Find User Document by Email
+        const user = await Users.findOne({ email }) ;
+        // Validate Email
+        if (!user) {
+            return res.status(404).json({ message: "Invalid Email or Password!" }) ;
+        }
+
+        // Validate Password
+        const isPasswordValid = await bcrypt.compare(password, user.password) ;
+        if (!isPasswordValid) {
+            return res.status(401).json({ 
+                status: "failed",
+                message: "Invalid Email or Password!" 
+            }) ;
+        } else {
+            // Send Response
+            return res.status(200).json({
+                status : "success",
+                message : "Login Successful!",
+                user : {
+                    userId: user._id,
+                    name: user.name,
+                    avatarUrl: user.avatarUrl,
+                }
+            });
+        }
+    } catch (error) {
+            console.error("Error Logging In User:", error) ;
+            return res.status(500).json({ message: "Internal Server Error" }) ;
+    }
+    
 };
 
 
