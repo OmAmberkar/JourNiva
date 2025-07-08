@@ -57,13 +57,9 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60]" onClick={() => navigate('/register')}>
-            Sign up
-          </button>
-        </li>
-        <li>
-          <button className="bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => navigate('/login')}>
-            Login
+          
+          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => navigate('/getstarted')}>
+            Get Started !
           </button>
         </li>
       </ul>
@@ -111,13 +107,8 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#324b60] w-full" onClick={() => navigate('/register')}>
-              Sign up
-            </button>
-          </li>
-          <li>
-            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"  onClick={() => navigate('/login')}  >
-              Login
+            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"  onClick={() => navigate('/getstarted')}  >
+              Get Started
             </button>
           </li>
         </ul>

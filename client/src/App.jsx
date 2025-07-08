@@ -2,8 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ScrollToTop from "./components/ScrollToTop"; 
 import AboutUsPage from "./Pages/AboutUsPage";
 import LandingPage from "./Pages/LandingPage";
-import LoginPage from "./Pages/LoginPage"; 
-import RegisterPage from "./Pages/RegisterPage";
+import GetStarted from "./Pages/GetStarted";
 
 const App = () => {
   return (
@@ -13,8 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/getstarted" element={<GetStarted />} />
         </Routes>
       </Router>
     </div>

@@ -1,8 +1,11 @@
 import React from "react";
-import { Link } from "react-router"; // ✅ Import Link
+import { Link,useNavigate } from "react-router"; // ✅ Import Link
 import BackGround from "../assets/BackGround.png";
 
+
+
 export default function Header() {
+  const navigate = useNavigate()
   return (
     <div
       id="Home"
@@ -20,7 +23,7 @@ export default function Header() {
             </p>
 
             <div className="flex justify-center gap-6 flex-wrap">
-              <button className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200">
+              <button className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200" onClick={() => {navigate('/getstarted')}}>
                 Get Started
               </button>
 
