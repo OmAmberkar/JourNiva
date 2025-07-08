@@ -88,10 +88,10 @@ export const registerUser = async (req, res) => {
 
 //Route 3 Controller - Login Existing User
 export const loginUser = async (req, res) => {
-    // Access Email and Password from Request Body
+    //Access Email & Password from Request Body
     const { email, password } = req.body ;
 
-    // Validate Email and Password
+    //Validate Email & Password
     if (!email || !password) {
         return res.status(400).json({ message: "Email and Password are Required!" }) ;
     }
@@ -113,22 +113,21 @@ export const loginUser = async (req, res) => {
                 message: "Invalid Email or Password!" 
             }) ;
         } else {
-            // Send Response
+            //Send Respone 
             return res.status(200).json({
-                status : "success",
-                message : "Login Successful!",
-                user : {
+                status: "success",
+                message: "Login Successful!",
+                user: {
                     userId: user._id,
                     name: user.name,
                     avatarUrl: user.avatarUrl,
                 }
-            });
+            }) ;
         }
     } catch (error) {
-            console.error("Error Logging In User:", error) ;
-            return res.status(500).json({ message: "Internal Server Error" }) ;
+        console.error("Error Logging In User:", error) ;
+        return res.status(500).json({ message: "Internal Server Error" }) ;        
     }
-    
 };
 
 
