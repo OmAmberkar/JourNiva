@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Link,useNavigate } from "react-router"; // ✅ Import Link
 import BackGround from "../assets/BackGround.png";
@@ -23,7 +24,7 @@ export default function Header() {
             </p>
 
             <div className="flex justify-center gap-6 flex-wrap">
-              <button className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200" onClick={() => {navigate('/getstarted')}}>
+              <button className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200" onClick={() => window.open('/getstarted', '_blank')}>
                 Get Started
               </button>
 
