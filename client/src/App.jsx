@@ -5,7 +5,8 @@ import AboutUsPage from "./Pages/AboutUsPage";
 import LandingPage from "./Pages/LandingPage";
 import GetStarted from "./Pages/GetStarted";
 import SignUp from "./components/SignUp";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./Pages/Dashboard";
+
 
 const App = () => {
   return (

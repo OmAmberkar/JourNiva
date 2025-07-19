@@ -1,15 +1,9 @@
-import React from "react";
-import LeftSideBar from "../components/LeftSideBar";
-import RightSideBar from "../components/RightSideBar";
+import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div>
-      Dashboard
-      <LeftSideBar />
-      <RightSideBar />
-    </div>
-  );
-};
+    <div>Dashboard</div>
+  )
+}
 
-export default Dashboard;
+export default Dashboard

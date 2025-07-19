@@ -1,7 +1,7 @@
 import React from "react";
 
 const LeftSideBar = () => {
-  return <div>pagal</div>;
+  return <div>LeftSideBar</div>;
 };
 
 export default LeftSideBar;

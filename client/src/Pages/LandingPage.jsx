@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
-import DescriptionBox from "../components/DescriptionBox";
+
 import Footer from "../components/Footer";
+import DescriptionBox from "../components/Landing Page Components/DescriptionBox";
 
 export default function LandingPage() {
   const location = useLocation();
