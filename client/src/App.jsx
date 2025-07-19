@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ScrollToTop from "./components/ScrollToTop";
 import SignIn from "./components/SignIn";
-import AboutUsPage from "./Pages/AboutUsPage";
-import LandingPage from "./Pages/LandingPage";
-import GetStarted from "./Pages/GetStarted";
+import AboutUsPage from "./pages/AboutUsPage";
+import LandingPage from "./pages/LandingPage";
+import GetStarted from "./pages/GetStarted";
 import SignUp from "./components/SignUp";
-import Dashboard from "./Pages/Dashboard";
-
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
