@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import ThemeDropdown from "./ThemeDropDown";
 
 const RightSideBar = () => {
   return (
-    <div>RightSideBar</div>
-  )
-}
+    <div>
+      <ThemeDropdown />
+    </div>
+  );
+};
 
-export default RightSideBar
+export default RightSideBar;
