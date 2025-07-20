@@ -24,7 +24,7 @@ function SignIn({ email, avatarUrl, name }) {
       });
 
       if (res.status === 200) {
-        navigate("/");
+        navigate("/dashboard");
         setLoading(false)
       } else {
         setError("Invalid Credentails.");
