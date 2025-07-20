@@ -6,6 +6,10 @@ import LandingPage from "./pages/LandingPage";
 import GetStarted from "./pages/GetStarted";
 import Dashboard from "./pages/Dashboard";
 import SignUp from "./components/SignUp";
+import AllGoals from "./pages/AllGoals";
+import AllHabits from "./pages/AllHabits";
+import VisionBoard from "./pages/VisionBoard";
+import AllJournals from "./pages/AllJournals";
 
 
 const App = () => {
@@ -18,6 +22,10 @@ const App = () => {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/getstarted" element={<GetStarted />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/goals" element={<AllGoals/>} />
+          <Route path="/habits" element={<AllHabits />} />
+          <Route path="/visionboard" element={<VisionBoard />} />
+          <Route path="/journals" element={<AllJournals />} />
        
           {/* <Route path="/" element={<SignIn />} />  */}
           {/* <Route path="/" element={<SignUp />} /> */}
