@@ -42,7 +42,7 @@ function SignUp({ email }) {
         avatarUrl,
       });
       if (res.status === 201) {
-        navigate("/");
+        navigate("/dashboard");
       } else {
         console.log("Check the entered filleds");
         setLoading(false);
