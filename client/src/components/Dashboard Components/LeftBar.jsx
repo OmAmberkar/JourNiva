@@ -100,6 +100,8 @@ import React, { useState } from "react";
 
 import { IoMdClose } from "react-icons/io";
 import { FiSidebar, FiSettings } from "react-icons/fi";
+import { Link } from "react-router";
+import { AiOutlineHome } from "react-icons/ai";
 
 // Settings Modal
 const SettingsModal = ({ onClose }) => (
@@ -153,8 +155,8 @@ const LeftBar = ({ isOpen, toggleSidebar }) => {
         {/* Close (X) button */}
         <div className="flex justify-end p-4">
           <button
-            onClick={toggleSidebar}
-            className="text-3xl text-[#3E5973] hover:text-[#DCEFFF] cursor-pointer"
+            onClick={toggleSidebar} 
+            className="text-3xl text-[#3E5973] cursor-pointer"
           >
             <IoMdClose />
           </button>
@@ -166,11 +168,23 @@ const LeftBar = ({ isOpen, toggleSidebar }) => {
           <div className="space-y-8 text-center">
             <h2 className="text-2xl font-bold">Disha</h2>
             <div className="h-[1px] w-24 bg-[#3E5973] mx-auto rounded-full" />
-            <ul className="space-y-4 text-lg">
-              <li className="hover:underline cursor-pointer">Home</li>
-              <li className="hover:underline cursor-pointer">All Journal</li>
-              <li className="hover:underline cursor-pointer">All Habits</li>
-              <li className="hover:underline cursor-pointer">All Goals</li>
+            <div className="flex flex-col gap-4 text-lg">
+                <Link to="/dashboard" className="flex items-center justify-center text-xl text-[#3E5973]">
+               <AiOutlineHome size={24} /> Home
+                </Link>
+                <Link to="/journals" className="text-xl text-[#3E5973]">
+                              All Journals
+                </Link>
+                <Link to="/habits" className="text-xl text-[#3E5973]">
+                              All Habits
+                </Link>
+                <Link to="/goals" className="text-xl text-[#3E5973]">
+                              All Goals
+                </Link>
+                </div>
+
+            
+            
               <button
                 onClick={openSettings}
                 className="flex gap-2 text-[#3E5973] text-xl fixed bottom-10 px-14"
@@ -178,7 +192,7 @@ const LeftBar = ({ isOpen, toggleSidebar }) => {
                 <FiSettings size={24} />
                 Settings
               </button>
-            </ul>
+            
           </div>
 
           {/* Bottom Section: Settings */}

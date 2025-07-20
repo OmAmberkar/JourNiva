@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { PiUserCircleFill } from "react-icons/pi";
-import SignIn from "../components/SignIn.jsx";
-import SignUp from "../components/SignUp.jsx"
+import SignIn from "../components/Get Started Components/SignIn";
+import SignUp from "../components/Get Started Components/SignUp";
+
 
 
 function GetStarted() {

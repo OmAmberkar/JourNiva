@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Link, useNavigate } from "react-router"; // ✅ Import Link
-import BackGround from "../assets/BackGround.png";
+import BackGround from "../../assets/BackGround.png";
 
 export default function Header() {
   const navigate = useNavigate();

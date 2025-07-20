@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import Logo from "../assets/logo.png";
+import Logo from "../../assets/logo.png";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 
