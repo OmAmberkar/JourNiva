@@ -1,11 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ScrollToTop from "./components/ScrollToTop";
-import SignIn from "./components/SignIn";
 import AboutUsPage from "./pages/AboutUsPage";
 import LandingPage from "./pages/LandingPage";
 import GetStarted from "./pages/GetStarted";
 import Dashboard from "./pages/Dashboard";
-import SignUp from "./components/SignUp";
 import AllGoals from "./pages/AllGoals";
 import AllHabits from "./pages/AllHabits";
 import VisionBoard from "./pages/VisionBoard";
@@ -27,8 +25,9 @@ const App = () => {
           <Route path="/visionboard" element={<VisionBoard />} />
           <Route path="/journals" element={<AllJournals />} />
        
-          {/* <Route path="/" element={<SignIn />} />  */}
-          {/* <Route path="/" element={<SignUp />} /> */}
+
+       
+        
         </Routes>
       </Router>
     </div>
