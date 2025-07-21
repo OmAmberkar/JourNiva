@@ -103,16 +103,11 @@ export const loginUser = async (req, res) => {
     const temail = email.trim() ;
 
     //Validate Email & Password
-<<<<<<< HEAD
-    if (!email || !password) {
+    if (!temail || !password) {
         return res.status(400).json({ 
             status : "failed",
             message: "Email and Password are Required!" 
         }) ;
-=======
-    if (!temail || !password) {
-        return res.status(400).json({ message: "Email and Password are Required!" }) ;
->>>>>>> origin/main
     }
 
   
