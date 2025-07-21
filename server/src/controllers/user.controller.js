@@ -100,7 +100,7 @@ export const loginUser = async (req, res) => {
   
     try {
         // Find User Document by Email
-        const user = await Users.findOne({ temail }) ;
+        const user = await Users.findOne({ email: temail }) ;
         // Validate Email
         if (!user) {
             return res.status(404).json({ 
