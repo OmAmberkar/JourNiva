@@ -9,8 +9,9 @@ import AllHabits from "./pages/AllHabits";
 import AllJournals from "./pages/AllJournals";
 import JournalFreely from "./components/Journiva info/JournalFreely";
 import DailyReflection from "./components/Journiva info/DailyReflection";
-import VisionBoard from "./components/Journiva info/VisionBoard";
 import HabitTracker from "./components/Journiva info/HabitTracker";
+import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
+import VisionBoard from "./pages/VisionBoard";
 
 const App = () => {
   return (
@@ -22,14 +23,14 @@ const App = () => {
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/getstarted" element={<GetStarted />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/goals" element={<AllGoals/>} />
+          <Route path="/goals" element={<AllGoals />} />
           <Route path="/habits" element={<AllHabits />} />
           <Route path="/visionboard" element={<VisionBoard />} />
           <Route path="/journals" element={<AllJournals />} />
           <Route path="/JournalFreely" element={<JournalFreely />} />
           <Route path="/DailyReflection" element={<DailyReflection />} />
-          <Route path="/VisionBoard" element={<VisionBoard />} />
           <Route path="/HabitTracker" element={<HabitTracker />} />
+          <Route path="/visionboardinfo" element={<VisionBoardInfo />} />
         </Routes>
       </Router>
     </div>
@@ -37,5 +38,3 @@ const App = () => {
 };
 
 export default App;
-
-

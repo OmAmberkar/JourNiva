@@ -31,7 +31,7 @@ const ThemeDropdown = () => {
     <div ref={menuRef} className="relative inline-block text-left">
       <button
         onClick={() => setOpen(!open)}
-        className="bg-[#3E5973] text-[#c3d7e8] px-4 py-2 rounded-full cursor-pointer"
+        className="bg-[#3E5973] text-[#c3d7e8] px-4 py-2 rounded-2xl cursor-pointer"
       >
         Your Mood, Your Theme
       </button>

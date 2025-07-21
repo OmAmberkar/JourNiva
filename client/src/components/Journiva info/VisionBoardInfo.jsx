@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import Footer from "../Common Components/Footer";
 
-function VisionBoard() {
+function VisionBoardInfo() {
   const navigate = useNavigate();
 
   const fadeUp = {
@@ -71,7 +71,11 @@ function VisionBoard() {
             stroke="currentColor"
             className="w-5 h-5"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Return back to Home
         </motion.button>
@@ -113,7 +117,9 @@ function VisionBoard() {
                 className="rounded-xl w-40 h-28 object-cover flex-shrink-0"
               />
               <div>
-                <h2 className="text-xl sm:text-2xl font-semibold mb-2">{title}</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2">
+                  {title}
+                </h2>
                 <p className="text-base sm:text-lg text-[#3E5973]">{text}</p>
               </div>
             </motion.div>
@@ -126,4 +132,4 @@ function VisionBoard() {
   );
 }
 
-export default VisionBoard;
+export default VisionBoardInfo;

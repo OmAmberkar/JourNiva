@@ -63,7 +63,7 @@ const DescriptionBox = () => {
                 {
                   img: WhiteGraph,
                   label: "Vision Board",
-                  link: "/VisionBoard",
+                  link: "/visionboardinfo",
                 },
                 {
                   img: WhiteHabit,
