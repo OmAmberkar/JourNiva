@@ -39,21 +39,31 @@ import bcrypt from "bcrypt";
 export const registerUser = async (req, res) => {
     // Access Input Data from Request Body
     const { email, password, name, avatarUrl } = req.body ;
+    const temail = email.trim() ;
+    const tname = name.trim() ;
+    const tavatarUrl = avatarUrl.trim() ;
 
     // Validate Input Data
-    if (!email || !password || !name || !avatarUrl) {
-        return res.status(400).json({ message: "All Fields are Required!"}) ;
+    if (!temail || !password || !tname || !tavatarUrl) {
+        return res.status(400).json({ 
+            status : "failed",
+            message: "All Fields are Required!"
+        }) ;
     }
 
     if (password.length < 6) {
-        return res.status(400).json({ message: " Password must be at least 6 Characters Long!"}) ;
+        return res.status(400).json({ 
+            status : "failed",
+            message: " Password must be at least 6 Characters Long!"}) ;
     }
 
     try {
         // Double Check for Existing User 
-        const existingUser = await Users.findOne({ email }) ;
+        const existingUser = await Users.findOne({ temail }) ;
         if (existingUser) {
-            return res.status(409).json({ message: "User Already Exists!"}) ;
+            return res.status(409).json({ 
+                
+                message: "User Already Exists!"}) ;
         }
 
         // Password Hashing
@@ -62,10 +72,10 @@ export const registerUser = async (req, res) => {
 
         // Create & Save New User
         const newUser = new Users({
-            name,
-            email,
+            name : tname,
+            email : temail,
             password: hashedPassword,
-            avatarUrl,
+            avatarUrl : tavatarUrl
         }) ;
         await newUser.save() ;
 
@@ -93,7 +103,10 @@ export const loginUser = async (req, res) => {
 
     //Validate Email & Password
     if (!email || !password) {
-        return res.status(400).json({ message: "Email and Password are Required!" }) ;
+        return res.status(400).json({ 
+            status : "failed",
+            message: "Email and Password are Required!" 
+        }) ;
     }
 
   
