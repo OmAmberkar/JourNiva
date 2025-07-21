@@ -53,22 +53,22 @@ const DescriptionBox = () => {
                 {
                   img: WhiteBooks,
                   label: "Journal Freely",
-                  link: "https://www.verywellhealth.com/journaling-7498123",
+                  link: "/JournalFreely",
                 },
                 {
                   img: WhiteLight,
                   label: "Daily Reflection",
-                  link: "https://medium.com/the-storm-of-words-un-said/the-power-of-daily-reflection-how-a-few-minutes-can-transform-your-day-b6312c0ec18e",
+                  link: "/DailyReflection",
                 },
                 {
                   img: WhiteGraph,
                   label: "Vision Board",
-                  link: "https://www.forbes.com/sites/traversmark/2024/03/29/a-psychologist-explains-the-power-of-vision-boarding-for-success/",
+                  link: "/VisionBoard",
                 },
                 {
                   img: WhiteHabit,
                   label: "Habit Tracker",
-                  link: "https://jamesclear.com/habit-tracker",
+                  link: "/HabitTracker",
                 },
               ].map((item, index) => {
                 const [word1, word2] = item.label.split(" ");
