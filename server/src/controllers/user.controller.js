@@ -100,19 +100,25 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     //Access Email & Password from Request Body
     const { email, password } = req.body ;
+    const temail = email.trim() ;
 
     //Validate Email & Password
+<<<<<<< HEAD
     if (!email || !password) {
         return res.status(400).json({ 
             status : "failed",
             message: "Email and Password are Required!" 
         }) ;
+=======
+    if (!temail || !password) {
+        return res.status(400).json({ message: "Email and Password are Required!" }) ;
+>>>>>>> origin/main
     }
 
   
     try {
         // Find User Document by Email
-        const user = await Users.findOne({ email }) ;
+        const user = await Users.findOne({ email: temail }) ;
         // Validate Email
         if (!user) {
             return res.status(404).json({ 

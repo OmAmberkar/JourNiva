@@ -1,11 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
-import { Link,useNavigate } from "react-router"; // ✅ Import Link
-import BackGround from "../assets/BackGround.png";
-
-
+import { Link, useNavigate } from "react-router"; // ✅ Import Link
+import BackGround from "../../assets/BackGround.png";
 
 export default function Header() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div
       id="Home"
@@ -23,7 +22,17 @@ export default function Header() {
             </p>
 
             <div className="flex justify-center gap-6 flex-wrap">
-              <button className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200" onClick={() => {navigate('/getstarted')}}>
+              <button
+                className="w-[200px] bg-[#3E5973] hover:bg-[#324b60] text-white px-8 py-2 rounded-full border border-[#a8b4d0] shadow-md transition-all duration-200"
+                onClick={() => {
+                  const isMobileDevice = window.innerWidth <= 768;
+                  if (isMobileDevice) {
+                    window.location.href = "/getstarted";
+                  } else {
+                    window.open("/getstarted", "_blank");
+                  }
+                }}
+              >
                 Get Started
               </button>
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import Logo from "../assets/logo.png";
+import Logo from "../../assets/logo.png";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 
@@ -58,7 +58,7 @@ const Navbar = () => {
         </li>
         <li>
           
-          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => navigate('/getstarted')}>
+          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => window.open('/getstarted', '_blank')}>
             Get Started !
           </button>
         </li>
@@ -107,7 +107,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"  onClick={() => navigate('/getstarted')}  >
+            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => window.open('/getstarted')}>
               Get Started
             </button>
           </li>

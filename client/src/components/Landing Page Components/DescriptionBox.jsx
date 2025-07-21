@@ -1,12 +1,12 @@
 // DescriptionBox.jsx
 import React, { useEffect } from "react";
-import BookReadingMan from "../assets/BookReadingMan.png";
-import BookReadingWoman from "../assets/BookReadingWoman.png";
-import Ring from "../assets/Ring.png";
-import WhiteBooks from "../assets/WhiteBooks.png";
-import WhiteGraph from "../assets/WhiteGraph.png";
-import WhiteLight from "../assets/WhiteLight.png";
-import WhiteHabit from "../assets/WhiteHabit.png";
+import BookReadingMan from "../../assets/BookReadingMan.png";
+import BookReadingWoman from "../../assets/BookReadingWoman.png";
+import Ring from "../../assets/Ring.png";
+import WhiteBooks from "../../assets/WhiteBooks.png";
+import WhiteGraph from "../../assets/WhiteGraph.png";
+import WhiteLight from "../../assets/WhiteLight.png";
+import WhiteHabit from "../../assets/WhiteHabit.png";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

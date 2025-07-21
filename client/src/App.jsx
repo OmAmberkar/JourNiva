@@ -1,8 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
-import ScrollToTop from "./components/ScrollToTop"; 
-import AboutUsPage from "./Pages/AboutUsPage";
-import LandingPage from "./Pages/LandingPage";
-import GetStarted from "./Pages/GetStarted";
+import ScrollToTop from "./components/Landing Page Components/ScrollToTop";
+import AboutUsPage from "./pages/AboutUsPage";
+import LandingPage from "./pages/LandingPage";
+import GetStarted from "./pages/GetStarted";
+import Dashboard from "./pages/Dashboard";
+import AllGoals from "./pages/AllGoals";
+import AllHabits from "./pages/AllHabits";
+import VisionBoard from "./pages/VisionBoard";
+import AllJournals from "./pages/AllJournals";
+
 
 const App = () => {
   return (
@@ -13,6 +19,15 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/getstarted" element={<GetStarted />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/goals" element={<AllGoals/>} />
+          <Route path="/habits" element={<AllHabits />} />
+          <Route path="/visionboard" element={<VisionBoard />} />
+          <Route path="/journals" element={<AllJournals />} />
+       
+
+       
+        
         </Routes>
       </Router>
     </div>
