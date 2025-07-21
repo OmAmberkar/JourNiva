@@ -59,10 +59,10 @@ export const registerUser = async (req, res) => {
 
     try {
         // Double Check for Existing User 
-        const existingUser = await Users.findOne({ temail }) ;
-        if (existingUser) {
+        const existingUser = await Users.findOne({ email : temail }) ;
+        if (existingUser) { 
             return res.status(409).json({ 
-                
+                status: "failed",
                 message: "User Already Exists!"}) ;
         }
 
@@ -109,7 +109,6 @@ export const loginUser = async (req, res) => {
             message: "Email and Password are Required!" 
         }) ;
     }
-
   
     try {
         // Find User Document by Email
