@@ -90,16 +90,17 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     //Access Email & Password from Request Body
     const { email, password } = req.body ;
+    const temail = email.trim() ;
 
     //Validate Email & Password
-    if (!email || !password) {
+    if (!temail || !password) {
         return res.status(400).json({ message: "Email and Password are Required!" }) ;
     }
 
   
     try {
         // Find User Document by Email
-        const user = await Users.findOne({ email }) ;
+        const user = await Users.findOne({ temail }) ;
         // Validate Email
         if (!user) {
             return res.status(404).json({ 
