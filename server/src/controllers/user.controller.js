@@ -1,6 +1,7 @@
 import User from "../../models/user.model.js" ;
 import bcrypt from "bcrypt" ;
 import crypto from "crypto" ;
+import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -111,7 +112,7 @@ export const registerUser = async (req, res) => {
                 avatarUrl: newUser.avatarUrl,
             },
         }) ;
-        
+
     } catch (error) {
         console.error("Error Registering User:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;
