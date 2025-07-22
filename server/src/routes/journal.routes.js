@@ -1,14 +1,10 @@
 import express from "express";
+import { createJournal, getAllJournals } from '../controllers/journal.controller.js';
 
 const router = express.Router();
 
 // Route 1 - Create Journal
-router.post("/create/:userID" , (req,res) => {
-    const {userID} = req.params;
-    const {date, title, mood, content} = req.body ;
-
-    res.status(201).json({message : "Journal Created Successfully !"});
-});
+router.post("/create/:userID",createJournal);
 
 // Route 2 - Get Journal by Date
 router.get("/by-date/:userID" , (req, res)=> {
@@ -19,11 +15,7 @@ router.get("/by-date/:userID" , (req, res)=> {
 });
 
 // Route 3 - Get all Journals
-router.get("/all/:userID" , (req, res) => {
-    const {userID} = req.params ;
-
-    res.status(200).json({message : "All Journals Retrieved Successfully !"});
-});
+router.get("/all/:userID" , getAllJournals);
 
 // Route 4 - Get Specific Journal by ID (View Jorunal))
 router.get("/view/:journalID" , (req, res) => {

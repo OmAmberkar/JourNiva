@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "framer-motion": "^12.23.6",
-    "react-transition-group": "^4.4.5"
-  }
-}
