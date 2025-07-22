@@ -265,7 +265,7 @@ import {
   FiSidebar,
 } from "react-icons/fi";
 import ThemeDropdown from "./ThemeDropDown";
-import VisionBoard from "../../pages/VisionBoard"; // ✅ Adjust path as needed
+import { VisionBoardCanvas } from "../../pages/VisionBoard";
 
 const QuickLinkCard = ({ to, title, subtitle, leadingIcon: Leading }) => (
   <Link
@@ -285,9 +285,8 @@ const QuickLinkCard = ({ to, title, subtitle, leadingIcon: Leading }) => (
 );
 
 const RightBar = () => {
-  const [isOpen, setIsOpen] = useState(false); // ✅ Toggle state
+  const [isOpen, setIsOpen] = useState(false);
 
-  // ✅ Sidebar closed state – only show floating icon
   if (!isOpen) {
     return (
       <div className="fixed top-4 right-4 z-50">
@@ -301,18 +300,16 @@ const RightBar = () => {
     );
   }
 
-  // ✅ Full RightBar content when open
   return (
     <aside
-      className={`
+      className="
         fixed top-0 right-0 h-full z-50
         w-full sm:w-[20rem] xl:w-[24rem]
         bg-[#DCEFFF]
         p-5 flex flex-col gap-10
         shadow-lg transition-all duration-500
-      `}
+      "
     >
-      {/* Close icon */}
       <div className="flex justify-end">
         <button
           className="text-3xl text-[#3E5973]"
@@ -322,15 +319,13 @@ const RightBar = () => {
         </button>
       </div>
 
-      {/* Theme icon on right */}
       <div className="flex justify-end">
         <ThemeDropdown />
       </div>
 
-      {/* Vision Board section */}
       <div className="px-2 flex flex-col items-center gap-3 text-[#3E5973]">
         <Link
-          to="/dashboard/visionboard"
+          to="/visionboard"
           className="flex items-center gap-2 text-xl sm:text-2xl font-semibold hover:text-[#1e2a35] transition"
         >
           <FiTrendingUp className="w-5 h-5" />
@@ -340,12 +335,36 @@ const RightBar = () => {
         <p className="text-sm opacity-70 text-center max-w-[12rem] leading-snug">
           Craft your desired future
         </p>
-        <div className="w-full mt-2 rounded-xl border-2 border-[#3E5973] overflow-hidden">
-          <VisionBoard />
-        </div>
+
+        {/* Responsive Mini Preview */}
+        
+
+{/* Vision Board Preview */}
+<Link to="/visionboard" className="w-full  px-4">
+  <div
+    className="relative overflow-hidden rounded-xl border border-[#3E5973] bg-white mx-auto"
+    style={{
+      width: "100%",
+      maxWidth: "290px",       // limits width on large screens
+      aspectRatio: "20.5 / 10",   // maintains same shape as full canvas
+    }}
+  >
+    <div
+      style={{
+        transform: "scale(0.215)",     // ✅ tweak scale to match your original canvas
+        transformOrigin: "top left",
+        width: "1440px",             // match your original canvas width
+        height: "900px",             // match original height
+        pointerEvents: "none",       // ensures clicks don’t affect inner elements
+      }}
+    >
+      <VisionBoardCanvas />
+    </div>
+  </div>
+</Link>
+
       </div>
 
-      {/* Habits & Goals section */}
       <div className="w-full px-2 flex items-center justify-center group gap-8">
         <QuickLinkCard
           to="/habits"
@@ -360,3 +379,4 @@ const RightBar = () => {
 };
 
 export default RightBar;
+
