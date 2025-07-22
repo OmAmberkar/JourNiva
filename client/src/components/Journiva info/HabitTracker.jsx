@@ -54,7 +54,7 @@ function HabitTracker() {
         {/* Back Button */}
         <motion.button
           whileHover={{ scale: 1.05, backgroundColor: "#aad3f5" }}
-          className="fixed top-6 left-6 z-50 p-3 text-sm sm:text-base border border-[#3E5973] rounded-full flex items-center gap-2 bg-white/80 backdrop-blur-md shadow-md transition-all"
+          className="fixed top-6 left-6 z-50 p-3 text-sm sm:text-base border border-[#3E5973] rounded-full flex items-center gap-2 bg-[#dcefff]/80 backdrop-blur-md shadow-md transition-all"
           onClick={() => navigate("/")}
         >
           <svg

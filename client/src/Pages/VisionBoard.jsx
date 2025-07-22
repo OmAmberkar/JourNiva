@@ -2,7 +2,9 @@ import React from 'react'
 
 const VisionBoard = () => {
   return (
-    <div>VisionBoard</div>
+    <div>VisionBoard
+      MEOW MEOW MAKAD
+    </div>
   )
 }
 
