@@ -56,11 +56,11 @@ function VisionBoardInfo() {
 
   return (
     <div>
-      <div className="bg-gradient-to-b from-[#DCEFFF] text-[#3E5973] font-Livvic px-4 pt-10 pb-10 relative z-10">
+      <div className="bg-gradient-to-b from-[#dcefff] text-[#3E5973] font-Livvic px-4 pt-10 pb-10 relative z-10">
         {/* Back Button */}
         <motion.button
           whileHover={{ scale: 1.05, backgroundColor: "#aad3f5" }}
-          className="p-3 text-xl border border-[#3E5973] rounded-full mb-6 flex items-center gap-2 transition-all"
+          className="fixed top-6 left-6 z-50 p-3 text-sm sm:text-base border border-[#3E5973] rounded-full flex items-center gap-2 bg-white/80 backdrop-blur-md shadow-md transition-all"
           onClick={() => navigate("/")}
         >
           <svg
