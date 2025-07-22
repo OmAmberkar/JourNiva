@@ -22,6 +22,7 @@ export const sendEmail = async ({ to, subject, templateName, templatedata }) => 
             to,
             subject,
             html: htmlContent,
+            replyTo: false,
         } ;
 
         // Send Email
