@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const moodOptions = [
-  { value: "smile", icon: "/src/assets/smile_mood.png" },
-  { value: "wink", icon: "/src/assets/wink_mood.png" },
-  { value: "happy", icon: "/src/assets/happy_mood.png" },
-  { value: "neutral", icon: "/src/assets/neutral_mood.png" },
-  { value: "sad", icon: "/src/assets/sad_mood.png" },
+  { value: "smile", icon: "/src/assets/blue_mood.png" },
+  { value: "wink", icon: "/src/assets/green_mood.png" },
+  { value: "happy", icon: "/src/assets/peach_mood.png" },
+  { value: "neutral", icon: "/src/assets/purple_mood.png" },
+  { value: "sad", icon: "/src/assets/pink_mood.png" },
 ];
 
 const MoodDropdown = () => {
@@ -39,7 +39,7 @@ const MoodDropdown = () => {
           <img
             src={selectedMood.icon}
             alt={selectedMood.value}
-            // className="w-[50px] h-[50px]"
+            className="w-10 h-10"
           />
         ) : (
           "- Choose -"
@@ -55,11 +55,7 @@ const MoodDropdown = () => {
               onClick={() => handleSelect(mood)}
               className="flex justify-center items-center p-2 cursor-pointer hover:bg-[#3E5973]"
             >
-              <img
-                src={mood.icon}
-                alt={mood.value}
-                // className="w-[50px] h-[50px]"
-              />
+              <img src={mood.icon} alt={mood.value} className="w-10 h-10" />
             </div>
           ))}
         </div>
