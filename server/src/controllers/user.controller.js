@@ -82,10 +82,10 @@ export const registerUser = async (req, res) => {
         const newUser = new User({
             name : tname,
             email : temail,
-            password: hashedPassword,
+            password : hashedPassword,
             avatarUrl : tavatarUrl,
             isVerified : false,
-            otp : hashedotp,
+            otp : hashedOtp,
             otpExpires : otpExpires,
         }) ;
         await newUser.save() ;
@@ -111,6 +111,7 @@ export const registerUser = async (req, res) => {
                 avatarUrl: newUser.avatarUrl,
             },
         }) ;
+        
     } catch (error) {
         console.error("Error Registering User:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;

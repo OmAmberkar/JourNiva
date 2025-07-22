@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename) ;
 export const sendEmail = async ({ to, subject, templateName, templatedata }) => {
     try {
         // Define Template Path
-        const templatePath = path.join(__dirname, `emailTemplates`, `${templateName}.ejs`) ;
+        const templatePath = path.join(__dirname, 'emailTemplates', `${templateName}.ejs`) ;
 
         // Render Template with Data
         const htmlContent = await ejs.renderFile(templatePath, templatedata) ;
@@ -26,8 +26,8 @@ export const sendEmail = async ({ to, subject, templateName, templatedata }) => 
 
         // Send Email
         const info = await transporter.sendMail(mailOptions) ;
-
-        console.log("Email Sent Successfully To:", info.messageID) ;
+        
+        console.log("Email Sent Successfully!",info.messageId) ;
         return info ;
     } catch (error) {
         console.error("Error Sending Email:", error) ;
