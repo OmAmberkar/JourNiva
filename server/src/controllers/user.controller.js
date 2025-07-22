@@ -1,4 +1,4 @@
-import Users from "../../models/user.model.js";
+import User from "../../models/user.model.js";
 import bcrypt from "bcrypt";
 
 // Route 1 Controller - Check Email
@@ -11,7 +11,7 @@ import bcrypt from "bcrypt";
     }
 
     try {
-        const existingUser = await Users.findOne({ email: temail }) ;
+        const existingUser = await User.findOne({ email: temail }) ;
         if (existingUser) {
             return res.status(200).json({ 
                 status : 1,
@@ -59,7 +59,7 @@ export const registerUser = async (req, res) => {
 
     try {
         // Double Check for Existing User 
-        const existingUser = await Users.findOne({ email : temail }) ;
+        const existingUser = await User.findOne({ email : temail }) ;
         if (existingUser) { 
             return res.status(409).json({ 
                 status: "failed",
@@ -71,7 +71,7 @@ export const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds) ;
 
         // Create & Save New User
-        const newUser = new Users({
+        const newUser = new User({
             name : tname,
             email : temail,
             password: hashedPassword,
@@ -112,7 +112,7 @@ export const loginUser = async (req, res) => {
   
     try {
         // Find User Document by Email
-        const user = await Users.findOne({ email: temail }) ;
+        const user = await User.findOne({ email: temail }) ;
         // Validate Email
         if (!user) {
             return res.status(404).json({ 
