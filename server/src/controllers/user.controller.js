@@ -78,22 +78,33 @@ export const registerUser = async (req, res) => {
         // Hash OTP
         const hashedOtp = await bcrypt.hash(otp, saltRounds) ;
 
-        // Send OTP Email
-        
-
         // Create & Save New User
         const newUser = new User({
             name : tname,
             email : temail,
             password: hashedPassword,
-            avatarUrl : tavatarUrl
+            avatarUrl : tavatarUrl,
+            isVerified : false,
+            otp : hashedotp,
+            otpExpires : otpExpires,
         }) ;
         await newUser.save() ;
+
+        // Send OTP Email
+        await sendEmail({
+            to : temail,
+            subject : "Verify Your Email - JourNiva",
+            templateName : "otpEmail",
+            templateData : {
+                name : tname,
+                otp : otp,
+            }
+        }) ;
 
         // Respose to Frontend
         return res.status(201).json({
             status: "success",
-            message: "User Registered Successfully!",
+            message: "OTP has been Sent. Please Check Your Spam Folder & Inbox!",
             user: {
                 userId: newUser._id,
                 name: newUser.name,
