@@ -1,58 +1,70 @@
-import { ReadPreference } from "mongodb";
-import mongoose, { mongo } from "mongoose";
-import User from "./user.model";
+import mongoose, { Schema } from "mongoose";
 
-const journal = mongoose.Schema(
+export const MoodList = [
+  "Calm",
+  "Peaceful",
+  "Happy",
+  "Bright",
+  "Loved",
+  "Tired",
+];
+
+//optionally mentioned so that if needed we could refer one
+// export const MOOD_TYPES = [
+//   "Happy","Sad","Angry","Excited","Calm","Stressed","Tired","Motivated","Grateful","Confused",
+//   "Optimistic","Anxious","Lonely","Focused","Bored","Proud","Relaxed","Other",
+// ];
+
+const journalSchema = new mongoose.Schema(
   {
-    username: {
+    _uid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: User,
+      ref: "User",
+      required: true,
+      index: true,
     },
-
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: User,
+    nameSnapshot: {
+      type: String,
+      required: true,
+      trim: true,
     },
 
     title: {
       type: String,
+      trim: true,
       required: true,
     },
-
-    date: {
-      type: Date,
-      required: true,
-    },
-
-    mood: {
-      type: String,
-      enum: ["Angry", "Happy", "Sad"],
-      default: "Happy",
-    },
-
     content: {
       type: String,
       required: true,
     },
-
-    coverImageUrl: {
+    date: {
+      type: Date,
+      required: true,
+      index: true,
+    },
+    mood: {
       type: String,
-      default: mongoose.Schema.Types.User,
+      enum: MoodList,
+      default: "Happy",
     },
-
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    cardImageUrl: {
+      type: String,
+      default: null,
     },
-
-    updatedAt: {
-      type: Date,
-      default: Date.now,
+    location: {
+      type: String,
+      default: null,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const Journals = mongoose.model("Journals", journal);
+journalSchema.index({ _uid: 1, date: -1 });
+//something new that would create the b-tree in backend so as to make the searhing easy
 
-export default Journals;
+const Journal = mongoose.model("Journal", journalSchema);
+
+export default Journal;
