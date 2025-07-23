@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"; // Use this for proper routing
 
 // ✅ Settings Modal
 const SettingsModal = ({ onClose }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
+  <div className="fixed inset-0 z-70 flex items-center justify-center backdrop-blur-sm bg-black/20">
     <div className="bg-white rounded-xl p-8 shadow-2xl w-[90%] max-w-xl animate-settingsOpen">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-[#3E5973]">Settings</h2>
