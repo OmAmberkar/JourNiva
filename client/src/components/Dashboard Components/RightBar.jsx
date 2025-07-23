@@ -136,15 +136,40 @@ const RightBar = ({ isOpen, toggle }) => {
           </Link>
 
           <Link to="/visionboard" className="w-full">
-            <div
-              className="relative overflow-hidden rounded-xl border border-[#3E5973] bg-white mx-auto"
-              style={{ width: "100%", aspectRatio: "19 / 10" }}
-            >
+            <div className="relative overflow-hidden rounded-xl border border-[#3E5973] bg-white w-full aspect-[16/10]">
+              {/* Scaled canvas inside */}
               <div
+                className="absolute top-0 left-0"
                 style={{
-                  transform: "scale(0.335)",
+                  transform: "scale(0.321)", // adjust as needed
                   transformOrigin: "top left",
-                  width: "1440px",
+                  width: "1440px", // matches full canvas width
+                  height: "900px",
+                  pointerEvents: "none", // disable interaction
+                }}
+              >
+                <VisionBoardCanvas previewMode />
+              </div>
+            </div>
+          </Link>
+          {/* {isOpen && (
+        <div className="px-4 flex flex-col items-center gap-6 text-[#3E5973] w-full">
+          <Link
+            to="/visionboard"
+            className="flex items-center gap-3 text-2xl font-semibold hover:text-[#1e2a35] transition"
+          >
+            <FiTrendingUp className="w-6 h-6" />
+            <span>Vision Board</span>
+          </Link>
+
+          <Link to="/visionboard" className="w-full">
+            <div className="relative overflow-hidden rounded-xl border border-[#3E5973] bg-white w-full aspect-[16/10]">
+              <div
+                className="absolute top-0 left-0"
+                style={{
+                  transform: "scale(0.22)", // You can fine-tune this
+                  transformOrigin: "top left",
+                  width: "1440px", // Canvas original size
                   height: "900px",
                   pointerEvents: "none",
                 }}
@@ -152,7 +177,7 @@ const RightBar = ({ isOpen, toggle }) => {
                 <VisionBoardCanvas previewMode />
               </div>
             </div>
-          </Link>
+          </Link> */}
 
           {/* Habits and Goals */}
           <div className="w-[460px] flex flex-row gap-6 justify-between">
@@ -175,14 +200,17 @@ const RightBar = ({ isOpen, toggle }) => {
                   ➤ {label}
                 </h3>
 
-                <div className="h-[160px] w-full border border-[#3E5973] rounded-lg px-2 py-2 overflow-hidden">
+                <div className="h-[160px] w-full border border-transparent hover:border-[#3E5973] rounded-lg px-2 py-2 overflow-hidden transition-all duration-300">
                   {tasks.length === 0 ? (
                     <div className="h-full flex justify-center items-center">
                       <button
                         onClick={() => onOpen(true)}
                         className="text-[#3E5973] hover:text-[#1e2a35] cursor-pointer"
                       >
-                        <FiPlus size={24} />
+                        <FiPlus
+                          size={24}
+                          className="opacity-30 transition-opacity duration-300"
+                        />
                       </button>
                     </div>
                   ) : (
@@ -192,7 +220,10 @@ const RightBar = ({ isOpen, toggle }) => {
                           onClick={() => onOpen(true)}
                           className="cursor-pointer"
                         >
-                          <FiPlus size={16} />
+                          <FiPlus
+                            size={16}
+                            className="opacity-30 transition-opacity duration-300"
+                          />
                         </button>
                       </div>
 
@@ -238,16 +269,6 @@ const RightBar = ({ isOpen, toggle }) => {
 };
 
 export default RightBar;
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import {
@@ -371,7 +392,7 @@ export default RightBar;
 //         <div className="px-4 flex flex-col items-center gap-6 text-[#3E5973] w-full">
 //           <Link
 //             to="/visionboard"
-            
+
 //             className="flex items-center gap-3 text-2xl font-semibold hover:text-[#1e2a35] transition"
 //           >
 //             <FiTrendingUp className="w-6 h-6" />
@@ -381,7 +402,7 @@ export default RightBar;
 
 //           <Link
 //             to="/visionboard"
-            
+
 //             className="w-full"
 //           >
 //             <div
