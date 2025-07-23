@@ -1,5 +1,7 @@
-import User from "../../models/user.model.js";
-import bcrypt from "bcrypt";
+import User from "../../models/user.model.js" ;
+import bcrypt from "bcrypt" ;
+import crypto from "crypto" ;
+import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -70,25 +72,47 @@ export const registerUser = async (req, res) => {
         const saltRounds = 10 ;
         const hashedPassword = await bcrypt.hash(password, saltRounds) ;
 
+        // Generate OTP & Set Expiry Time
+        const otp = crypto.randomInt(100000, 999999).toString() ;
+        const otpExpires = new Date(Date.now() + 10 * 60 * 1000) ; // 10 minutes from now
+
+        // Hash OTP
+        const hashedOtp = await bcrypt.hash(otp, saltRounds) ;
+
         // Create & Save New User
         const newUser = new User({
             name : tname,
             email : temail,
-            password: hashedPassword,
-            avatarUrl : tavatarUrl
+            password : hashedPassword,
+            avatarUrl : tavatarUrl,
+            isVerified : false,
+            otp : hashedOtp,
+            otpExpires : otpExpires,
         }) ;
         await newUser.save() ;
+
+        // Send OTP Email
+        await sendEmail({
+            to : temail,
+            subject : "Verify Your Email - JourNiva",
+            templateName : "otpEmail",
+            templateData : {
+                name : tname,
+                otp : otp,
+            }
+        }) ;
 
         // Respose to Frontend
         return res.status(201).json({
             status: "success",
-            message: "User Registered Successfully!",
+            message: "OTP has been Sent. Please Check Your Spam Folder & Inbox!",
             user: {
                 userId: newUser._id,
                 name: newUser.name,
                 avatarUrl: newUser.avatarUrl,
             },
         }) ;
+
     } catch (error) {
         console.error("Error Registering User:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;
@@ -147,15 +171,8 @@ export const loginUser = async (req, res) => {
 };
 
 
-//Route 4 Controller - Register : Email OTP Generation & Send
-export const sendOTP = (req, res) => {
-    const { email } = req.body ;
 
-    res.status(200).json(message = "OTP Sent Successfully to your Email!");
-};
-
-
-//Route 5 Controller - Register : Email OTP Verification
+//Route 4 Controller - Register : Email OTP Verification
 export const verifyOTP = (req, res) => {
     const { otp } = req.body;
 
@@ -163,7 +180,7 @@ export const verifyOTP = (req, res) => {
 };
 
 
-//Route 6 Controller - Forgot Password : Link Generation
+//Route 5 Controller - Forgot Password : Link Generation
 export const forgotPasswordLink = (req, res) => {
     const { email } = req.body;
     
@@ -171,7 +188,7 @@ export const forgotPasswordLink = (req, res) => {
 };
 
 
-//Route 7 Controller - Forgot Password : Validate Token
+//Route 6 Controller - Forgot Password : Validate Token
 export const validateToken = (req, res) => {
     const { token } = req.params;
 
@@ -179,7 +196,7 @@ export const validateToken = (req, res) => {
 };
 
 
-//Route 8 Controller - Forgot Password : Reset Password
+//Route 7 Controller - Forgot Password : Reset Password
 export const resetPassword = (req, res) => {
     const { password } = req.body;
 
