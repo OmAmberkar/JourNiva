@@ -9,8 +9,8 @@ export const VisionBoardCanvas = () => {
     <div className="w-full h-screen max-h-[100vh] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden">
       {/* Canvas content will go here */}
       <h1>
-        MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW meo 
-        <br /> MEOW 
+        MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW
+        MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW meo
         <br /> MEOW
         <br /> MEOW
         <br /> MEOW
@@ -35,7 +35,8 @@ export const VisionBoardCanvas = () => {
         <br /> MEOW
         <br /> MEOW
         <br /> MEOW
-        
+        <br /> MEOW
+        <br /> MEOW <br /> MEOW <br /> meow
       </h1>
     </div>
   );
