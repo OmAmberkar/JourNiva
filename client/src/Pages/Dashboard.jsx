@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import MoodDropdown from "../components/Dashboard Components/MoodDropDown";
-import TextareaAutosize from "react-textarea-autosize";
 import LeftBar from "../components/Dashboard Components/LeftBar";
 import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
 import RightBar from "../components/Dashboard Components/RightBar";
