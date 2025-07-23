@@ -83,11 +83,12 @@ const Dashboard = () => {
 
       {/* Dashboard Content & RightBar */}
       <div
-        className={`
-          lg:flex transition-all duration-300
-          ${rightSidebarOpen ? "lg:mr-[20rem] xl:mr-[24rem]" : "lg:mr-[4rem]"}
-        `}
-      >
+  className={`
+    lg:flex transition-all duration-300
+    ${rightSidebarOpen ? "lg:mr-[30rem] xl:mr-[34rem]" : "lg:mr-[4rem]"}
+  `}
+>
+
         {/* Main Content */}
         <div
           className={`
@@ -132,11 +133,11 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <TextareaAutosize
-              minRows={20}
-              placeholder="Start Writing..."
-              className="w-full text-lg sm:text-xl bg-transparent outline-none leading-relaxed"
-            />
+            <textarea
+  placeholder="Start Writing..."
+  className="w-full h-[60vh] text-lg sm:text-xl bg-transparent outline-none leading-relaxed resize-none"
+/>
+
           </main>
         </div>
 
