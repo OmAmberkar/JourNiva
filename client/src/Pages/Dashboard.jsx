@@ -154,7 +154,15 @@ const Dashboard = () => {
                       pointerEvents: "none",
                     }}
                   >
-                    <VisionBoardCanvas previewMode />
+                    <VisionBoardCanvas
+  elements={[
+    { id: 1, type: "text", content: "Sample Text" },
+    { id: 2, type: "image", url: "https://via.placeholder.com/220x160" },
+  ]}
+  onRemove={() => {}}
+  previewMode
+/>
+
                   </div>
                 </div>
 
