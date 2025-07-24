@@ -179,7 +179,7 @@ export const verifyOTP = async (req, res) => {
     // Trim userId
     const tuserId = userId.trim() ;
 
-    // Validate Input
+    // Validate Input Data
     if (!tuserId || !otp) {
         return res.status(400).json({ 
             status: "failed",
@@ -190,20 +190,20 @@ export const verifyOTP = async (req, res) => {
     try {
         // Find User by ID
         const user = await User.findById(tuserId) ;
-
+        
         // Validate User
         if (!user) {
             return res.status(404).json({ 
                 status: "failed",
-                message: "User Not Found - Please Register!" 
+                message: "User Not Found! - Please Register" 
             }) ;
         }
 
-        // Validate User Verfication Status 
-        if(user.isVerified === true) {
-            return res.status(400).json({ 
+        // Validate User Verification Status
+        if (user.isVerified === true) {
+            return res.status(400).json({
                 status: "failed",
-                message: "User Already Verified - Please Login!" 
+                message: "User Already Verified! - Please Login" 
             }) ;
         }
 
@@ -211,7 +211,7 @@ export const verifyOTP = async (req, res) => {
         if (!user.otpExpires || user.otpExpires < new Date()) {
             return res.status(410).json({ 
                 status: "failed",
-                message: "OTP has Expired - Please Request a New OTP!" 
+                message: "OTP has Expired! Please Request a New OTP" 
             }) ;
         }
 
@@ -220,7 +220,7 @@ export const verifyOTP = async (req, res) => {
         if (!isOtpValid) {
             return res.status(401).json({ 
                 status: "failed",
-                message: "Invalid OTP - Please Try Again!" 
+                message: "Invalid OTP! Please Try Again" 
             }) ;
         }
 
@@ -230,74 +230,76 @@ export const verifyOTP = async (req, res) => {
         user.otpExpires = undefined ; // Clear OTP Expiry
         await user.save() ;
 
-        
+
+        // Response to Frontend
         return res.status(200).json({
             status: "success",
-            message: "Email Verfied Successfully!",
+            message: "Email Verified Successfully!",
             user: {
                 userId: user._id,
                 name: user.name,
                 avatarUrl: user.avatarUrl,
-            }
+            },
         }) ;
-
+        
     } catch (error) {
         console.error("Error Verifying OTP:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;
     }
+
 };
 
- 
-//Route 5 Controller - Resend OTP
+
+// Route 5 Controller - Resend OTP
 export const resendOTP = async (req, res) => {
-    //Destructure Request Body
+    // Destructure Request Body
     const { userId } = req.body ;
 
-    //Validate User ID
+    // Validate userId
     if (!userId) {
-        return res.status(400).json({ 
+        res.status(400).json({ 
             status: "failed",
             message: "User ID is Required!" 
         }) ;
     }
-
+        
     try {
-        //Find User by ID
+        // Find User by ID
         const user = await User.findById(userId) ;
 
-        //Validate User 
+        // Validate User
         if (!user) {
             return res.status(404).json({ 
                 status: "failed",
-                message: "User Not Found - Please Register!" 
+                message: "User Not Found! - Please Register" 
             }) ;
         }
 
-        //Validate User Verification Status
+        // Validate User Verification Status
         if (user.isVerified === true) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 status: "failed",
-                message: "User Already Verified - Please Login!" 
+                message: "User Already Verified! - Please Login" 
             }) ;
         }
 
-        //Generate New OTP & Set Expiry Time
+        // Generate New OTP & Set Expiry Time
         const newOtp = crypto.randomInt(100000, 999999).toString() ;
-        const newOtpExpires = new Date(Date.now() + 10 * 60 * 1000) ; 
+        const newOtpExpires = new Date(Date.now() + 10 * 60 * 1000) ; // 10 minutes from now
 
-        //Hash New OTP
+        // Hash New OTP
         const saltRounds = 10 ;
         const hashedNewOtp = await bcrypt.hash(newOtp, saltRounds) ;
 
-        //Update User Document
+        // Update User Document
         user.otp = hashedNewOtp ;
         user.otpExpires = newOtpExpires ;
         await user.save() ;
 
-        //Send New OTP Email
+        // Send New OTP Email
         await sendEmail({
             to: user.email,
-            subject: "Verify Your Email - JourNiva",
+            subject : "Verify Your Email - JourNiva",
             templateName: "otpEmail",
             templateData: {
                 name: user.name,
@@ -305,7 +307,7 @@ export const resendOTP = async (req, res) => {
             }
         }) ;
 
-        //Response to Frontend
+        // Response to Frontend
         return res.status(200).json({
             status: "success",
             message: "New OTP has been Sent. Please Check Your Spam Folder & Inbox!",
