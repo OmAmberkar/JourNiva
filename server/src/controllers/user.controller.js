@@ -171,16 +171,158 @@ export const loginUser = async (req, res) => {
 };
 
 
-
 //Route 4 Controller - Register : Email OTP Verification
-export const verifyOTP = (req, res) => {
-    const { otp } = req.body;
+export const verifyOTP = async (req, res) => {
+    // Destructure Request Body
+    const { userId, otp } = req.body ;
 
-    res.status(200).json({ message: "Email Verified Successfully!"});
+    // Trim userId
+    const tuserId = userId.trim() ;
+
+    // Validate Input
+    if (!tuserId || !otp) {
+        return res.status(400).json({ 
+            status: "failed",
+            message: "Please Enter Valid OTP!" 
+        }) ;
+    }
+
+    try {
+        // Find User by ID
+        const user = await User.findById(tuserId) ;
+
+        // Validate User
+        if (!user) {
+            return res.status(404).json({ 
+                status: "failed",
+                message: "User Not Found - Please Register!" 
+            }) ;
+        }
+
+        // Validate User Verfication Status 
+        if(user.isVerified === true) {
+            return res.status(400).json({ 
+                status: "failed",
+                message: "User Already Verified - Please Login!" 
+            }) ;
+        }
+
+        // Validate OTP Expiry
+        if (!user.otpExpires || user.otpExpires < new Date()) {
+            return res.status(410).json({ 
+                status: "failed",
+                message: "OTP has Expired - Please Request a New OTP!" 
+            }) ;
+        }
+
+        // Validate OTP
+        const isOtpValid = await bcrypt.compare(otp, user.otp) ;
+        if (!isOtpValid) {
+            return res.status(401).json({ 
+                status: "failed",
+                message: "Invalid OTP - Please Try Again!" 
+            }) ;
+        }
+
+        // Update User Document
+        user.isVerified = true ;
+        user.otp = undefined ; // Clear OTP
+        user.otpExpires = undefined ; // Clear OTP Expiry
+        await user.save() ;
+
+        
+        return res.status(200).json({
+            status: "success",
+            message: "Email Verfied Successfully!",
+            user: {
+                userId: user._id,
+                name: user.name,
+                avatarUrl: user.avatarUrl,
+            }
+        }) ;
+
+    } catch (error) {
+        console.error("Error Verifying OTP:", error) ;
+        return res.status(500).json({ message: "Internal Server Error" }) ;
+    }
 };
 
+ 
+//Route 5 Controller - Resend OTP
+export const resendOTP = async (req, res) => {
+    //Destructure Request Body
+    const { userId } = req.body ;
 
-//Route 5 Controller - Forgot Password : Link Generation
+    //Validate User ID
+    if (!userId) {
+        return res.status(400).json({ 
+            status: "failed",
+            message: "User ID is Required!" 
+        }) ;
+    }
+
+    try {
+        //Find User by ID
+        const user = await User.findById(userId) ;
+
+        //Validate User 
+        if (!user) {
+            return res.status(404).json({ 
+                status: "failed",
+                message: "User Not Found - Please Register!" 
+            }) ;
+        }
+
+        //Validate User Verification Status
+        if (user.isVerified === true) {
+            return res.status(400).json({ 
+                status: "failed",
+                message: "User Already Verified - Please Login!" 
+            }) ;
+        }
+
+        //Generate New OTP & Set Expiry Time
+        const newOtp = crypto.randomInt(100000, 999999).toString() ;
+        const newOtpExpires = new Date(Date.now() + 10 * 60 * 1000) ; 
+
+        //Hash New OTP
+        const saltRounds = 10 ;
+        const hashedNewOtp = await bcrypt.hash(newOtp, saltRounds) ;
+
+        //Update User Document
+        user.otp = hashedNewOtp ;
+        user.otpExpires = newOtpExpires ;
+        await user.save() ;
+
+        //Send New OTP Email
+        await sendEmail({
+            to: user.email,
+            subject: "Verify Your Email - JourNiva",
+            templateName: "otpEmail",
+            templateData: {
+                name: user.name,
+                otp: newOtp,
+            }
+        }) ;
+
+        //Response to Frontend
+        return res.status(200).json({
+            status: "success",
+            message: "New OTP has been Sent. Please Check Your Spam Folder & Inbox!",
+            user: {
+                userId: user._id,
+                name: user.name,
+                avatarUrl: user.avatarUrl,
+            },
+        }) ;
+    } catch (error) {
+        console.error("Error Resending OTP:", error) ;
+        return res.status(500).json({ message: "Internal Server Error" }) ;
+    }
+}
+
+
+//Route 6 Controller - Forgot Password : Link Generation
 export const forgotPasswordLink = (req, res) => {
     const { email } = req.body;
     
@@ -188,7 +330,7 @@ export const forgotPasswordLink = (req, res) => {
 };
 
 
-//Route 6 Controller - Forgot Password : Validate Token
+//Route 7 Controller - Forgot Password : Validate Token
 export const validateToken = (req, res) => {
     const { token } = req.params;
 
@@ -196,7 +338,7 @@ export const validateToken = (req, res) => {
 };
 
 
-//Route 7 Controller - Forgot Password : Reset Password
+//Route 8 Controller - Forgot Password : Reset Password
 export const resetPassword = (req, res) => {
     const { password } = req.body;
 
