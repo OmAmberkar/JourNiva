@@ -152,7 +152,6 @@ const RightBar = ({ isOpen, toggle }) => {
               </div>
             </div>
           </Link>
-          
 
           {/* Habits and Goals */}
           <div className="w-[460px] flex flex-row gap-6 justify-between">

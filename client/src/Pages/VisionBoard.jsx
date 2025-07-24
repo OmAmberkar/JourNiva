@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { FiArrowLeft, FiBookmark, FiImage, FiType, FiCheck } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiBookmark,
+  FiImage,
+  FiType,
+  FiCheck,
+  FiPlus,
+} from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Rnd } from "react-rnd";
 import axios from "axios";
@@ -19,7 +26,12 @@ const AddTextModal = ({ onClose, onAdd }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
       <div className="bg-[#DCEFFF] relative rounded-xl p-6 shadow-xl w-[90%] max-w-sm animate-settingsOpen">
-        <button onClick={onClose} className="absolute top-3 right-4 text-3xl text-[#3E5973] hover:text-red-500">×</button>
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-4 text-3xl text-[#3E5973] hover:text-red-500"
+        >
+          ×
+        </button>
         <h2 className="text-2xl font-bold text-[#3E5973] mb-4">Add Text</h2>
         <input
           type="text"
@@ -30,7 +42,10 @@ const AddTextModal = ({ onClose, onAdd }) => {
           className="w-full p-3 rounded-md text-[#3E5973] bg-white border border-[#3E5973] outline-none text-lg"
         />
         <div className="flex justify-end mt-4">
-          <button onClick={handleSubmit} className="text-4xl text-[#3E5973] hover:text-green-600">
+          <button
+            onClick={handleSubmit}
+            className="text-4xl text-[#3E5973] hover:text-green-600"
+          >
             <FiCheck />
           </button>
         </div>
@@ -58,7 +73,12 @@ const AddImageModal = ({ onClose, onAdd }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
       <div className="bg-[#DCEFFF] relative rounded-xl p-6 shadow-xl w-[90%] max-w-2xl animate-settingsOpen">
-        <button onClick={onClose} className="absolute top-3 right-4 text-3xl text-[#3E5973] hover:text-red-500">×</button>
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-4 text-3xl text-[#3E5973] hover:text-red-500"
+        >
+          ×
+        </button>
         <h2 className="text-2xl font-bold text-[#3E5973] mb-4">Search Image</h2>
         <div className="flex gap-2">
           <input
@@ -68,7 +88,12 @@ const AddImageModal = ({ onClose, onAdd }) => {
             placeholder="Search image"
             className="w-full p-3 rounded-md text-[#3E5973] bg-white border border-[#3E5973] outline-none text-base"
           />
-          <button onClick={searchImages} className="bg-[#3E5973] text-white px-4 py-2 rounded-md">Search</button>
+          <button
+            onClick={searchImages}
+            className="bg-[#3E5973] text-white px-4 py-2 rounded-md"
+          >
+            Search
+          </button>
         </div>
         <div className="grid grid-cols-3 gap-3 mt-4 max-h-[300px] overflow-y-auto">
           {results.map((img) => (
@@ -90,9 +115,20 @@ const AddImageModal = ({ onClose, onAdd }) => {
 };
 
 // ---- Vision Board Canvas ----
-export const VisionBoardCanvas = ({ elements, onRemove, previewMode = false }) => {
+export const VisionBoardCanvas = ({
+  elements = [],
+  onRemove,
+  previewMode = false,
+}) => {
   return (
     <div className="relative w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden">
+      {/* FiPlus icon when empty */}
+      {elements.length === 0 && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <FiPlus className="text-6xl text-[#3E5973] opacity-20" />
+        </div>
+      )}
+
       {elements.map((el, index) => (
         <Rnd
           key={el.id}
@@ -121,7 +157,11 @@ export const VisionBoardCanvas = ({ elements, onRemove, previewMode = false }) =
             </div>
           ) : (
             <div className="relative w-full h-full">
-              <img src={el.url} alt="vision-img" className="w-full h-full object-cover rounded-md pointer-events-none" />
+              <img
+                src={el.url}
+                alt="vision-img"
+                className="w-full h-full object-cover rounded-md pointer-events-none"
+              />
               {!previewMode && (
                 <button
                   onClick={() => onRemove(el.id)}
@@ -144,25 +184,36 @@ const VisionBoard = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [elements, setElements] = useState([]);
 
-  const handleAddElement = (element) => setElements((prev) => [...prev, element]);
-  const handleRemoveElement = (id) => setElements((prev) => prev.filter((el) => el.id !== id));
+  const handleAddElement = (element) =>
+    setElements((prev) => [...prev, element]);
+  const handleRemoveElement = (id) =>
+    setElements((prev) => prev.filter((el) => el.id !== id));
 
   return (
     <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
       {/* Top Bar */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
-          <Link to="/dashboard" className="text-[#3E5973] hover:text-[#1e2a35] transition">
+          <Link
+            to="/dashboard"
+            className="text-[#3E5973] hover:text-[#1e2a35] transition"
+          >
             <FiArrowLeft className="text-2xl" />
           </Link>
           Craft the Life You Desire
         </div>
 
         <div className="flex gap-3">
-          <button onClick={() => setShowTextModal(true)} className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+          <button
+            onClick={() => setShowTextModal(true)}
+            className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition"
+          >
             Add Text <FiType />
           </button>
-          <button onClick={() => setShowImageModal(true)} className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+          <button
+            onClick={() => setShowImageModal(true)}
+            className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition"
+          >
             Add Images <FiImage />
           </button>
           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
@@ -175,21 +226,23 @@ const VisionBoard = () => {
       <VisionBoardCanvas elements={elements} onRemove={handleRemoveElement} />
 
       {/* Modals */}
-      {showTextModal && <AddTextModal onClose={() => setShowTextModal(false)} onAdd={handleAddElement} />}
-      {showImageModal && <AddImageModal onClose={() => setShowImageModal(false)} onAdd={handleAddElement} />}
+      {showTextModal && (
+        <AddTextModal
+          onClose={() => setShowTextModal(false)}
+          onAdd={handleAddElement}
+        />
+      )}
+      {showImageModal && (
+        <AddImageModal
+          onClose={() => setShowImageModal(false)}
+          onAdd={handleAddElement}
+        />
+      )}
     </div>
   );
 };
 
 export default VisionBoard;
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import { FiArrowLeft, FiBookmark, FiImage, FiType, FiCheck } from "react-icons/fi";
@@ -292,7 +345,7 @@ export default VisionBoard;
 // }) => {
 //   return (
 //     <div className="relative w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden">
-      
+
 //       {/* Text Elements */}
 //       {texts.map((item) => (
 //         <Rnd
@@ -402,17 +455,6 @@ export default VisionBoard;
 // };
 
 // export default VisionBoard;
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import { FiArrowLeft, FiBookmark, FiImage, FiType, FiCheck } from "react-icons/fi";
@@ -630,15 +672,6 @@ export default VisionBoard;
 // };
 
 // export default VisionBoard;
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import { FiArrowLeft, FiBookmark, FiImage, FiPlus, FiType, FiCheck } from "react-icons/fi";
@@ -865,14 +898,6 @@ export default VisionBoard;
 // };
 
 // export default VisionBoard;
-
-
-
-
-
-
-
-
 
 // // src/pages/VisionBoard.jsx
 // import React, { useState } from "react";
@@ -1110,12 +1135,6 @@ export default VisionBoard;
 
 // export default VisionBoard;
 
-
-
-
-
-
-
 // import React, { useState } from "react";
 // import {
 //   FiArrowLeft,
@@ -1316,12 +1335,6 @@ export default VisionBoard;
 // };
 
 // export default VisionBoard;
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import {
@@ -1559,13 +1572,6 @@ export default VisionBoard;
 
 // export default VisionBoard;
 
-
-
-
-
-
-
-
 // import React, { useState } from "react";
 // import { FiArrowLeft, FiBookmark, FiImage, FiPlus, FiType, FiCheck } from "react-icons/fi";
 // import { Link } from "react-router-dom";
@@ -1639,7 +1645,6 @@ export default VisionBoard;
 //   );
 // };
 
-
 // const VisionBoard = () => {
 //   const [showTextModal, setShowTextModal] = useState(false);
 //   const [texts, setTexts] = useState([]);
@@ -1698,76 +1703,69 @@ export default VisionBoard;
 // };
 
 // export default VisionBoard;
- 
-  
-  
-  
-  
-  
-  
-  
-  // // src/pages/VisionBoard.jsx
-  // import React from "react";
-  // import {
-  //   FiArrowLeft,
-  //   FiBookmark,
-  //   FiImage,
-  //   FiPlus,
-  //   FiType,
-  // } from "react-icons/fi";
-  // import { Link } from "react-router-dom";
-  // import { useState } from "react";
 
-  // // ✅ This is the canvas-only previewable component
-  // // ✅ This is the canvas-only previewable component
-  // export const VisionBoardCanvas = ({ previewMode = false }) => {
-  //   const [hasContent, setHasContent] = useState(false);
-  //   return (
-  //     <div className="flex w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden items-center justify-center">
-  //       {!hasContent && (
-  //         <div className="flex flex-col items-center justify-center gap-2 opacity-30 transition-opacity duration-300 text-center">
-  //           <FiPlus className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl" />
-  //         </div>
-  //       )}
+// // src/pages/VisionBoard.jsx
+// import React from "react";
+// import {
+//   FiArrowLeft,
+//   FiBookmark,
+//   FiImage,
+//   FiPlus,
+//   FiType,
+// } from "react-icons/fi";
+// import { Link } from "react-router-dom";
+// import { useState } from "react";
 
-  //       {/* Your content logic goes here */}
-  //       {/* Example: if user adds a block, call setHasContent(true) */}
-  //     </div>
-  //   );
-  // };
+// // ✅ This is the canvas-only previewable component
+// // ✅ This is the canvas-only previewable component
+// export const VisionBoardCanvas = ({ previewMode = false }) => {
+//   const [hasContent, setHasContent] = useState(false);
+//   return (
+//     <div className="flex w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden items-center justify-center">
+//       {!hasContent && (
+//         <div className="flex flex-col items-center justify-center gap-2 opacity-30 transition-opacity duration-300 text-center">
+//           <FiPlus className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl" />
+//         </div>
+//       )}
 
-  // const VisionBoard = () => {
-  //   return (
-  //     <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
-  //       {/* Top Bar */}
-  //       <div className="flex justify-between items-center mb-6">
-  //         <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
-  //           <Link
-  //             to="/dashboard"
-  //             className="text-[#3E5973] hover:text-[#1e2a35] transition"
-  //           >
-  //             <FiArrowLeft className="text-2xl" />
-  //           </Link>
-  //           Craft the Life You Desire
-  //         </div>
+//       {/* Your content logic goes here */}
+//       {/* Example: if user adds a block, call setHasContent(true) */}
+//     </div>
+//   );
+// };
 
-  //         <div className="flex gap-3">
-  //           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-  //             Add Text <FiType />
-  //           </button>
-  //           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-  //             Add Images <FiImage />
-  //           </button>
-  //           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-  //             Save <FiBookmark />
-  //           </button>
-  //         </div>
-  //       </div>
+// const VisionBoard = () => {
+//   return (
+//     <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
+//       {/* Top Bar */}
+//       <div className="flex justify-between items-center mb-6">
+//         <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
+//           <Link
+//             to="/dashboard"
+//             className="text-[#3E5973] hover:text-[#1e2a35] transition"
+//           >
+//             <FiArrowLeft className="text-2xl" />
+//           </Link>
+//           Craft the Life You Desire
+//         </div>
 
-  //       {/* Canvas Section */}
-  //       <VisionBoardCanvas />
-  //     </div>
-  //   );
-  // };
+//         <div className="flex gap-3">
+//           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+//             Add Text <FiType />
+//           </button>
+//           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+//             Add Images <FiImage />
+//           </button>
+//           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+//             Save <FiBookmark />
+//           </button>
+//         </div>
+//       </div>
 
-  // export default VisionBoard;
+//       {/* Canvas Section */}
+//       <VisionBoardCanvas />
+//     </div>
+//   );
+// };
+
+// export default VisionBoard;
