@@ -232,6 +232,16 @@ export const verifyOTP = async (req, res) => {
         await user.save() ;
 
 
+        // Send Welcome Email
+        await sendEmail({
+            to: user.email,
+            subject: "Welcome to JourNiva!",
+            templateName: "welcomeEmail",
+            templateData: {
+                name: user.name,
+            }
+        }) ;
+
         // Response to Frontend
         return res.status(200).json({
             status: "success",
@@ -263,7 +273,7 @@ export const resendOTP = async (req, res) => {
             message: "User ID is Required!" 
         }) ;
     }
-        
+
     try {
         // Find User by ID
         const user = await User.findById(userId) ;
@@ -326,24 +336,169 @@ export const resendOTP = async (req, res) => {
 }
 
 //Route 6 Controller - Forgot Password : Link Generation
-export const forgotPasswordLink = (req, res) => {
-    const { email } = req.body;
-    
-    res.status(200).json({ message: "Password Reset Link has been Sent to your Registered Email!"});
+export const forgotPasswordLink = async (req, res) => {
+    // Destructure Request Body
+    const { email } = req.body ;
+    const temail = email.trim() ;
+
+    // Validate Email
+    if (!temail) {
+        return res.status(400).json({ 
+            status: "failed",
+            message: "Email is Required!" 
+        }) ;
+    }
+
+    try {
+        // Find User by Email
+        const user = await User.findOne({ email: temail }) ;
+
+        // Validate User
+        if (!user) {
+            return res.status(404).json({ 
+                status: "failed",
+                message: "User Not Found! - Please Register" 
+            }) ;
+        }
+
+        // Generate Reset Password Token & Set Expiry Time
+        const resetPasswordToken = crypto.randomBytes(32).toString("hex") ;
+        const resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000) ; // 15 minutes from now
+
+        // Hash Reset Password Token
+        const hashedResetPasswordToken = await bcrypt.hash(resetPasswordToken, 10) ;
+
+        // Update User Document
+        user.resetPasswordToken = hashedResetPasswordToken ;
+        user.resetPasswordExpires = resetPasswordExpires ;
+        await user.save() ;
+
+        // Generate Frontend Reset Password Link
+        const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${resetPasswordToken}` ;
+
+        // Send Reset Password Email
+        await sendEmail({
+            to: user.email,
+            subject: "Reset Your Password - JourNiva",
+            templateName: "forgotPasswordEmail",
+            templateData: {
+                name: user.name,
+                resetPasswordLink: resetPasswordLink,
+                resetPasswordExpires: resetPasswordExpires.toLocaleString(), // Format as needed
+            }
+        }) ;    
+
+        // Response to Frontend
+        return res.status(200).json({
+            status: "success",
+            message: "Reset Password Link has been Sent. Please Check Your Spam Folder & Inbox!",
+            user: {
+                userId: user._id,
+                name: user.name,
+                avatarUrl: user.avatarUrl,
+            },
+        }) ;
+        
+    } catch (error) {
+        console.error("Error Generating Forgot Password Link:", error) ;
+        return res.status(500).json({ message: "Internal Server Error" }) ;
+    }
 };
 
 
-//Route 7 Controller - Forgot Password : Validate Token
-export const validateToken = (req, res) => {
-    const { token } = req.params;
+//Route 7 Controller - Forgot Password : Reset Password
+export const resetPassword = async (req, res) => {
+    // Destructure Request Body
+    const { token, newPassword, userId } = req.body ;
+    const ttoken = token.trim() ;
+    const tuserId = userId.trim() ;
 
-    res.status(200).json({ message: "Token is Valid!"});
-};
+    // Validate Input Data
+    if (!ttoken || !newPassword || !tuserId) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Token and New Password are Required!"
+        }) ;
+    }
 
+    // Validate Password Length
+    if (newPassword.length < 6) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Password must be at least 6 Characters Long!"
+        }) ;
+    }
 
-//Route 8 Controller - Forgot Password : Reset Password
-export const resetPassword = (req, res) => {
-    const { password } = req.body;
+    try {
+        const user = await User.findById(tuserId) ;
 
-    res.status(200).json({ message: "Password has been Reset Successfully!"});
-};
+        // Validate User
+        if (!user) {
+            return res.status(404).json({
+                status: "failed",
+                message: "User Not Found! - Please Register"
+            }) ;
+        }
+
+        // Validate Reset Password Tokens
+        if (!user.resetPasswordToken || !user.resetPasswordExpires) {
+            return res.status(400).json({
+                status: "failed",
+                message: "Reset Password Token is Invalid or Expired! Please Request a New Link"
+            }) ;
+        }
+
+        // Check if Reset Password Token Matches
+        const isTokenValid = await bcrypt.compare(ttoken, user.resetPasswordToken) ;
+        if (!isTokenValid) {
+            return res.status(401).json({
+                status: "failed",
+                message: "Invalid Reset Password Token! Please Request a New Link"
+            }) ;
+        }
+
+        // Validate Reset Password Token Expiry
+        if (user.resetPasswordExpires < new Date()) {
+            return res.status(410).json({
+                status: "failed",
+                message: "Reset Password Token has Expired! Please Request a New Link"
+            }) ;
+        }
+
+        // Hash New Password
+        const saltRounds = 10 ;
+        const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds) ;
+
+        // Update User Document
+        user.password = hashedNewPassword ;
+        user.resetPasswordToken = undefined ; // Clear Reset Password Token
+        user.resetPasswordExpires = undefined ; // Clear Reset Password Expiry
+        await user.save() ;
+
+        // Send Confirmation Email
+        await sendEmail({
+            to: user.email,
+            subject: "Your Password has been Reset - JourNiva",
+            templateName: "passwordResetSuccessEmail",
+            templateData: {
+                name: user.name,
+            }
+        }) ;
+
+        // Response to Frontend
+        return res.status(200).json({
+            status: "success",
+            message: "Password has been Reset Successfully!",
+            user: {
+                userId: user._id,
+                name: user.name,
+                avatarUrl: user.avatarUrl,
+
+            },
+        }) ;
+            
+    } catch (error) {
+        console.error("Error Resetting Password:", error) ;
+        return res.status(500).json({ message: "Internal Server Error" }) ;
+    }
+} ;
