@@ -1,5 +1,5 @@
 import express from "express"
-import { checkEmail, registerUser, loginUser, verifyOTP, resendOTP, forgotPasswordLink, validateToken, resetPassword, refreshAccessToken, checkAuth, logout } from "../controllers/user.controller.js" 
+import { checkEmail, registerUser, loginUser, verifyOTP, resendOTP, forgotPasswordLink, resetPassword, refreshAccessToken, checkAuth, logout } from "../controllers/user.controller.js" 
 import { verifyAccessToken } from "../middleware/userAuthMiddleware.js";
 
 const router = express.Router();
@@ -22,19 +22,16 @@ router.post("/resend-otp" , resendOTP) ;
 //Route 6 - Forgot Password : Link Generation
 router.post("/forgot-password-link" , forgotPasswordLink) 
 
-//Route 7 - Forgot Password : Validate Token
-router.get("/validate-token/:token" , validateToken) ;
-
-//Route 8 - Forgot Password : Reset Password
+//Route 7 - Forgot Password : Reset Password
 router.post("/reset-password" , resetPassword) ;
 
-//Route 9 - Generate New Access Token using Refresh Token : Refresh Access Token
+//Route 8 - Generate New Access Token using Refresh Token : Refresh Access Token
 router.get("refresh-access-token" , refreshAccessToken) ;
 
-//Route 10 - Check User Authentication 
+//Route 9 - Check User Authentication 
 router.get("/check-auth" , checkAuth) ;
 
-//Route 11 - Logout
+//Route 10 - Logout
 router.post("/logout" , logout) ;
 
 export default router ;
