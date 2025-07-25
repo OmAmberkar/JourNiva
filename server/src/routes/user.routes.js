@@ -5,7 +5,7 @@ import { verifyAccessToken } from "../middleware/userAuthMiddleware.js";
 const router = express.Router();
 
 //Route 1 - Check Email
-router.post("/check-email" , verifyAccessToken , checkEmail) ;
+router.post("/check-email" , checkEmail) ;
 
 //Route 2 - Register : Create New User & Store details
 router.post("/register" , registerUser);
@@ -29,7 +29,7 @@ router.post("/reset-password" , resetPassword) ;
 router.get("refresh-access-token" , refreshAccessToken) ;
 
 //Route 9 - Check User Authentication 
-router.get("/check-auth" , checkAuth) ;
+router.get("/check-auth" , verifyAccessToken, checkAuth) ;
 
 //Route 10 - Logout
 router.post("/logout" , logout) ;
