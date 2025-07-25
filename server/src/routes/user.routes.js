@@ -15,7 +15,7 @@ router.post("/login" , loginUser);
 router.post("/verify-otp" , verifyOTP);
 
 //Route 5 - Resend OTP
-router.post("/resend-otp", resendOTP);
+router.post("/resend-otp" , resendOTP);
 
 //Route 6 - Forgot Password : Link Generation
 router.post("/forgot-password-link" , forgotPasswordLink);

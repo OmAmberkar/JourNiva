@@ -173,7 +173,6 @@ export const loginUser = async (req, res) => {
 
 //Route 4 Controller - Register : Email OTP Verification
 export const verifyOTP = async (req, res) => {
-
     // Destructure Request Body
     const { userId, otp } = req.body ;
 
@@ -328,12 +327,12 @@ export const resendOTP = async (req, res) => {
                 avatarUrl: user.avatarUrl,
             },
         }) ;
-
     } catch (error) {
         console.error("Error Resending OTP:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;
     }
 }
+
 
 //Route 6 Controller - Forgot Password : Link Generation
 export const forgotPasswordLink = async (req, res) => {
