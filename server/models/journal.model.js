@@ -7,6 +7,7 @@ export const MoodList = [
   "Bright",
   "Loved",
   "Tired",
+  "smile","wink","happy","neutral","sad"
 ];
 
 //optionally mentioned so that if needed we could refer one
