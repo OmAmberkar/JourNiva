@@ -7,6 +7,7 @@ import journalRoutes from "./routes/journal.routes.js";
 import habitRoutes from "./routes/habit.routes.js";
 import goalRoutes from "./routes/goal.routes.js";
 import axios from "axios"; // ✅ for Unsplash API
+import cookieParser from "cookie-parser" ;
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
+app.use(cookieParser()); 
 
 // API Routes
 app.use("/api/user", userRoutes);

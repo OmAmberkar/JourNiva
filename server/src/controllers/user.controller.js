@@ -2,6 +2,9 @@ import User from "../../models/user.model.js" ;
 import bcrypt from "bcrypt" ;
 import crypto from "crypto" ;
 import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
+import { sendTokenResponse, generateAccessToken } from "../utils/jwtUtils.js";
+import jwt from "jsonwebtoken" ;
+import { GeneratedAPIs } from "googleapis/build/src/apis/index.js";
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -137,11 +140,20 @@ export const loginUser = async (req, res) => {
     try {
         // Find User Document by Email
         const user = await User.findOne({ email: temail }) ;
+        
         // Validate Email
         if (!user) {
             return res.status(404).json({ 
                 status: "failed",
                 message: "Invalid Email or Password!" 
+            }) ;
+        }
+
+        // Validate User Verification Status
+        if (user.isVerified === false) {
+            return res.status(401).json({
+                status: "failed",
+                message: "Email Not Verified! - Please Verify Email" 
             }) ;
         }
 
@@ -153,10 +165,14 @@ export const loginUser = async (req, res) => {
                 message: "Invalid Email or Password!" 
             }) ;
         } else {
+            // Generate JWT Access Token & Refresh Token
+            const accessToken = sendTokenResponse(res, user._id) ;
+
             //Send Respone 
             return res.status(200).json({
                 status: "success",
                 message: "Login Successful!",
+                accessToken,
                 user: {
                     userId: user._id,
                     name: user.name,
@@ -230,11 +246,14 @@ export const verifyOTP = async (req, res) => {
         user.otpExpires = undefined ; // Clear OTP Expiry
         await user.save() ;
 
+        // Generate JWT Access Token & Refresh Token
+        const accessToken = sendTokenResponse(res, user._id) ;
 
         // Response to Frontend
         return res.status(200).json({
             status: "success",
-            message: "Email Verified Successfully!",
+            message: "Email Verified Successfully - Registeration Completed!",
+            accessToken,
             user: {
                 userId: user._id,
                 name: user.name,
@@ -246,7 +265,6 @@ export const verifyOTP = async (req, res) => {
         console.error("Error Verifying OTP:", error) ;
         return res.status(500).json({ message: "Internal Server Error" }) ;
     }
-
 };
 
 
@@ -346,3 +364,109 @@ export const resetPassword = (req, res) => {
 
     res.status(200).json({ message: "Password has been Reset Successfully!"});
 };
+
+
+//Route 9 Controller - Generate New Access Token using Refresh Token : Refresh Access Token
+export const refreshAccessToken = (req, res) => {
+    try {
+        // Access Refresh Token from Cookie
+        const refreshToken = req.cookies.refreshToken ;
+
+        // Validate Refresh Token
+        if (!refreshToken) {
+            return res.status(401).json({
+                status: "failed",
+                message: "User Unauthorized - Refresh Token Missing!"
+            }) ;
+        }
+
+        // Verify Refresh Token & Use Callback Function 
+        jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_TOKEN,
+            (err, decoded) => {
+                // Validate Verification
+                if (err) {
+                    return res.status(403).json({
+                        status: "failed",
+                        message: "User Unauthorized - Invalid or Expired Token!"
+                    }) ;
+                }
+
+                // Generate New Access Token
+                const newAccessToken = generateAccessToken(decoded.userId) ;
+
+                // Send New Access Token 
+                return res.status(200).json({
+                    status: "success",
+                    accessToken: newAccessToken
+                }) ;
+            }) ;
+
+    } catch (error) {
+        console.erro("Error Refreshing Access Token: ", err) ;
+        res.status(500).json({ message: "Internal Server Error"}) ;
+    }
+} ;
+
+
+//Route 10 Controller - Check User Authentication 
+export const checkAuth = async (req, res) => {
+    try {
+        // Access Token from Authorization Header
+        const authHeader = req.headers.authorization ; 
+
+        // Validate Authorization Header
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({
+                status: "failed",
+                message: "User Unauthorized - Token Missing or Invalid!"
+            }) ;
+        }
+
+        // Access the Access Token using Split
+        const accessToken = authHeader.split(" ")[1] ;
+
+        // Verify Access Token using Callback Function
+        jwt.verify(
+            accessToken,
+            process.env.JWT_ACCESS_TOKEN_SECRET,
+            (err, decoded) => {
+                // Validate Verification
+                if (err) {
+                    return res.status(403).json({
+                        status: "failed",
+                        message: "User Unauthorized - Invalid or Expired Token!"
+                    }) ;
+                }
+
+                // Return Decoded User Info (userId)
+                return res.status(200).json({
+                    status: "success",
+                    userId: decoded.userId,
+                    message: "User is Authenticated!"
+                }) ;
+            }
+        ) ;
+
+    } catch (error) {
+        console.error("Check Auth Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+
+//Route 11 Controller - Logout 
+export const logout = async (req, res) => {
+    // Clear the Tokens & Cookies
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV == "production",
+        sameSite: "Strict"
+    });
+
+    //Response to Frontend
+    res.status(200).json({
+        message: "Logged Out Successfully - Come Back Soon!"
+    }) ;
+} ;
