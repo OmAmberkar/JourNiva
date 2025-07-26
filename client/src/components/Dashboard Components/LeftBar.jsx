@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiSidebar, FiSettings } from "react-icons/fi";
 import { AiOutlineHome } from "react-icons/ai";
 import { Link } from "react-router-dom"; // Use this for proper routing
-import SettingsModal from "../SettingsModal";
+import SettingsModal from "./SettingsModal";
 
 // ✅ Settings Modal
 // const SettingsModal = ({ onClose }) => (
