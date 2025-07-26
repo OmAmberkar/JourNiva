@@ -8,7 +8,7 @@ const moodOptions = [
   { value: "sad", icon: "/src/assets/pink_mood.png" },
 ];
 
-const MoodDropdown = () => {
+const MoodDropdown = ({onMoodSelect}) => {
   const [selectedMood, setSelectedMood] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -25,6 +25,7 @@ const MoodDropdown = () => {
 
   const handleSelect = (mood) => {
     setSelectedMood(mood);
+    onMoodSelect(mood) // extra to notify the parent code as this is the child component
     setIsOpen(false);
   };
 
