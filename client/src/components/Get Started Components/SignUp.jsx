@@ -26,12 +26,12 @@ function SignUp({ email }) {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     } else if (!avatarUrl) {
       setError("Please select an avatar.");
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     }
 
     try {
@@ -42,7 +42,13 @@ function SignUp({ email }) {
         avatarUrl,
       });
       if (res.status === 201) {
-        navigate("/dashboard");
+        navigate("/verify", {
+          state: {
+            userId: res.data.user.userId,
+            name: res.data.user.name,
+            avatarUrl: res.data.user.avatarUrl,
+          },
+        });
       } else {
         console.log("Check the entered filleds");
         setLoading(false);
@@ -57,7 +63,7 @@ function SignUp({ email }) {
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       <div className="flex items-center">
         <img
-          src={avatarUrl}
+          src={avatarUrl || "https://plus.unsplash.com/premium_photo-1678216285952-1cb373275d14?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
           onClick={() => setIsModalOpen(true)}
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"
           alt="avatar"

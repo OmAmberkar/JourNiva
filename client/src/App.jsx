@@ -12,6 +12,8 @@ import DailyReflection from "./components/Journiva info/DailyReflection";
 import HabitTracker from "./components/Journiva info/HabitTracker";
 import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
 import VisionBoard from "./pages/VisionBoard";
+import Verification from "./components/Get Started Components/Verification";
+
 
 const App = () => {
   return (
@@ -31,6 +33,8 @@ const App = () => {
           <Route path="/DailyReflection" element={<DailyReflection />} />
           <Route path="/HabitTracker" element={<HabitTracker />} />
           <Route path="/visionboardinfo" element={<VisionBoardInfo />} />
+          <Route path="/verify" element={<Verification/>}/>
+          {/* Add more routes as needed */}
         </Routes>
       </Router>
     </div>
