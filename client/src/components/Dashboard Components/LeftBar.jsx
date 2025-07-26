@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import { FiSidebar, FiSettings } from "react-icons/fi";
 import { AiOutlineHome } from "react-icons/ai";
 import { Link } from "react-router-dom"; // Use this for proper routing
+import SettingsModal from "../SettingsModal";
 
 // ✅ Settings Modal
-const SettingsModal = ({ onClose }) => (
-  <div className="fixed inset-0 z-70 flex items-center justify-center backdrop-blur-sm bg-black/20">
-    <div className="bg-white rounded-xl p-8 shadow-2xl w-[90%] max-w-xl animate-settingsOpen">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-[#3E5973]">Settings</h2>
-        <button
-          onClick={onClose}
-          className="text-3xl text-[#3E5973] hover:text-red-500"
-        >
-          &times;
-        </button>
-      </div>
-      <p className="text-[#3E5973] text-lg">This is your settings panel.</p>
-    </div>
-  </div>
-);
+// const SettingsModal = ({ onClose }) => (
+//   <div className="fixed inset-0 z-70 flex items-center justify-center backdrop-blur-sm bg-black/20">
+//     <div className="bg-white rounded-xl p-8 shadow-2xl w-[90%] max-w-xl animate-settingsOpen">
+//       <div className="flex justify-between items-center mb-4">
+//         <h2 className="text-2xl font-bold text-[#3E5973]">Settings</h2>
+//         <button
+//           onClick={onClose}
+//           className="text-3xl text-[#3E5973] hover:text-red-500"
+//         >
+//           &times;
+//         </button>
+//       </div>
+//       <p className="text-[#3E5973] text-lg">This is your settings panel.</p>
+//     </div>
+//   </div>
+// );
 
 // ✅ Sidebar Component
 const LeftBar = ({ isOpen, toggleSidebar }) => {
@@ -107,7 +108,7 @@ const LeftBar = ({ isOpen, toggleSidebar }) => {
         <div className="absolute bottom-10 w-full flex justify-center">
           <button
             onClick={openSettings}
-            className="flex items-center gap-2 text-[#3E5973] text-xl hover:text-[#1e2a35]"
+            className="flex items-center gap-2 text-[#3E5973] text-xl hover:text-[#1e2a35] cursor-pointer"
           >
             <FiSettings size={24} />
             Settings
