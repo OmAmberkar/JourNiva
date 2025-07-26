@@ -26,10 +26,10 @@ router.post("/forgot-password-link" , forgotPasswordLink)
 router.post("/reset-password" , resetPassword) ;
 
 //Route 8 - Generate New Access Token using Refresh Token : Refresh Access Token
-router.get("refresh-access-token" , refreshAccessToken) ;
+router.get("/refresh-access-token" , refreshAccessToken) ;
 
 //Route 9 - Check User Authentication 
-router.get("/check-auth" , verifyAccessToken, checkAuth) ;
+router.get("/check-auth" ,  verifyAccessToken, checkAuth) ;
 
 //Route 10 - Logout
 router.post("/logout" , logout) ;
