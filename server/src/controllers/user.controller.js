@@ -113,6 +113,7 @@ export const registerUser = async (req, res) => {
                 userId: newUser._id,
                 name: newUser.name,
                 avatarUrl: newUser.avatarUrl,
+                email: newUser.email,
             },
         }) ;
 

@@ -46,6 +46,7 @@ function SignUp({ email }) {
           state: {
             userId: res.data.user.userId,
             name: res.data.user.name,
+            email:res.data.user.email,
             avatarUrl: res.data.user.avatarUrl,
           },
         });
