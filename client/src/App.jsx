@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ScrollToTop from "./components/Landing Page Components/ScrollToTop";
-import AboutUsPage from "./pages/AboutUsPage";
-import LandingPage from "./pages/LandingPage";
-import GetStarted from "./pages/GetStarted";
-import Dashboard from "./pages/Dashboard";
-import AllGoals from "./pages/AllGoals";
-import AllHabits from "./pages/AllHabits";
-import AllJournals from "./pages/AllJournals";
+import AboutUsPage from "./Pages/AboutUsPage";
+import LandingPage from "./Pages/LandingPage";
+import GetStarted from "./Pages/GetStarted";
+import Dashboard from "./Pages/Dashboard";
+import AllGoals from "./Pages/AllGoals";
+import AllHabits from "./Pages/AllHabits";
+import AllJournals from "./Pages/AllJournals";
 import JournalFreely from "./components/Journiva info/JournalFreely";
 import DailyReflection from "./components/Journiva info/DailyReflection";
 import HabitTracker from "./components/Journiva info/HabitTracker";
 import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
-import VisionBoard from "./pages/VisionBoard";
+import VisionBoard from "./Pages/VisionBoard";
 import Verification from "./components/Get Started Components/Verification";
 
 
