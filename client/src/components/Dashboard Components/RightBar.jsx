@@ -8,7 +8,7 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import ThemeDropdown from "./ThemeDropDown";
-import { VisionBoardCanvas } from "../../pages/VisionBoard";
+import { VisionBoardCanvas } from "../../components/VisionBoard Components/VisionBoardCanvas";
 
 // ✅ Modal for adding tasks
 const AddTaskModal = ({ type, onClose, onAdd }) => {
