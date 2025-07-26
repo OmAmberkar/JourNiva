@@ -6,7 +6,7 @@ import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
 import RightBar from "../components/Dashboard Components/RightBar";
 import { Link } from "react-router-dom";
 import { FiTrendingUp } from "react-icons/fi";
-import { VisionBoardCanvas } from "../pages/VisionBoard";
+import { VisionBoardCanvas } from "../components/VisionBoard Components/VisionBoardCanvas";
 
 const formatDate = (dateObj) =>
   dateObj.toLocaleDateString("en-GB", {
