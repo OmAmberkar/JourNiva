@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import LeftBar from "../components/Dashboard Components/LeftBar";
 import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
@@ -46,4 +45,3 @@ const AllGoals = () => {
 };
 
 export default AllGoals;
-
