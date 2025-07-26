@@ -155,31 +155,42 @@ const Dashboard = () => {
                     }}
                   >
                     <VisionBoardCanvas
-  elements={[
-    { id: 1, type: "text", content: "Sample Text" },
-    { id: 2, type: "image", url: "https://via.placeholder.com/220x160" },
-  ]}
-  onRemove={() => {}}
-  previewMode
-/>
-
+                      elements={[
+                        { id: 1, type: "text", content: "Sample Text" },
+                        {
+                          id: 2,
+                          type: "image",
+                          url: "https://via.placeholder.com/220x160",
+                        },
+                      ]}
+                      onRemove={() => {}}
+                      previewMode
+                    />
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-between w-full">
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg mb-2 text-center">➤ Habits</h3>
+                    <h3 className="font-bold text-lg mb-2 text-center">
+                      ➤ Habits
+                    </h3>
                     <div className="min-h-[160px] border border-transparent hover:border-[#3E5973] rounded-lg px-2 py-2">
                       {/* Show habits here or placeholder */}
-                      <p className="text-center text-sm opacity-50">No habits added</p>
+                      <p className="text-center text-sm opacity-50">
+                        No habits added
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg mb-2 text-center">➤ Goals</h3>
+                    <h3 className="font-bold text-lg mb-2 text-center">
+                      ➤ Goals
+                    </h3>
                     <div className="min-h-[160px] border border-transparent hover:border-[#3E5973] rounded-lg px-2 py-2">
                       {/* Show goals here or placeholder */}
-                      <p className="text-center text-sm opacity-50">No goals added</p>
+                      <p className="text-center text-sm opacity-50">
+                        No goals added
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -200,10 +211,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import MoodDropdown from "../components/Dashboard Components/MoodDropDown";
