@@ -6,10 +6,10 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { PiUserCircleFill } from "react-icons/pi";
 
 const avatars = [
-  "https://i.pinimg.com/736x/a2/38/48/a23848b563ee1cc33de9586492962a7f.jpg",
+  "https://imagizer.imageshack.com/img924/4476/roJLyv.png",
   "https://images.unsplash.com/photo-1579445710183-f9a816f5da05?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://images.unsplash.com/photo-1563296704-6df0d360b9ab?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://i.pinimg.com/736x/79/0f/b8/790fb81c632855bb69fd55303c1fe6f8.jpg",
+  "https://imagizer.imageshack.com/img923/4397/W1kTjr.png",
 ];
 
 function SignUp({ email }) {
@@ -72,7 +72,7 @@ function SignUp({ email }) {
           src={
             avatarUrl && avatarUrl.trim() !== ""
             ? avatarUrl
-            : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Question_Mark.svg/1024px-Question_Mark.svg.png"
+            : "https://imagizer.imageshack.com/img924/4476/roJLyv.png"
           }
           onClick={() => setIsModalOpen(true)}
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"

@@ -4,6 +4,7 @@ import crypto from "crypto" ;
 import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
 import { sendTokenResponse, generateAccessToken } from "../utils/jwtUtils.js";
 import jwt from "jsonwebtoken" ;
+import validator from "validator" ;
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -43,9 +44,10 @@ import jwt from "jsonwebtoken" ;
 export const registerUser = async (req, res) => {
     // Access Input Data from Request Body
     const { email, password, name, avatarUrl } = req.body ;
-    const temail = email.trim() ;
+    const temail = email.trim().toLowerCase() ; // Normalize Email
     const tname = name.trim() ;
-    const tavatarUrl = avatarUrl.trim() ;
+    const tavatarUrl = avatarUrl?.trim() || process.env.DEFAULT_AVATAR_URL ;
+
 
     // Validate Input Data
     if (!temail || !password || !tname || !tavatarUrl) {
@@ -55,12 +57,21 @@ export const registerUser = async (req, res) => {
         }) ;
     }
 
+    // Validate Email Format
+    if (!validator.isEmail(temail)) {
+        return res.status(400).json({
+            status : "failed",
+            message: "Invalid Email Format!"
+        }) ;
+    }
+
     if (password.length < 6) {
         return res.status(400).json({ 
             status : "failed",
             message: " Password must be at least 6 Characters Long!"}) ;
     }
 
+    
     try {
         // Double Check for Existing User 
         const existingUser = await User.findOne({ email : temail }) ;
