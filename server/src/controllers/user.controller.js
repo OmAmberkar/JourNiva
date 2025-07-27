@@ -4,7 +4,6 @@ import crypto from "crypto" ;
 import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
 import { sendTokenResponse, generateAccessToken } from "../utils/jwtUtils.js";
 import jwt from "jsonwebtoken" ;
-import { GeneratedAPIs } from "googleapis/build/src/apis/index.js";
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -568,43 +567,16 @@ export const refreshAccessToken = (req, res) => {
 
 //Route 9 Controller - Check User Authentication 
 export const checkAuth = async (req, res) => {
+    // Middleware will Verify the Access Token
+    // If Verified , this controller will Run
     try {
-        // Access Token from Authorization Header
-        const authHeader = req.headers.authorization ; 
-
-        // Validate Authorization Header
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                status: "failed",
-                message: "User Unauthorized - Token Missing or Invalid!"
-            }) ;
-        }
-
-        // Access the Access Token using Split
-        const accessToken = authHeader.split(" ")[1] ;
-
-        // Verify Access Token using Callback Function
-        jwt.verify(
-            accessToken,
-            process.env.JWT_ACCESS_TOKEN_SECRET,
-            (err, decoded) => {
-                // Validate Verification
-                if (err) {
-                    return res.status(403).json({
-                        status: "failed",
-                        message: "User Unauthorized - Invalid or Expired Token!"
-                    }) ;
-                }
-
-                // Return Decoded User Info (userId)
-                return res.status(200).json({
-                    status: "success",
-                    userId: decoded.userId,
-                    message: "User is Authenticated!"
-                }) ;
-            }
-        ) ;
-
+        // Return the userId & Status to Frontend
+        return res.status(200).json({
+            status: "success",
+            userId: req.userId,
+            message: "User is Authenticated!"
+        }) ;
+            
     } catch (error) {
         console.error("Check Auth Error:", error);
         res.status(500).json({ message: "Internal Server Error" });
