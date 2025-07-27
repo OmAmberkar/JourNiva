@@ -13,6 +13,7 @@ import HabitTracker from "./components/Journiva info/HabitTracker";
 import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
 import VisionBoard from "./Pages/VisionBoard";
 import Verification from "./components/Get Started Components/Verification";
+import ResetPassword from "./components/Get Started Components/ResetPassword";
 
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/HabitTracker" element={<HabitTracker />} />
           <Route path="/visionboardinfo" element={<VisionBoardInfo />} />
           <Route path="/verify" element={<Verification/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* Add more routes as needed */}
         </Routes>
       </Router>

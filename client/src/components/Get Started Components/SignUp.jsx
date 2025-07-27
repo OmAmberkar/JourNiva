@@ -5,7 +5,12 @@ import { IoLockClosedOutline, IoLockOpenOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { PiUserCircleFill } from "react-icons/pi";
 
-const avatars = ["Logo.png", "Avatar1.png", "Avatar2.png", "Avatar3.png"];
+const avatars = [
+  "https://i.pinimg.com/736x/a2/38/48/a23848b563ee1cc33de9586492962a7f.jpg",
+  "https://images.unsplash.com/photo-1579445710183-f9a816f5da05?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1563296704-6df0d360b9ab?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://i.pinimg.com/736x/79/0f/b8/790fb81c632855bb69fd55303c1fe6f8.jpg",
+];
 
 function SignUp({ email }) {
   const [username, setUsername] = useState("");
@@ -46,7 +51,7 @@ function SignUp({ email }) {
           state: {
             userId: res.data.user.userId,
             name: res.data.user.name,
-            email:res.data.user.email,
+            email: res.data.user.email,
             avatarUrl: res.data.user.avatarUrl,
           },
         });
@@ -64,7 +69,11 @@ function SignUp({ email }) {
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       <div className="flex items-center">
         <img
-          src={avatarUrl || "https://plus.unsplash.com/premium_photo-1678216285952-1cb373275d14?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+          src={
+            avatarUrl && avatarUrl.trim() !== ""
+            ? avatarUrl
+            : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Question_Mark.svg/1024px-Question_Mark.svg.png"
+          }
           onClick={() => setIsModalOpen(true)}
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"
           alt="avatar"
@@ -82,14 +91,14 @@ function SignUp({ email }) {
               {avatars.map((img) => (
                 <img
                   key={img}
-                  src={`/${img}`}
+                  src={`${img}`}
                   alt="avatar"
                   onClick={() => {
-                    setAvatarUrl(`/${img}`);
+                    setAvatarUrl(`${img}`);
                     setIsModalOpen(false);
                   }}
                   className={`w-16 h-16 rounded-full cursor-pointer border-2 transition-transform hover:scale-110 border-white ]${
-                    avatarUrl === `/${img}`
+                    avatarUrl === `${img}`
                       ? "border-[#3E5973]"
                       : "border-transparent"
                   }`}
