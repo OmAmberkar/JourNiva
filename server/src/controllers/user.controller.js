@@ -4,15 +4,27 @@ import crypto from "crypto" ;
 import { sendEmail } from "../utils/nodemailer/mailSender.js" ;
 import { sendTokenResponse, generateAccessToken } from "../utils/jwtUtils.js";
 import jwt from "jsonwebtoken" ;
+import dotenv from "dotenv" ;
 import validator from "validator" ;
+import sanitizeHtml from "sanitize-html" ;
+
+dotenv.config() ;
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
     const { email } = req.body ;
-    const temail = email.trim() ;
+    const temail = sanitizeHtml(email.trim().toLowerCase()) ;
 
     if (!temail) {
         return res.status(400).json({ message: "Email is required!" }) ;
+    }
+
+    // Validate Email Format
+    if (!validator.isEmail(temail)) {
+        return res.status(400).json({
+            status : "failed",
+            message: "Invalid Email Format!"
+        }) ;
     }
 
     try {
@@ -44,9 +56,9 @@ import validator from "validator" ;
 export const registerUser = async (req, res) => {
     // Access Input Data from Request Body
     const { email, password, name, avatarUrl } = req.body ;
-    const temail = email.trim().toLowerCase() ; // Normalize Email
-    const tname = name.trim() ;
-    const tavatarUrl = avatarUrl?.trim() || process.env.DEFAULT_AVATAR_URL ;
+    const temail = sanitizeHtml(email.trim().toLowerCase()) ; 
+    const tname = sanitizeHtml(name.trim()) ;
+    const tavatarUrl = validator.isURL(avatarUrl?.trim()) ? avatarUrl.trim() : process.env.DEFAULT_AVATAR_URL;
 
 
     // Validate Input Data
@@ -138,7 +150,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     //Access Email & Password from Request Body
     const { email, password } = req.body ;
-    const temail = email.trim() ;
+    const temail = sanitizeHtml(email.trim().toLowerCase()) ;
 
     //Validate Email & Password
     if (!temail || !password) {
@@ -147,7 +159,15 @@ export const loginUser = async (req, res) => {
             message: "Email and Password are Required!" 
         }) ;
     }
-  
+
+     // Validate Email Format
+    if (!validator.isEmail(temail)) {
+        return res.status(400).json({
+            status : "failed",
+            message: "Invalid Email Format!"
+        }) ;
+    }
+
     try {
         // Find User Document by Email
         const user = await User.findOne({ email: temail }) ;
@@ -204,10 +224,11 @@ export const verifyOTP = async (req, res) => {
     const { userId, otp } = req.body ;
 
     // Trim userId
-    const tuserId = userId.trim() ;
+    const tuserId = sanitizeHtml(userId.trim()) ;
+    const totp = sanitizeHtml(otp.trim());
 
     // Validate Input Data
-    if (!tuserId || !otp) {
+    if (!tuserId || !totp) {
         return res.status(400).json({ 
             status: "failed",
             message: "Please Enter Valid OTP!" 
@@ -243,7 +264,7 @@ export const verifyOTP = async (req, res) => {
         }
 
         // Validate OTP
-        const isOtpValid = await bcrypt.compare(otp, user.otp) ;
+        const isOtpValid = await bcrypt.compare(totp, user.otp) ;
         if (!isOtpValid) {
             return res.status(401).json({ 
                 status: "failed",
@@ -294,8 +315,11 @@ export const resendOTP = async (req, res) => {
     // Destructure Request Body
     const { userId } = req.body ;
 
+    // Trim userId
+    const tuserId = sanitizeHtml(userId.trim());
+
     // Validate userId
-    if (!userId) {
+    if (!tuserId) {
         res.status(400).json({ 
             status: "failed",
             message: "User ID is Required!" 
@@ -304,7 +328,7 @@ export const resendOTP = async (req, res) => {
         
     try {
         // Find User by ID
-        const user = await User.findById(userId) ;
+        const user = await User.findById(tuserId) ;
 
         // Validate User
         if (!user) {
@@ -367,7 +391,9 @@ export const resendOTP = async (req, res) => {
 export const forgotPasswordLink = async (req, res) => {
     // Destructure Request Body
     const { email } = req.body ;
-    const temail = email.trim() ;
+
+    // Trim & Sanitize Email
+    const temail = sanitizeHtml(email.trim().toLowerCase());
 
     // Validate Email
     if (!temail) {
@@ -438,8 +464,10 @@ export const forgotPasswordLink = async (req, res) => {
 export const resetPassword = async (req, res) => {
     // Destructure Request Body
     const { token, newPassword, userId } = req.body ;
-    const ttoken = token.trim() ;
-    const tuserId = userId.trim() ;
+
+    // Trim & Sanitize Input Data
+    const ttoken = sanitizeHtml(token.trim());
+    const tuserId = sanitizeHtml(userId.trim());
 
     // Validate Input Data
     if (!ttoken || !newPassword || !tuserId) {
