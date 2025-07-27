@@ -18,6 +18,7 @@ function Verification() {
   const { state } = useLocation();
   const userId = state?.userId;
   const username = state?.name;
+  const email = state?.email;
 
   // Redirect or block page if userId is missing
   useEffect(() => {
@@ -101,7 +102,7 @@ function Verification() {
       </div>
       <div className="bg-[#c3d7e8] border-2 border-[#3E5973] shadow-lg rounded-xl p-8 max-w-xl h-100 w-full text-center  ">
         <div className="text-md font-semibold text-[#3E5973] mb-20">
-          Please enter the otp received on your valid email
+          Please enter the otp received on your valid {email}
         </div>
 
         <OTPInput
