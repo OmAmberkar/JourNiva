@@ -18,25 +18,27 @@ const AddImageModal = ({ onClose, onAdd }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-      <div className="bg-[#DCEFFF] relative rounded-xl p-6 shadow-xl w-[90%] max-w-2xl animate-settingsOpen">
+      <div className="bg-[var(--color-background)] relative rounded-xl p-6 shadow-xl w-[90%] max-w-2xl animate-settingsOpen">
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-3xl text-[#3E5973] hover:text-red-500"
+          className="absolute top-3 right-4 text-3xl text-[var(--color-dark)] hover:text-red-500"
         >
           ×
         </button>
-        <h2 className="text-2xl font-bold text-[#3E5973] mb-4">Search Image</h2>
+        <h2 className="text-2xl font-bold text-[var(--color-dark)] mb-4">
+          Search Image
+        </h2>
         <div className="flex gap-2">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search image"
-            className="w-full p-3 rounded-md text-[#3E5973] bg-white border border-[#3E5973] outline-none text-base"
+            className="w-full p-3 rounded-md text-[var(--color-dark)] bg-white border border-[var(--color-dark)] outline-none text-base"
           />
           <button
             onClick={searchImages}
-            className="bg-[#3E5973] text-white px-4 py-2 rounded-md"
+            className="bg-[var(--color-dark)] text-white px-4 py-2 rounded-md"
           >
             Search
           </button>

@@ -49,6 +49,7 @@ input::placeholder {
   --color-sidebar: #d0e6f8;
   --color-background: #dcefff;
   --color-drop: #c7d7ec;
+  --color-border: #aacbe1;
 }
 
 /* GREEN SOFT / PEACEFUL */
@@ -57,6 +58,7 @@ input::placeholder {
   --color-sidebar: #e1e5db;
   --color-background: #efefef;
   --color-drop: #c2c8ba;
+  --color-border: #90ab97;
 }
 
 /* PEACH LIGHT / HAPPY */
@@ -65,6 +67,7 @@ input::placeholder {
   --color-sidebar: #ffeedf;
   --color-background: #fff9ef;
   --color-drop: #e5bbbb;
+  --color-border: #eac8c8;
 }
 
 /* PURPLE BOLD / BRIGHT */
@@ -73,6 +76,7 @@ input::placeholder {
   --color-sidebar: #e9e1f9;
   --color-background: #f4f1fa;
   --color-drop: #e3c6ed;
+  --color-border: #e4caec;
 }
 
 /* PINK LOVED / GENTLE */
@@ -81,4 +85,5 @@ input::placeholder {
   --color-sidebar: #ffe7ef;
   --color-background: #fff0f5;
   --color-drop: #eab9c2;
+  --color-border: #f1d0d6;
 }

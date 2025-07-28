@@ -65,7 +65,7 @@ export const VisionBoardCanvas = ({
       height: 50,
       zIndex: elements.length + 1,
       background: "transparent",
-      textColor: "#3E5973",
+      textColor: "var(--color-dark)",
       margin: 4,
       border: false,
       fontSize: 16,
@@ -102,7 +102,7 @@ export const VisionBoardCanvas = ({
     <div
       ref={canvasRef}
       onClick={handleCanvasClick}
-      className="relative w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden"
+      className="relative w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[var(--color-border)] rounded-md bg-[var(--color-background)] p-4 overflow-hidden"
     >
       {(elements || []).map((el) => (
         <Rnd
@@ -148,7 +148,7 @@ export const VisionBoardCanvas = ({
                 color: el.textColor,
                 resize: "none",
                 border: el.border
-                  ? `2px solid ${el.borderColor || "#3E5973"}`
+                  ? `2px solid ${el.borderColor || "var(--color-dark)"}`
                   : "none",
                 borderRadius: "6px",
                 fontWeight: "bold",
@@ -280,13 +280,13 @@ export const VisionBoardCanvas = ({
           <SketchPicker
             color={
               colorPicker.type === "bg"
-                ? elements.find((e) => e.id === colorPicker.targetId)?.background ||
-                  "#ffffff"
+                ? elements.find((e) => e.id === colorPicker.targetId)
+                    ?.background || "#ffffff"
                 : colorPicker.type === "text"
-                ? elements.find((e) => e.id === colorPicker.targetId)?.textColor ||
-                  "#3E5973"
-                : elements.find((e) => e.id === colorPicker.targetId)?.borderColor ||
-                  "#3E5973"
+                ? elements.find((e) => e.id === colorPicker.targetId)
+                    ?.textColor || "var(--color-dark)"
+                : elements.find((e) => e.id === colorPicker.targetId)
+                    ?.borderColor || "var(--color-dark)"
             }
             onChangeComplete={(color) => {
               updateElement(colorPicker.targetId, {
@@ -300,7 +300,7 @@ export const VisionBoardCanvas = ({
           />
           <button
             onClick={() => setColorPicker({ ...colorPicker, visible: false })}
-            className="mt-2 bg-[#3E5973] text-white px-3 py-1 rounded"
+            className="mt-2 bg-[var(--color-dark)] text-white px-3 py-1 rounded"
           >
             Done
           </button>
@@ -311,9 +311,6 @@ export const VisionBoardCanvas = ({
 };
 
 export default VisionBoardCanvas;
-
-
-
 
 // import React, { useState, useRef, useEffect } from "react";
 // import { Rnd } from "react-rnd";
@@ -663,12 +660,6 @@ export default VisionBoardCanvas;
 
 // export default VisionBoardCanvas;
 
-
-
-
-
-
-
 // import React, { useState, useRef, useEffect } from "react";
 // import { Rnd } from "react-rnd";
 // import { SketchPicker } from "react-color";
@@ -719,7 +710,6 @@ export default VisionBoardCanvas;
 //     document.addEventListener("mousedown", handleLeftClick);
 //     return () => document.removeEventListener("mousedown", handleLeftClick);
 //   }, [contextMenu, colorPicker, marginControl]);
-
 
 //   const handleCanvasClick = (e) => {
 //     if (!addingText) return;
@@ -845,11 +835,6 @@ export default VisionBoardCanvas;
 //   placeholder="Type here..."
 // />
 
-
-
-
-
-            
 //           ) : (
 //             <img
 //               src={el.url}
@@ -1038,10 +1023,6 @@ export default VisionBoardCanvas;
 
 // export default VisionBoardCanvas;
 
-
-
-
-
 // import React, { useState, useRef, useEffect } from "react";
 // import { Rnd } from "react-rnd";
 // import { SketchPicker } from "react-color";
@@ -1220,8 +1201,6 @@ export default VisionBoardCanvas;
 // >
 //   {el.content || "Type here..."}
 // </div>
-
-
 
 //           ) : (
 //             <img
@@ -1426,7 +1405,6 @@ export default VisionBoardCanvas;
 
 // export default VisionBoardCanvas;
 
-
 // import React, { useState, useRef, useEffect } from "react";
 // import { FiPlus } from "react-icons/fi";
 // import { Rnd } from "react-rnd";
@@ -1585,9 +1563,6 @@ export default VisionBoardCanvas;
 
 // export default VisionBoardCanvas;
 
-
-
-
 // import React, { useState, useRef, useEffect } from "react";
 // import { Rnd } from "react-rnd";
 // import { SketchPicker } from "react-color";
@@ -1618,7 +1593,7 @@ export default VisionBoardCanvas;
 //   });
 
 //   useEffect(() => {
-    
+
 //      const handleLeftClick = (e) => {
 //     const contextEl = document.querySelector(".context-menu");
 //     const colorPickerEl = document.querySelector(".color-picker");
@@ -1639,7 +1614,6 @@ export default VisionBoardCanvas;
 //   document.addEventListener("mousedown", handleLeftClick);
 //   return () => document.removeEventListener("mousedown", handleLeftClick);
 // }, [contextMenu, colorPicker, marginControl]);
-  
 
 //   const handleCanvasClick = (e) => {
 //     if (!addingText) return;
@@ -1748,7 +1722,6 @@ export default VisionBoardCanvas;
 //   className="w-full h-full text-center"
 //   placeholder="Type here..."
 // />
-
 
 //           ) : (
 //             <img

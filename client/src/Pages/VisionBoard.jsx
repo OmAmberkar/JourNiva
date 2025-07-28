@@ -94,12 +94,12 @@ const VisionBoard = () => {
     setElements((prev) => prev.filter((el) => el.id !== id));
 
   return (
-    <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
+    <div className="min-h-screen bg-[var(--color-background)] p-6 font-Livvic text-[var(--color-dark)]">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
           <Link
             to="/dashboard"
-            className="text-[#3E5973] hover:text-[#1e2a35] transition"
+            className="text-[var(--color-dark)] hover:text-[#1e2a35] transition"
           >
             <FiArrowLeft className="text-2xl" />
           </Link>
@@ -108,19 +108,19 @@ const VisionBoard = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setAddingText(true)}
-            className={`flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition ${
-              addingText ? "ring-2 ring-[#3E5973]" : ""
+            className={`flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition ${
+              addingText ? "ring-2 ring-[var(--color-dark)]" : ""
             }`}
           >
             Add Text <FiType />
           </button>
           <button
             onClick={() => setShowImageModal(true)} // 🔹 Show modal on click
-            className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition"
+            className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition"
           >
             Add Images <FiImage />
           </button>
-          <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+          <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition">
             Save <FiBookmark />
           </button>
         </div>
