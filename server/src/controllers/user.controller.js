@@ -46,7 +46,7 @@ dotenv.config() ;
         } ;
     } catch (error) {
         console.error("Error Checking Email :", error) ;
-        res.status(500).json({message : "Internal Server Error"}) ;
+        return res.status(500).json({message : "Internal Server Error"}) ;
     } ; 
 
 } ;
@@ -628,7 +628,7 @@ export const refreshAccessToken = (req, res) => {
             }) ;
 
     } catch (error) {
-        console.erro("Error Refreshing Access Token: ", err) ;
+        console.error("Error Refreshing Access Token: ", error) ;
         res.status(500).json({ message: "Internal Server Error"}) ;
     }
 } ;
@@ -655,15 +655,21 @@ export const checkAuth = async (req, res) => {
 
 //Route 10 Controller - Logout 
 export const logout = async (req, res) => {
-    // Clear the Tokens & Cookies
-    res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: "Strict"
-    });
+    try {
+        // Clear the Tokens & Cookies
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV == "production",
+            sameSite: "Strict",
+            path: "/" // Ensures cookie is cleared properly from all routes
+        });
 
-    //Response to Frontend
-    res.status(200).json({
-        message: "Logged Out Successfully - Come Back Soon!"
-    }) ;
+        //Response to Frontend
+        res.status(200).json({
+            message: "Logged Out Successfully - Come Back Soon!"
+        }) ;    
+    } catch (error) {
+        console.error("Logout Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 } ;

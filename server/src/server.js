@@ -19,9 +19,11 @@ app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser()); 
 
-// API Routes
+// Public API Routes
 app.use("/api/user", userRoutes);
-app.use("/api/journal", journalRoutes);
+
+// Protected API Routes
+app.use("/api/journal", verifyAccessToken, journalRoutes);
 app.use("/api/habit", habitRoutes);
 app.use("/api/goal", goalRoutes);
 

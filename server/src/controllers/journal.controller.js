@@ -136,101 +136,149 @@ export const viewJournal = async (req ,res) => {
   }
 };
 
-// Route - 6 update journal by ID
-export const updateJournalByID = async (req, res) => {
-  const { journalID } = req.params;
-  const { date, title, mood, content } = req.body;
+// Route 5 - Update Journal by ID
+export const updateJournalById = async (req, res) => {
+  // Taking userId from Middleware
+  const userId = req.userId ;
 
-  if (!journalID) {
+  // Destructure req.param & req.body
+  const { journalId } = req.params;
+  const { date, title, mood, content, iconUrl } = req.body;
+
+  // Validating JournalId
+  if (!journalId) {
     return res.status(400).json({
-      status: "Failed",
-      message: "Journal ID is required to update the journal.",
+      status: "failed",
+      message: "Update Failed - Journal ID is Required to Update the Journal!",
     });
   }
 
   try {
-    const updatedJournal = await journals.findByIdAndUpdate(
-      journalID,
-      { date, title, mood, content },
-      { new: true }
-    );
+    // Checking if Journal Exists 
+    const existingJournal = await Journal.findById(journalId) ;
 
-    if (!updatedJournal) {
+    if (!existingJournal) {
       return res.status(404).json({
-        status: "Failed",
-        message: "Journal not found.",
+        status: "failed",
+        message: "Update Failed - Journal Not Found!",
       });
     }
 
+    // Check Ownership of Journal
+    if (existingJournal._uid.toString() !== userId.toString()) {
+      return res.status(403).json({
+        status: "failed",
+        message: "Update Failed - User Unauthorized",
+      });
+    }
+
+    //  Update Journal
+    const updatedJournal = await journals.findByIdAndUpdate(
+      journalID,
+      { date, title, mood, content, iconUrl },
+      { new: true }
+    );
+
+    // Validate Updated Journal
+    if (!updatedJournal) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Update Failed - Journal Not Found!",
+      });
+    }
+
+    // Response to Frontend
     return res.status(200).json({
-      status: "Success",
-      message: "Journal Updated Successfully !",
-      data: updatedJournal,
+      status: "success",
+      message: "Journal Updated Successfully!",
+      data: updatedJournal
     });
+
   } catch (error) {
-    console.error("Error updating Journal", error);
-    return res.status(500).json({
-      status: "error",
-      message: "Technical error—could not update journal.",
-    });
-  }
+      console.error("Error Updating Journal", error);
+      return res.status(500).json({
+        status: "error",
+        message: "Technical Error — Could Not Update Journal!"
+      });
+  } 
 }
-// Route - 7 delete one journal using Journal ID
+
+// Route 6 - Delete One Journal By Journal ID
 export const deleteOneJournal = async (req, res) => {
-  const { journalID } = req.params;
+  // Taking userId from Middleware
+  const userId = req.userId ;
+  
+  // Destructure req.param
+  const { journalId } = req.params;
 
-  if (!journalID) {
+  // Validate Journal ID
+  if (!journalId) {
     return res.status(400).json({
-      status: "Failed",
-      message: "Journal ID is required to delete the journal.",
+      status: "failed",
+      message: "Delete Failed - Journal ID is Required to Delete the Journal!",
     });
   }
-  try {
-    const Journal = await journals.findByIdAndDelete({ _id: journalID });
 
-    if (!Journal) {
-      return res.status(404).json({ message: "No journal found for this journal ID." });
-    }
-    res.status(200).json({
-      status: "Success",
-      journalID: Journal._id,
-      message: "Journal deleted Successfully."
+  try {
+    // Validate Ownership & Delete Journal
+    const journal = await Journal.findOneAndDelete({
+      _id: journalId,
+      _uid: userId,
     });
+
+    //Check if Journal Existed 
+    if (!journal) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Delete Failed - No Journal Found for this Journal ID." 
+      });
+    }
+
+    // Response to Frontend
+    res.status(200).json({
+      status: "success",
+      deletedJournalTitle: journal.title,
+      message: "Journal Deleted Successfully!"
+    });
+
   }catch (error) {
-    console.error("Error deleting Journal", error);
+    console.error("Error Deleting Journal", error);
     return res.status(500).json({
       status: "error",
-      message: "Technical error—could not delete journal.",
+      message: "Technical Error — Could Not Delete Journal!",
     });
   };
 }
-// Route - 8 :delete all journal by user Id
+
+// Route 7 - Delete All Journals of User
 export const deleteAllJournal = async (req, res) => {
-   const { userID } = req.params;
-
-   if (!userID) {
-    return res.status(400).json({
-      status: "Failed",
-      message: "User ID is required to delete all journal.",
-    });
-  }
+  // Taking userId from Middleware
+  const userId = req.userId ;
 
   try {
-    const User = await journals.findOneAndDelete({ _uid: userID});
-    if (!User) {
-      return res.status(404).json({ message: "No user found for this user ID." });
+    // Delete All Journals Belonging to User
+    const result = await Journal.deleteMany({ _uid: userId }) ;
+
+    // Validate Deletion
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Delete Failed - No Journals Found for the User!",
+      });
     }
+    
+    // Response to Frontend
     res.status(200).json({
-      status: "Success",
-      userID: User._id,
-      message: "All journals deleted Successfully."
-    });u
+      status: "success",
+      deletedJournalCount: result.deletedCount,
+      message: "All Journals Deleted Successfully."
+    });
+  
   }catch (error) {
-    console.error("Error deleting Journals", error);
+    console.error("Error Deleting Journals", error);
     return res.status(500).json({
       status: "error",
-      message: "Technical error—could not delete journals.",
+      message: "Technical Error — Could Not Delete Journals!",
     });
   };
 }
-
