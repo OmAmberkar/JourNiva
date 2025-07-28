@@ -22,7 +22,7 @@ const AllJournals = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#DCEFFF] text-[#3E5973] font-Livvic">
+    <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-dark)] font-Livvic">
       {/* ✅ Left Sidebar */}
       {isLargeScreen ? (
         <LeftBar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
