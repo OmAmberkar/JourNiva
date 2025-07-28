@@ -38,7 +38,7 @@ const MoodDropdown = ({ onMoodSelect }) => {
       {/* Trigger button */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-2 p-2 bg-[#D0E6F8]/10 cursor-pointer"
+        className="flex items-center gap-2 p-2 bg-[var(--color-background)]/10 cursor-pointer"
       >
         {selectedMood ? (
           <div className="flex items-center gap-2">
@@ -50,18 +50,18 @@ const MoodDropdown = ({ onMoodSelect }) => {
             <span className="text-sm font-medium">{selectedMood.label}</span>
           </div>
         ) : (
-          <span className="text-md text-gray-600">- Choose -</span>
+          <span className="text-md text-gray-500">- Choose -</span>
         )}
       </button>
 
       {/* Dropdown list */}
       {isOpen && (
-        <div className="absolute z-20 mt-2 w-28 bg-[#C7D7EC] border border-[#3E5973] rounded-md shadow-md">
+        <div className="absolute z-20 mt-2 w-28 bg-[var(--color-drop)] border border-[var(--color-dark)] rounded-md shadow-md">
           {moodOptions.map((mood) => (
             <div
               key={mood.value}
               onClick={() => handleSelect(mood)}
-              className="flex items-center gap-3 p-2 cursor-pointer hover:bg-[#3E5973] hover:text-white rounded-sm"
+              className="flex items-center gap-3 p-2 cursor-pointer hover:bg-[var(--color-dark)] hover:text-white rounded-sm"
             >
               <img
                 src={mood.icon}

@@ -73,7 +73,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#DCEFFF] text-[#3E5973] font-Livvic">
+    <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-dark)] font-Livvic">
       {isLargeScreen ? (
         <LeftBar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       ) : (
@@ -92,13 +92,13 @@ const Dashboard = () => {
             ${sidebarOpen && isLargeScreen ? "lg:ml-64" : "lg:ml-0"}
           `}
         >
-          <header className="flex flex-col sm:flex-row items-center justify-between ml-5 gap-4 bg-[#DCEFFF]/60 p-1 rounded-md">
+          <header className="flex flex-col sm:flex-row items-center justify-between ml-5 gap-4 bg-[var(--color-background)]/60 p-1 rounded-md">
             <div className="flex items-center gap-4 text-center sm:text-left">
               {user.avatarUrl && (
                 <img
                   src={user.avatarUrl}
                   alt="avatar"
-                  className="w-12 h-12 rounded-full object-cover ring-2 ring-[#3E5973]"
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-[var(--color-dark)]"
                 />
               )}
               <h1 className="text-2xl sm:text-3xl font-semibold">
@@ -107,13 +107,13 @@ const Dashboard = () => {
             </div>
           </header>
 
-          <div className="mt-4 h-[1px] w-full bg-[#3E5973] rounded-full" />
+          <div className="mt-4 h-[1px] w-full bg-[var(--color-background)] rounded-full" />
 
           <main className="mt-6 space-y-6">
             <input
               type="text"
               placeholder="Journal Title"
-              className="w-full text-2xl sm:text-3xl md:text-4xl font-semibold bg-transparent outline-none placeholder:text-2xl sm:placeholder:text-3xl"
+              className="w-full text-2xl sm:text-3xl md:text-4xl font-semibold bg-transparent outline-none placeholder:text-2xl sm:placeholder:text-3xl leading-tight py-1"
             />
 
             <div className="flex flex-col gap-2 text-base sm:text-lg">
@@ -134,16 +134,16 @@ const Dashboard = () => {
 
             {/* Clone of RightBar content for small screens */}
             {!isLargeScreen && rightSidebarOpen && (
-              <div className="mt-10 px-2 sm:px-6 md:px-10 text-[#3E5973]">
+              <div className="mt-10 px-2 sm:px-6 md:px-10 text-[var(--color-dark)]">
                 <Link
                   to="/visionboard"
-                  className="flex items-center gap-3 text-xl font-semibold hover:text-[#1e2a35] transition mb-4"
+                  className="flex items-center gap-3 text-xl font-semibold hover:text-[var(--color-dark)] transition mb-4"
                 >
                   <FiTrendingUp className="w-6 h-6" />
                   <span>Vision Board</span>
                 </Link>
 
-                <div className="relative overflow-hidden rounded-xl border border-[#3E5973] bg-white w-full aspect-[16/10] mb-6">
+                <div className="relative overflow-hidden rounded-xl border border-[var(--color-dark)] bg-white w-full aspect-[16/10] mb-6">
                   <div
                     className="absolute top-0 left-0"
                     style={{
@@ -174,7 +174,7 @@ const Dashboard = () => {
                     <h3 className="font-bold text-lg mb-2 text-center">
                       ➤ Habits
                     </h3>
-                    <div className="min-h-[160px] border border-transparent hover:border-[#3E5973] rounded-lg px-2 py-2">
+                    <div className="min-h-[160px] border border-transparent hover:border-[var(--color-dark)] rounded-lg px-2 py-2">
                       {/* Show habits here or placeholder */}
                       <p className="text-center text-sm opacity-50">
                         No habits added
@@ -186,7 +186,7 @@ const Dashboard = () => {
                     <h3 className="font-bold text-lg mb-2 text-center">
                       ➤ Goals
                     </h3>
-                    <div className="min-h-[160px] border border-transparent hover:border-[#3E5973] rounded-lg px-2 py-2">
+                    <div className="min-h-[160px] border border-transparent hover:border-[var(--color-dark)] rounded-lg px-2 py-2">
                       {/* Show goals here or placeholder */}
                       <p className="text-center text-sm opacity-50">
                         No goals added
