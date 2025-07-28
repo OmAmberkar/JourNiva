@@ -117,15 +117,21 @@ export const registerUser = async (req, res) => {
         await newUser.save() ;
 
         // Send OTP Email
-        await sendEmail({
-            to : temail,
-            subject : "Verify Your Email - JourNiva",
-            templateName : "otpEmail",
-            templateData : {
-                name : tname,
-                otp : otp,
-            }
-        }) ;
+        try {
+            await sendEmail({
+                to : temail,
+                subject : "Verify Your Email - JourNiva",
+                templateName : "otpEmail",
+                templateData : {
+                    name : tname,
+                    otp : otp,
+                },
+                successMessage: "Verify Email OTP Sent Successfully!"
+            }) ;    
+        } catch (error) {
+            console.error("Error sending welcome email:", e.message) ;
+        }
+        
 
         // Respose to Frontend
         return res.status(201).json({
@@ -235,6 +241,14 @@ export const verifyOTP = async (req, res) => {
         }) ;
     }
 
+    // Validate User ID Format
+    if (!validator.isMongoId(tuserId)) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Invalid User ID format!"
+        });
+    }
+
     try {
         // Find User by ID
         const user = await User.findById(tuserId) ;
@@ -243,7 +257,7 @@ export const verifyOTP = async (req, res) => {
         if (!user) {
             return res.status(404).json({ 
                 status: "failed",
-                message: "User Not Found! - Please Register" 
+                message: "User Not Found! - Please Register!" 
             }) ;
         }
 
@@ -251,7 +265,7 @@ export const verifyOTP = async (req, res) => {
         if (user.isVerified === true) {
             return res.status(400).json({
                 status: "failed",
-                message: "User Already Verified! - Please Login" 
+                message: "User Already Verified! - Please Login!" 
             }) ;
         }
 
@@ -282,14 +296,19 @@ export const verifyOTP = async (req, res) => {
         const accessToken = sendTokenResponse(res, user._id) ;
 
         // Send Welcome Email
-        await sendEmail({
-            to: user.email,
-            subject: "Welcome to JourNiva!",
-            templateName: "welcomeEmail",
-            templateData: {
-                name: user.name,
-            }
-        }) ;
+        try {
+            await sendEmail({
+                to: user.email,
+                subject: "Welcome to JourNiva!",
+                templateName: "welcomeEmail",
+                templateData: {
+                    name: user.name,
+                },
+                successMessage: "Welcome Email Sent Successfully!"
+            }) ;    
+        } catch (error) {
+            console.error("Error sending welcome email:", e.message) ;
+        }
 
         // Response to Frontend
         return res.status(200).json({
@@ -320,10 +339,18 @@ export const resendOTP = async (req, res) => {
 
     // Validate userId
     if (!tuserId) {
-        res.status(400).json({ 
+        return res.status(400).json({ 
             status: "failed",
             message: "User ID is Required!" 
         }) ;
+    }
+
+    // Validate User ID Format
+    if (!validator.isMongoId(tuserId)) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Invalid User ID format"
+        });
     }
         
     try {
@@ -334,7 +361,7 @@ export const resendOTP = async (req, res) => {
         if (!user) {
             return res.status(404).json({ 
                 status: "failed",
-                message: "User Not Found! - Please Register" 
+                message: "User Not Found! - Please Register!" 
             }) ;
         }
 
@@ -342,7 +369,7 @@ export const resendOTP = async (req, res) => {
         if (user.isVerified === true) {
             return res.status(400).json({
                 status: "failed",
-                message: "User Already Verified! - Please Login" 
+                message: "User Already Verified! - Please Login!" 
             }) ;
         }
 
@@ -367,7 +394,8 @@ export const resendOTP = async (req, res) => {
             templateData: {
                 name: user.name,
                 otp: newOtp,
-            }
+            },
+            successMessage: "Verify Email OTP Resent Successfully!"
         }) ;
 
         // Response to Frontend
@@ -439,7 +467,8 @@ export const forgotPasswordLink = async (req, res) => {
                 name: user.name,
                 resetPasswordLink: resetPasswordLink,
                 resetPasswordExpires: resetPasswordExpires.toLocaleString(), // Format as needed
-            }
+            },
+            successMessage: "Reset Password Link Email Sent Successfully!"
         }) ;    
 
         // Response to Frontend
@@ -538,7 +567,8 @@ export const resetPassword = async (req, res) => {
             templateName: "passwordResetSuccessEmail",
             templateData: {
                 name: user.name,
-            }
+            },
+            successMessage: "Reset Password Successful Email Sent Successfully!"
         }) ;
 
         // Response to Frontend
@@ -577,7 +607,7 @@ export const refreshAccessToken = (req, res) => {
         // Verify Refresh Token & Use Callback Function 
         jwt.verify(
             refreshToken,
-            process.env.JWT_REFRESH_TOKEN,
+            process.env.JWT_REFRESH_TOKEN_SECRET,
             (err, decoded) => {
                 // Validate Verification
                 if (err) {
