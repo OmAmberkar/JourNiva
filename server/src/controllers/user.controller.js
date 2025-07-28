@@ -448,7 +448,7 @@ export const forgotPasswordLink = async (req, res) => {
         const resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000) ; // 15 minutes from now
 
         // Hash Reset Password Token
-        const hashedResetPasswordToken = await bcrypt.hash(resetPasswordToken, 10) ;
+        const hashedResetPasswordToken = crypto.createHash("sha256").update(resetPasswordToken).digest("hex") ;
 
         // Update User Document
         user.resetPasswordToken = hashedResetPasswordToken ;
@@ -533,20 +533,20 @@ export const resetPassword = async (req, res) => {
             }) ;
         }
 
-        // Check if Reset Password Token Matches
-        const isTokenValid = await bcrypt.compare(ttoken, user.resetPasswordToken) ;
-        if (!isTokenValid) {
-            return res.status(401).json({
-                status: "failed",
-                message: "Invalid Reset Password Token! Please Request a New Link"
-            }) ;
-        }
-
         // Validate Reset Password Token Expiry
         if (user.resetPasswordExpires < new Date()) {
             return res.status(410).json({
                 status: "failed",
                 message: "Reset Password Token has Expired! Please Request a New Link"
+            }) ;
+        }
+
+        // Check if Reset Password Token Matches
+        const hashedToken = crypto.createHash("sha256").update(ttoken).digest("hex") ;
+        if (hashedToken !== user.resetPasswordToken) {
+            return res.status(401).json({
+                status: "failed",
+                message: "Invalid Reset Password Token! Please Request a New Link"
             }) ;
         }
 

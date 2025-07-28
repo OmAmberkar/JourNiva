@@ -7,7 +7,7 @@ export const MoodList = [
   "Bright",
   "Loved",
   "Tired",
-  "smile","wink","happy","neutral","sad"
+  "Smile","Neutral","Sad"
 ];
 
 //optionally mentioned so that if needed we could refer one
@@ -49,7 +49,7 @@ const journalSchema = new mongoose.Schema(
       enum: MoodList,
       default: "Happy",
     },
-    cardImageUrl: {
+    iconUrl: {
       type: String,
       default: null,
     },
