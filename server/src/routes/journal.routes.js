@@ -1,16 +1,16 @@
 import express from "express";
-import { createJournal, getAllJournals, getJournalbydate, updateJournalByID, deleteOneJournal, deleteAllJournal, viewJournal} from '../controllers/journal.controller.js';
+import { createJournal, getAllJournals, getJournalsByDate, updateJournalByID, deleteOneJournal, deleteAllJournal, viewJournal} from '../controllers/journal.controller.js';
 
 const router = express.Router();
 
 // Route 1 - Create Journal
-router.post("/create/:userID",createJournal);
+router.post("/create", createJournal);
 
 // Route 2 - Get Journal by Date
-router.get("/by-date/:date" ,getJournalbydate);
+router.get("/by-date/:date" ,getJournalsByDate);
 
 // Route 3 - Get all Journals
-router.get("/all/:userID" , getAllJournals);
+router.get("/all" , getAllJournals);
 
 // Route 4 - Get Specific Journal by ID (View Jorunal))
 router.get("/view/:journalID" , viewJournal);

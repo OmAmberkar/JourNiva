@@ -8,6 +8,7 @@ import habitRoutes from "./routes/habit.routes.js";
 import goalRoutes from "./routes/goal.routes.js";
 import axios from "axios"; // ✅ for Unsplash API
 import cookieParser from "cookie-parser" ;
+import { verifyAccessToken } from "./middleware/userAuthMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -22,8 +23,8 @@ app.use(cookieParser());
 // API Routes
 app.use("/api/user", userRoutes);
 app.use("/api/journal", journalRoutes);
-app.use("/api/habit", habitRoutes);
-app.use("/api/goal", goalRoutes);
+app.use("/api/habit", verifyAccessToken, habitRoutes);
+app.use("/api/goal", verifyAccessToken, goalRoutes);
 
 // ✅ Unsplash Search Proxy Route
 app.get("/api/unsplash-search", async (req, res) => {

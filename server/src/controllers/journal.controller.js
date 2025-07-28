@@ -1,137 +1,205 @@
-import journals from "../../models/journal.model.js";
+import Journal from "../../models/journal.model.js";
 import User from "../../models/user.model.js";
 
-// Route - 1 create new journal
+// Route 1 - Create New Journal
 export const createJournal = async (req, res) => {
-  // checks if user is authorized or not
-  const fromAuth = req.user?._uid || req.user?._id || req.user?.id; //requesting from auth
-  const fromParam = req.params.userID; //requesting from the url as a parameter
+  // Taking userId from Middleware 
+  const userId = req.userId ;
 
-  const userId = fromParam || fromAuth;
-
+  // Validate userId
   if (!userId) {
-    return res.status(400).json({
+    return res.status(401).json({
       status: "failed",
-      message: "No user context—provide userID or be authenticated.",
+      message: "User Unauthorized. Please login to create a Journal."
     });
   }
 
-  const { title, content, cardImageUrl, mood, location, date } = req.body;
+  // Destructure request body
+  const { title, content, iconUrl, mood, location, date } = req.body;
 
+  // Validate title and content
   if (!title?.trim() || !content?.trim()) {
     return res.status(400).json({
-      status: "Failed",
-      message: "Provide Title and Content",
+      status: "failed",
+      message: "Title and Content are required to create a Journal."
     });
   }
 
   try {
-    //getting the user snapshot
+    //Getting the User for snapshot
     const user = await User.findById(userId).select("name");
+
+    // Validate User
     if (!user) {
       return res.status(404).json({
-        status: "Failed",
-        message: "User not found.",
+        status: "failed",
+        message: "User not found. Please Register!"
       });
     }
 
-    // creating the new journal if user exists
-    const newJournal = await journals.create({
-      _uid: user._id,
+    // Creating New Journal if user exists
+    const newJournal = await Journal.create({
+      _uid: user.id,
       nameSnapshot: user.name,
       title: title.trim(),
       content,
       date: date ? new Date(date) : new Date(),
       mood,
-      cardImageUrl,
+      iconUrl,
       location,
     });
 
     return res.status(201).json({
-      status: "Success",
-      message: "Successfully Posted New Journal",
+      status: "success",
+      message: "Successfully Created New Journal",
+      data: newJournal
     });
+
   } catch (error) {
-    console.error("Error while creating new Journal", error);
-    return res
-      .status(500)
-      .json({ message: "Cant store data due to technical issue" });
+      console.error("Error while creating new Journal", error);
+      return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-// Route - 3 getall journals
-export const getAllJournals = async (req, res) => {
-  const userId = req.params.userID || req.user?._uid;
+// Route 3 - Getall Journal
+export const getAllJournal = async (req, res) => {
+  // Taking userId from Middleware
+    const userId = req.userId ;
+
+  // Validate userId  
   if (!userId) {
-    return res.status(400).json({
-      status: "Failed",
-      message: "No user context—provide userID or be authenticated.",
+    return res.status(401).json({
+      status: "failed",
+      message: "User Unauthorized. Please Register or Login!",
     });
   }
 
   try {
-    const Journal = await journals.find({ _uid: userId })
+    // Access all Journals by userId - find() returns an array
+    const Journal = await Journal
+      .find({ _uid: userId })
       .sort({ date: -1 })
+      .select(" title date mood iconUrl")
       .lean();
+
+    // find() returns an array, so we check if it's empty
+    if (Journal.length === 0) {
+      return res.status(404).json({
+        status: "failed",
+        message: "No Journals found! Please create a Journal.",
+      });
+    }
+
     return res.status(200).json({
       status: "success",
       count: Journal.length,
       data: Journal,
+      message: "All Journals retrieved Successfully!",
     });
+
   } catch (error) {
     console.error("Error fetching Journal", error);
     return res.status(500).json({
-      status: "error",
-      message: "Technical error—could not fetch journals.",
+      status: "failed",
+      message: "Technical Error - Could not fetch Journal.",
     });
   }
 };
 
-// Route - 2 get journal by date
-export const getJournalbydate = async (req, res) => {
-    const { userID } = req.params ;
+// Route 2 - Get Journal by Date
+export const getJournalsByDate = async (req, res) => {
+  // Taking userId from Middleware
+    const userId = req.userId ;
+
+  // Taking date from request params
     const { date } = req.params ;
 
-  try {
-    const Journal = await journals.find({ userID, date });
+  // Validate Date format using Validator
+  if(!validator.isDate(date)) {
+    return res.status(400).json({
+      status: "failed",
+      message: "Invalid Date format. Please provide a valid date."
+    });
+  }
 
-    if (!Journal) {
-      return res.status(404).json({ message: "No journal found for this date." });
+  try {
+    // Access all Journals by userId and date - find() returns an array
+    const Journal = await Journal.find({ _uid : userId , date });
+
+    // find() returns an array, so we check if it's empty
+    if (Journal.length === 0) {
+      return res.status(404).json({ 
+        status : "failed",
+        message: "No Journal found for this Date." });
     }
+
     res.status(200).json({
-      status: "Success",
-      message: "Journal retrieved successfully by date!",
+      status: "success",
+      message: "Journal retrieved Successfully for the given Date!",
       data: Journal
     });
+
   } catch (error) {
     console.error("Error fetching journal:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// Route - 4 get journal by ID
+// Route - 4 Get journal by ID
 export const viewJournal = async (req ,res) => {
-  const { journalID } = req.params;
-  if (!journalID) {
+  // Taking userId from Middleware
+  const userId = req.userId;
+
+  // Taking journalId from request params
+  const { journalId } = req.params;
+
+  // Validate journalId
+  if (!journalId) {
     return res.status(400).json({
       status: "Failed",
-      message: "Jaournal Id is required to fetch the journal.",
+      message: "Journal Id is required to fetch the journal.",
     });
   }
+
+  // Validate userId
+  if (!userId) {
+    return res.status(401).json({
+      status: "failed",
+      message: "User Unauthorized. Please Register or Login!",
+    });
+  }
+
   try {
-    const Journal = await journals.find({ _id: journalID });
+    // Accessing the Journal by journalId
+    const Journal = await Journal.findById({ journalId }).lean();
+
+    // Check if Journal exists
+    if (!Journal) {
+      return res.status(404).json({
+        status: "failed",
+        message: "Journal not found for this Journal ID.",
+      });
+    }
+
+    // Check if the Journal belongs to the user
+    if (Journal._uid.toString() !== userId.toString()) {
+      return res.status(403).json({
+        status: "failed",
+        message: "Unauthorized access to this Journal.",
+      });
+    }
+
     return res.status(200).json({
       status: "Success",
       message: "Journal retrieved successfully by Id !",
       data: Journal
-      
     });
   }
   catch (error) {
     console.error("Error fetching Journal", error);
     return res.status(500).json({
       status: "error",
-      message: "Technical error—could not fetch journals.",
+      message: "Technical Error - Could not fetch Journal.",
     });
   }
 };
@@ -149,7 +217,7 @@ export const updateJournalByID = async (req, res) => {
   }
 
   try {
-    const updatedJournal = await journals.findByIdAndUpdate(
+    const updatedJournal = await Journal.findByIdAndUpdate(
       journalID,
       { date, title, mood, content },
       { new: true }
@@ -186,7 +254,7 @@ export const deleteOneJournal = async (req, res) => {
     });
   }
   try {
-    const Journal = await journals.findByIdAndDelete({ _id: journalID });
+    const Journal = await Journal.findByIdAndDelete({ _id: journalID });
 
     if (!Journal) {
       return res.status(404).json({ message: "No journal found for this journal ID." });
@@ -216,20 +284,20 @@ export const deleteAllJournal = async (req, res) => {
   }
 
   try {
-    const User = await journals.findOneAndDelete({ _uid: userID});
+    const User = await Journal.findOneAndDelete({ _uid: userID});
     if (!User) {
       return res.status(404).json({ message: "No user found for this user ID." });
     }
     res.status(200).json({
       status: "Success",
       userID: User._id,
-      message: "All journals deleted Successfully."
+      message: "All Journal deleted Successfully."
     });u
   }catch (error) {
-    console.error("Error deleting Journals", error);
+    console.error("Error deleting Journal", error);
     return res.status(500).json({
       status: "error",
-      message: "Technical error—could not delete journals.",
+      message: "Technical error—could not delete Journal.",
     });
   };
 }
