@@ -46,7 +46,7 @@ function Footer() {
           <div className="space-y-1">
             <h4 className="text-lg font-medium mb-2">Learn</h4>
             <a
-              href="https://www.verywellhealth.com/journaling-7498123"
+              href="/JournalFreely"
               className="block cursor-pointer hover:underline"
             >
               Research on Journaling

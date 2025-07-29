@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url) ;
 const __dirname = path.dirname(__filename) ;
 
 // Create sendEmail Function 
-export const sendEmail = async ({ to, subject, templateName, templateData }) => {
+export const sendEmail = async ({ to, subject, templateName, templateData, successMessage }) => {
     try {
         // Get Transporter
         const transporter = await createTransporter() ;
@@ -32,7 +32,8 @@ export const sendEmail = async ({ to, subject, templateName, templateData }) => 
         // Send Email
         const result = await transporter.sendMail(mailOptions) ;
 
-        console.log("Email Sent Successfully!",result.messageId) ;
+        // Using Custom Success Message or Generic
+        console.log(successMessage || "Email Sent Successfully!",result.messageId) ;
         return result ;
 
     } catch (error) {

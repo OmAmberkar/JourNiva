@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import LeftBar from "../components/Dashboard Components/LeftBar";
 import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
@@ -23,7 +22,7 @@ const AllGoals = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#DCEFFF] text-[#3E5973] font-Livvic">
+    <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-dark)] font-Livvic">
       {/* ✅ Left Sidebar */}
       {isLargeScreen ? (
         <LeftBar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
@@ -46,4 +45,3 @@ const AllGoals = () => {
 };
 
 export default AllGoals;
-

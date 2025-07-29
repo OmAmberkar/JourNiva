@@ -5,7 +5,12 @@ import { IoLockClosedOutline, IoLockOpenOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { PiUserCircleFill } from "react-icons/pi";
 
-const avatars = ["Logo.png", "Avatar1.png", "Avatar2.png", "Avatar3.png"];
+const avatars = [
+  "https://imagizer.imageshack.com/img924/4476/roJLyv.png",
+  "https://images.unsplash.com/photo-1579445710183-f9a816f5da05?q=80&w=729&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1563296704-6df0d360b9ab?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://imagizer.imageshack.com/img923/4397/W1kTjr.png",
+];
 
 function SignUp({ email }) {
   const [username, setUsername] = useState("");
@@ -26,12 +31,12 @@ function SignUp({ email }) {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     } else if (!avatarUrl) {
       setError("Please select an avatar.");
-      setLoading(false)
-      return
+      setLoading(false);
+      return;
     }
 
     try {
@@ -42,7 +47,14 @@ function SignUp({ email }) {
         avatarUrl,
       });
       if (res.status === 201) {
-        navigate("/dashboard");
+        navigate("/verify", {
+          state: {
+            userId: res.data.user.userId,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            avatarUrl: res.data.user.avatarUrl,
+          },
+        });
       } else {
         console.log("Check the entered filleds");
         setLoading(false);
@@ -57,7 +69,11 @@ function SignUp({ email }) {
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       <div className="flex items-center">
         <img
-          src={avatarUrl}
+          src={
+            avatarUrl && avatarUrl.trim() !== ""
+            ? avatarUrl
+            : "https://imagizer.imageshack.com/img924/4476/roJLyv.png"
+          }
           onClick={() => setIsModalOpen(true)}
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"
           alt="avatar"
@@ -75,14 +91,14 @@ function SignUp({ email }) {
               {avatars.map((img) => (
                 <img
                   key={img}
-                  src={`/${img}`}
+                  src={`${img}`}
                   alt="avatar"
                   onClick={() => {
-                    setAvatarUrl(`/${img}`);
+                    setAvatarUrl(`${img}`);
                     setIsModalOpen(false);
                   }}
                   className={`w-16 h-16 rounded-full cursor-pointer border-2 transition-transform hover:scale-110 border-white ]${
-                    avatarUrl === `/${img}`
+                    avatarUrl === `${img}`
                       ? "border-[#3E5973]"
                       : "border-transparent"
                   }`}

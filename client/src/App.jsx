@@ -1,19 +1,30 @@
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import ScrollToTop from "./components/Landing Page Components/ScrollToTop";
-import AboutUsPage from "./pages/AboutUsPage";
-import LandingPage from "./pages/LandingPage";
-import GetStarted from "./pages/GetStarted";
-import Dashboard from "./pages/Dashboard";
-import AllGoals from "./pages/AllGoals";
-import AllHabits from "./pages/AllHabits";
-import AllJournals from "./pages/AllJournals";
+import AboutUsPage from "./Pages/AboutUsPage";
+import LandingPage from "./Pages/LandingPage";
+import GetStarted from "./Pages/GetStarted";
+import Dashboard from "./Pages/Dashboard";
+import AllGoals from "./Pages/AllGoals";
+import AllHabits from "./Pages/AllHabits";
+import AllJournals from "./Pages/AllJournals";
 import JournalFreely from "./components/Journiva info/JournalFreely";
 import DailyReflection from "./components/Journiva info/DailyReflection";
 import HabitTracker from "./components/Journiva info/HabitTracker";
 import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
-import VisionBoard from "./pages/VisionBoard";
+import VisionBoard from "./Pages/VisionBoard";
+import Verification from "./components/Get Started Components/Verification";
+import ResetPassword from "./components/Get Started Components/ResetPassword";
 
 const App = () => {
+  useEffect(() => {
+    const hasTheme = [...document.body.classList].some((cls) =>
+      cls.startsWith("theme-")
+    );
+    if (!hasTheme) {
+      document.body.classList.add("theme-blue"); // Default theme
+    }
+  }, []);
   return (
     <div className="bg-[#DCEFFF] min-h-screen">
       <Router>
@@ -31,6 +42,9 @@ const App = () => {
           <Route path="/DailyReflection" element={<DailyReflection />} />
           <Route path="/HabitTracker" element={<HabitTracker />} />
           <Route path="/visionboardinfo" element={<VisionBoardInfo />} />
+          <Route path="/verify" element={<Verification />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          {/* Add more routes as needed */}
         </Routes>
       </Router>
     </div>

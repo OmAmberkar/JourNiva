@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/Logo.png";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 
@@ -15,15 +15,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full sticky top-0 z-50 flex items-center justify-between px-4 md:px-6 py-2 bg-[#DCEFFF]/60 backdrop-blur-md border-b-2 border-[#3E5973] shadow-md font-Livvic">
+    <nav className="w-full sticky top-0 z-50 flex items-center justify-between px-4 md:px-6 py-2 bg-[var(--color-background)]/60 backdrop-blur-md border-b-2 border-[var(--color-dark)] shadow-md font-Livvic">
       {/* Logo + Brand */}
       <div className="flex items-center space-x-2">
         <img src={Logo} alt="logo" className="h-14 w-14 object-contain" />
-        <h1 className="text-[#3E5973] text-2xl md:text-3xl">JourNiva</h1>
+        <h1 className="text-[var(--color-dark)] text-2xl md:text-3xl">
+          JourNiva
+        </h1>
       </div>
 
       {/* Desktop Nav */}
-      <ul className="hidden md:flex gap-6 text-[#3E5973] text-sm md:text-base font-medium items-center">
+      <ul className="hidden md:flex gap-6 text-[var(--color-dark)] text-sm md:text-base font-medium items-center">
         <li>
           <Link to="/" className="hover:underline" onClick={handleLinkClick}>
             Home
@@ -57,8 +59,10 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          
-          <button className="bg-[#3E5973] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => window.open('/getstarted', '_blank')}>
+          <button
+            className="bg-[var(--color-dark)] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"
+            onClick={() => window.open("/getstarted", "_blank")}
+          >
             Get Started !
           </button>
         </li>
@@ -68,7 +72,7 @@ const Navbar = () => {
       <div className="md:hidden">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-[#3E5973] text-3xl focus:outline-none"
+          className="text-[var(--color-dark)] text-3xl focus:outline-none"
         >
           {menuOpen ? <HiX /> : <HiMenu />}
         </button>
@@ -76,7 +80,7 @@ const Navbar = () => {
 
       {/* Mobile Nav */}
       {menuOpen && (
-        <ul className="absolute top-20 right-4 w-64 bg-[#dcefff]/80 backdrop-blur-md border border-[#3E5973] flex flex-col items-center text-[#3E5973] text-base font-medium gap-4 py-4 px-6 md:hidden z-50 shadow-xl rounded-xl">
+        <ul className="absolute top-20 right-4 w-64 bg-[var(--color-background)]/80 backdrop-blur-md border border-[var(--color-dark)] flex flex-col items-center text-[var(--color-dark)] text-base font-medium gap-4 py-4 px-6 md:hidden z-50 shadow-xl rounded-xl">
           <li onClick={handleLinkClick}>
             <Link
               to={{ pathname: "/", hash: "#Home" }}
@@ -107,7 +111,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <button className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]" onClick={() => window.open('/getstarted')}>
+            <button
+              className="w-full bg-[#a8b4d0] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"
+              onClick={() => window.open("/getstarted")}
+            >
               Get Started
             </button>
           </li>

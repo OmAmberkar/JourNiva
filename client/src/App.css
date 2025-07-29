@@ -11,12 +11,22 @@ html {
   scroll-padding-top: 80px; /* if navbar is fixed, adjust this */
 }
 
-
 * {
   font-family: "Livvic", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: var(--color-dark);
+  opacity: 0.5; /* 👈 makes it lighter */
+  transition: color 0.4s ease, opacity 0.4s ease;
 }
 
 @keyframes settingsOpen {
@@ -33,3 +43,75 @@ html {
 .animate-settingsOpen {
   animation: settingsOpen 0.3s ease-out forwards;
 }
+/* Default Theme (Blue Clam / Clear) */
+:root {
+  --color-dark: #3e5973;
+  --color-sidebar: #d0e6f8;
+  --color-background: #dcefff;
+  --color-drop: #c7d7ec;
+  --color-border: #aacbe1;
+}
+
+/* GREEN SOFT / PEACEFUL */
+.theme-green {
+  --color-dark: #5e7664;
+  --color-sidebar: #e1e5db;
+  --color-background: #efefef;
+  --color-drop: #c2c8ba;
+  --color-border: #90ab97;
+}
+
+/* PEACH LIGHT / HAPPY */
+.theme-peach {
+  --color-dark: #b64e4e;
+  --color-sidebar: #ffeedf;
+  --color-background: #fff9ef;
+  --color-drop: #e5bbbb;
+  --color-border: #eac8c8;
+}
+
+/* PURPLE BOLD / BRIGHT */
+.theme-purple {
+  --color-dark: #7b5787;
+  --color-sidebar: #e9e1f9;
+  --color-background: #f4f1fa;
+  --color-drop: #e3c6ed;
+  --color-border: #e4caec;
+}
+
+/* PINK LOVED / GENTLE */
+.theme-pink {
+  --color-dark: #a81731;
+  --color-sidebar: #ffe7ef;
+  --color-background: #fff0f5;
+  --color-drop: #eab9c2;
+  --color-border: #f1d0d6;
+}
+
+@layer utilities {
+  .theme-blue {
+  }
+  .theme-green {
+  }
+  .theme-peach {
+  }
+  .theme-purple {
+  }
+  .theme-pink {
+  }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.fade-in-slide {
+  animation: fadeInSlide 180ms ease-out forwards;
+}
+

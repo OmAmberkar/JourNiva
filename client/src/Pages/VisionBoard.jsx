@@ -1,103 +1,41 @@
-//   // src/pages/VisionBoard.jsx
-// import React, { useState, useRef } from "react";
-// import {
-//   FiArrowLeft,
-//   FiBookmark,
-//   FiImage,
-//   FiPlus,
-//   FiType,
-//   FiX,
-// } from "react-icons/fi";
+// import React, { useState } from "react";
+// import { FiArrowLeft, FiBookmark, FiImage, FiType } from "react-icons/fi";
 // import { Link } from "react-router-dom";
-// import axios from "axios";
-
-// // ✅ Canvas where users drop images/text
-// export const VisionBoardCanvas = ({ elements, setElements }) => {
-//   const canvasRef = useRef(null);
-
-//   const handleDragOver = (e) => {
-//     e.preventDefault();
-//   };
-
-//   const handleDrop = (e) => {
-//     e.preventDefault();
-//     const imageUrl = e.dataTransfer.getData("imageUrl");
-//     const x = e.clientX - canvasRef.current.getBoundingClientRect().left;
-//     const y = e.clientY - canvasRef.current.getBoundingClientRect().top;
-
-//     if (imageUrl) {
-//       setElements((prev) => [...prev, { type: "image", src: imageUrl, x, y }]);
-//     }
-//   };
-
-//   return (
-//     <div
-//       ref={canvasRef}
-//       className="relative flex w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden items-center justify-center"
-//       onDragOver={handleDragOver}
-//       onDrop={handleDrop}
-//     >
-//       {elements.map((el, idx) => {
-//         if (el.type === "image") {
-//           return (
-//             <img
-//               key={idx}
-//               src={el.src}
-//               alt="user-img"
-//               className="absolute w-32 h-32 object-cover cursor-move"
-//               style={{ top: el.y, left: el.x }}
-//             />
-//           );
-//         }
-//         return null;
-//       })}
-
-//       {elements.length === 0 && (
-//         <div className="flex flex-col items-center justify-center gap-2 opacity-30 transition-opacity duration-300 text-center">
-//           <FiPlus className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl" />
-//           <p className="text-sm">Drag images or add something!</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
+// import VisionBoardCanvas from "../components/VisionBoard Components/VisionBoardCanvas";
+// import AddTextModal from "../components/VisionBoard Components/AddTextModal";
+// import AddImageModal from "../components/VisionBoard Components/AddImageModal";
 
 // const VisionBoard = () => {
+//   const [showTextModal, setShowTextModal] = useState(false);
+//   const [showImageModal, setShowImageModal] = useState(false);
 //   const [elements, setElements] = useState([]);
-//   const [imageResults, setImageResults] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState("");
 
-//   const fetchImages = async () => {
-//     try {
-//       const res = await axios.get("https://api.unsplash.com/search/photos", {
-//         params: { query: searchTerm, per_page: 12 },
-//         headers: {
-//           Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`,
-//         },
-//       });
-//       setImageResults(res.data.results);
-//     } catch (err) {
-//       console.error("Unsplash error:", err);
-//     }
-//   };
+//   const handleAddElement = (element) =>
+//     setElements((prev) => [...prev, element]);
+//   const handleRemoveElement = (id) =>
+//     setElements((prev) => prev.filter((el) => el.id !== id));
 
 //   return (
 //     <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
-//       {/* Top Bar */}
-//       <div className="flex flex-col lg:flex-row justify-between items-center mb-6 gap-4">
+//       <div className="flex justify-between items-center mb-6">
 //         <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
-//           <Link to="/dashboard" className="text-[#3E5973] hover:text-[#1e2a35] transition">
+//           <Link
+//             to="/dashboard"
+//             className="text-[#3E5973] hover:text-[#1e2a35] transition"
+//           >
 //             <FiArrowLeft className="text-2xl" />
 //           </Link>
 //           Craft the Life You Desire
 //         </div>
-
-//         <div className="flex gap-3 flex-wrap justify-center">
-//           <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
+//         <div className="flex gap-3">
+//           <button
+//             onClick={() => setShowTextModal(true)}
+//             className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition"
+//           >
 //             Add Text <FiType />
 //           </button>
 //           <button
-//             onClick={fetchImages}
+//             onClick={() => setShowImageModal(true)}
 //             className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition"
 //           >
 //             Add Images <FiImage />
@@ -108,98 +46,106 @@
 //         </div>
 //       </div>
 
-//       {/* Image Gallery */}
-//       {imageResults.length > 0 && (
-//         <div className="mb-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-//           {imageResults.map((img) => (
-//             <img
-//               key={img.id}
-//               src={img.urls.small}
-//               alt={img.alt_description}
-//               draggable
-//               onDragStart={(e) => e.dataTransfer.setData("imageUrl", img.urls.small)}
-//               className="w-full h-40 object-cover rounded-md shadow hover:scale-105 transition"
-//             />
-//           ))}
-//         </div>
-//       )}
+//       {/* Canvas with blur when modal is open */}
+//       <div
+//         className={`${
+//           showTextModal || showImageModal ? "blur-sm" : ""
+//         } transition duration-300`}
+//       >
+//         <VisionBoardCanvas
+//           elements={elements}
+//           onRemove={handleRemoveElement}
+//           setElements={setElements}
+//         />
+//       </div>
 
-//       {/* Canvas Section */}
-//       <VisionBoardCanvas elements={elements} setElements={setElements} />
+//       {showTextModal && (
+//         <AddTextModal
+//           onClose={() => setShowTextModal(false)}
+//           onAdd={handleAddElement}
+//         />
+//       )}
+//       {showImageModal && (
+//         <AddImageModal
+//           onClose={() => setShowImageModal(false)}
+//           onAdd={handleAddElement}
+//         />
+//       )}
 //     </div>
 //   );
 // };
 
 // export default VisionBoard;
-  
-  
-  
-  
-  
-  
-  
-  // src/pages/VisionBoard.jsx
-  import React from "react";
-  import {
-    FiArrowLeft,
-    FiBookmark,
-    FiImage,
-    FiPlus,
-    FiType,
-  } from "react-icons/fi";
-  import { Link } from "react-router-dom";
-  import { useState } from "react";
+import React, { useState } from "react";
+import { FiArrowLeft, FiBookmark, FiImage, FiType } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import VisionBoardCanvas from "../components/VisionBoard Components/VisionBoardCanvas";
+import AddImageModal from "../components/VisionBoard Components/AddImageModal"; // Make sure the path is correct
 
-  // ✅ This is the canvas-only previewable component
-  // ✅ This is the canvas-only previewable component
-  export const VisionBoardCanvas = ({ previewMode = false }) => {
-    const [hasContent, setHasContent] = useState(false);
-    return (
-      <div className="flex w-full max-w-[1440px] h-[83vh] md:h-[700px] lg:h-[800px] xl:h-[900px] border border-[#aacbe1] rounded-md bg-[#DCEEFF] p-4 overflow-hidden items-center justify-center">
-        {!hasContent && (
-          <div className="flex flex-col items-center justify-center gap-2 opacity-30 transition-opacity duration-300 text-center">
-            <FiPlus className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl" />
-          </div>
-        )}
+const VisionBoard = () => {
+  const [elements, setElements] = useState([]);
+  const [addingText, setAddingText] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false); // 🔹 Modal toggle
 
-        {/* Your content logic goes here */}
-        {/* Example: if user adds a block, call setHasContent(true) */}
-      </div>
-    );
-  };
+  const handleAddElement = (element) =>
+    setElements((prev) => [...prev, element]);
 
-  const VisionBoard = () => {
-    return (
-      <div className="min-h-screen bg-[#DCEEFF] p-6 font-Livvic text-[#3E5973]">
-        {/* Top Bar */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
-            <Link
-              to="/dashboard"
-              className="text-[#3E5973] hover:text-[#1e2a35] transition"
-            >
-              <FiArrowLeft className="text-2xl" />
-            </Link>
-            Craft the Life You Desire
-          </div>
+  const handleRemoveElement = (id) =>
+    setElements((prev) => prev.filter((el) => el.id !== id));
 
-          <div className="flex gap-3">
-            <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-              Add Text <FiType />
-            </button>
-            <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-              Add Images <FiImage />
-            </button>
-            <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[#DCEEFF] hover:shadow-lg transition">
-              Save <FiBookmark />
-            </button>
-          </div>
+  return (
+    <div className="min-h-screen bg-[var(--color-background)] p-6 font-Livvic text-[var(--color-dark)]">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-3 text-lg sm:text-xl font-semibold">
+          <Link
+            to="/dashboard"
+            className="text-[var(--color-dark)] hover:text-[#1e2a35] transition"
+          >
+            <FiArrowLeft className="text-2xl" />
+          </Link>
+          Craft the Life You Desire
         </div>
-
-        {/* Canvas Section */}
-        <VisionBoardCanvas />
+        <div className="flex gap-3">
+          <button
+            onClick={() => setAddingText(true)}
+            className={`flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition ${
+              addingText ? "ring-2 ring-[var(--color-dark)]" : ""
+            }`}
+          >
+            Add Text <FiType />
+          </button>
+          <button
+            onClick={() => setShowImageModal(true)} // 🔹 Show modal on click
+            className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition"
+          >
+            Add Images <FiImage />
+          </button>
+          <button className="flex items-center gap-1 px-4 py-2 rounded-xl shadow-md bg-[var(--color-background)] hover:shadow-lg transition">
+            Save <FiBookmark />
+          </button>
+        </div>
       </div>
-    );
-  };
 
-  export default VisionBoard;
+      {/* 🔹 Canvas with props */}
+      <VisionBoardCanvas
+        elements={elements}
+        onRemove={handleRemoveElement}
+        setElements={setElements}
+        addingText={addingText}
+        setAddingText={setAddingText}
+      />
+
+      {/* 🔹 Render AddImageModal if triggered */}
+      {showImageModal && (
+        <AddImageModal
+          onClose={() => setShowImageModal(false)}
+          onAdd={(newImage) => {
+            setElements((prev) => [...prev, newImage]);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+export default VisionBoard;

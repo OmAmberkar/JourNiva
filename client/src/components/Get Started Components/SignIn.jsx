@@ -20,12 +20,12 @@ function SignIn({ email, avatarUrl, name }) {
     try {
       const res = await axios.post("http://localhost:4000/api/user/login", {
         email,
-        password
+        password,
       });
 
       if (res.status === 200) {
         navigate("/dashboard");
-        setLoading(false)
+        setLoading(false);
       } else {
         setError("Invalid Credentails.");
         setLoading(false);
@@ -36,8 +36,30 @@ function SignIn({ email, avatarUrl, name }) {
       setLoading(false);
     }
   };
+
+  const handleForgotPassword = async(e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const res = await axios.post("http://localhost:4000/api/user/forgot-password-link", {
+        email: email.toLowerCase(),
+      });
+      if (res.status === 200) {
+        navigate("/reset-password");
+      } else {
+        setError("Failed to send reset password link.");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Failed to send reset password link. Please try again.");
+    }
+  };
+
+
   return (
-    <form className="w-full space-y-6">
+    <form className="w-full space-y-6 text-center">
       {avatarUrl && (
         <div className="flex justify-center mb-4">
           <img
@@ -50,7 +72,8 @@ function SignIn({ email, avatarUrl, name }) {
 
       {name && (
         <h1 className="text-5xl font-semibold text-[#3E5973] mb-6 text-center">
-          Welcome <br /> {name}{" !!"}
+          Welcome <br /> {name}
+          {" !!"}
         </h1>
       )}
 
@@ -91,11 +114,18 @@ function SignIn({ email, avatarUrl, name }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#3E5973] text-white py-3 rounded-[25px]"
+        className="w-full border-2 border-[#3E5973] bg-[#3E5973] text-[#c3d7e8] py-3 text-xl rounded-[25px] !font-semibold hover:bg-[#c3d7e8] hover:text-[#3E5973]"
         onClick={handleSubmit}
       >
         {loading ? "Logging in..." : "Login"}
       </button>
+
+      <a
+        onClick={handleForgotPassword}
+        className="text-sm text-blue-600 !font-semibold hover:underline hover:text-blue-800 transition duration-200 "
+      >
+        Forgot Password ??
+      </a>
     </form>
   );
 }
