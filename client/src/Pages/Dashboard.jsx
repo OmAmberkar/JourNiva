@@ -72,6 +72,32 @@ const Dashboard = () => {
     setGreetingMessage(greetings[index]);
   }, []);
 
+  const handleMoodSelect = (mood) => {
+    const moodToThemeMap = {
+      sad: "theme-blue",
+      Angry: "theme-green",
+      happy: "theme-peach",
+      chill: "theme-purple",
+      love: "theme-pink",
+    };
+
+    const themeClass = moodToThemeMap[mood.value];
+
+    // Remove previous theme classes
+    document.documentElement.classList.remove(
+      "theme-blue",
+      "theme-green",
+      "theme-peach",
+      "theme-purple",
+      "theme-pink"
+    );
+
+    // Apply new one
+    if (themeClass) {
+      document.documentElement.classList.add(themeClass);
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-dark)] font-Livvic">
       {isLargeScreen ? (
@@ -123,7 +149,9 @@ const Dashboard = () => {
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                 <span>Your Mood:</span>
-                <MoodDropdown />
+                <MoodDropdown onMoodSelect={handleMoodSelect} />
+
+                {/* <MoodDropdown /> */}
               </div>
             </div>
 

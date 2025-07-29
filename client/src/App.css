@@ -87,3 +87,16 @@ input::placeholder {
   --color-drop: #eab9c2;
   --color-border: #f1d0d6;
 }
+
+@layer utilities {
+  .theme-blue {
+  }
+  .theme-green {
+  }
+  .theme-peach {
+  }
+  .theme-purple {
+  }
+  .theme-pink {
+  }
+}
