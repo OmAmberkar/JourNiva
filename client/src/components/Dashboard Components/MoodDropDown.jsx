@@ -29,9 +29,18 @@ const MoodDropdown = ({ onMoodSelect }) => {
 
   const handleSelect = (mood) => {
     setSelectedMood(mood);
-    onMoodSelect(mood);
+    if (onMoodSelect) {
+      onMoodSelect(mood);
+    }
     setIsOpen(false);
   };
+
+  // const handleSelect = (mood) => {
+  //   setSelectedMood(mood);
+  //   onMoodSelect(mood);
+  //   setIsOpen(false);
+
+  // };
 
   return (
     <div ref={menuRef} className="relative inline-block">

@@ -88,6 +88,19 @@ input::placeholder {
   --color-border: #f1d0d6;
 }
 
+@layer utilities {
+  .theme-blue {
+  }
+  .theme-green {
+  }
+  .theme-peach {
+  }
+  .theme-purple {
+  }
+  .theme-pink {
+  }
+}
+
 @keyframes fadeInSlide {
   0% {
     opacity: 0;
