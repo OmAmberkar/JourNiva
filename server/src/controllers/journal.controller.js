@@ -174,7 +174,8 @@ export const updateJournalByID = async (req, res) => {
       message: "Technical error—could not update journal.",
     });
   }
-}
+};
+
 // Route - 7 delete one journal using Journal ID
 export const deleteOneJournal = async (req, res) => {
   const { journalID } = req.params;
