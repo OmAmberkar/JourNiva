@@ -87,3 +87,18 @@ input::placeholder {
   --color-drop: #eab9c2;
   --color-border: #f1d0d6;
 }
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.fade-in-slide {
+  animation: fadeInSlide 180ms ease-out forwards;
+}
+
