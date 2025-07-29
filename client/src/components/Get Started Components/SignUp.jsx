@@ -47,6 +47,7 @@ function SignUp({ email }) {
         avatarUrl,
       });
       if (res.status === 201) {
+        localStorage.setItem("accessToken",res.data.accessToken)
         navigate("/verify", {
           state: {
             userId: res.data.user.userId,

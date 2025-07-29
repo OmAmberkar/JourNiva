@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import MoodDropdown from "../components/Dashboard Components/MoodDropDown";
@@ -7,6 +8,8 @@ import RightBar from "../components/Dashboard Components/RightBar";
 import { Link } from "react-router-dom";
 import { FiTrendingUp } from "react-icons/fi";
 import { VisionBoardCanvas } from "../components/VisionBoard Components/VisionBoardCanvas";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateObj) =>
   dateObj.toLocaleDateString("en-GB", {
@@ -72,7 +75,17 @@ const Dashboard = () => {
     setGreetingMessage(greetings[index]);
   }, []);
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    } // or a protected route pattern
+  }, [navigate]);
+
   const handleMoodSelect = (mood) => {
+    setMood(mood.value);
     const moodToThemeMap = {
       sad: "theme-blue",
       Angry: "theme-green",
@@ -95,6 +108,45 @@ const Dashboard = () => {
     // Apply new one
     if (themeClass) {
       document.documentElement.classList.add(themeClass);
+    }
+  };
+
+  //connecting the backend to the dashboard
+  const [title, setTitle] = useState("");
+  const [mood, setMood] = useState("");
+  const [content, setContent] = useState("");
+  const [iconUrl, setIconUrl] = useState("");
+  const [location, setLocation] = useState("");
+
+  const token = localStorage.getItem("accessToken");
+
+  const handleSave = async () => {
+    if (!mood || !mood.value) return;
+    try {
+      const res = await axios.post(
+        "http://localhost:4000/api/journal/create",
+        {
+          title: title,
+          date: today,
+          mood: mood,
+          content: content,
+          iconUrl: iconUrl,
+          location: location,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 201) {
+        alert("Journal saved successfully!");
+        setTitle("");
+      }
+    } catch (error) {
+      console.error("Error saving journal:", error);
+      alert("Failed to save journal. Please try again.");
     }
   };
 
@@ -136,9 +188,13 @@ const Dashboard = () => {
           <div className="mt-4 h-[1px] w-full bg-[var(--color-background)] rounded-full" />
 
           <main className="mt-6 space-y-6">
+            {/* the data receiving part is here */}
             <input
               type="text"
               placeholder="Journal Title"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
               className="w-full text-2xl sm:text-3xl md:text-4xl font-semibold bg-transparent outline-none placeholder:text-2xl sm:placeholder:text-3xl leading-tight py-1"
             />
 
@@ -157,8 +213,32 @@ const Dashboard = () => {
 
             <textarea
               placeholder="Start Writing..."
-              className="w-full h-[60vh] text-lg sm:text-xl bg-transparent outline-none leading-relaxed resize-none"
+              className="w-full h-[35vh] text-lg sm:text-xl bg-transparent outline-none leading-relaxed resize-none"
+              onChange={(e) => setContent(e.target.value)}
             />
+
+            <input
+              type="text"
+              placeholder="Tag a location (optional)"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full bg-transparent border-b border-[var(--color-dark)] py-2"
+            />
+
+            <input
+              type="text"
+              placeholder="Add icon URL (optional)"
+              value={iconUrl}
+              onChange={(e) => setIconUrl(e.target.value)}
+              className="w-full bg-transparent border-b border-[var(--color-dark)] py-2"
+            />
+
+            <button
+              className="w-full p-2 text-xl !font-semibold rounded-2xl border-2 border-[var(--color-dark)] hover:bg-[var(--color-background)] hover:text-[var(--color-dark)] bg-[var(--color-dark)] text-[var(--color-background)]"
+              onClick={handleSave}
+            >
+              Keep It in My Journal
+            </button>
 
             {/* Clone of RightBar content for small screens */}
             {!isLargeScreen && rightSidebarOpen && (

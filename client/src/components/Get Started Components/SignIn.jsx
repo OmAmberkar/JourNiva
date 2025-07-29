@@ -24,6 +24,7 @@ function SignIn({ email, avatarUrl, name }) {
       });
 
       if (res.status === 200) {
+        localStorage.setItem("accessToken",res.data.accessToken)
         navigate("/dashboard");
         setLoading(false);
       } else {
