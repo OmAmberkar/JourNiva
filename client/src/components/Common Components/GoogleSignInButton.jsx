@@ -16,7 +16,7 @@ const GoogleSignInButton = () => {
 
         try {
             // Send the Credential to the server for verification
-            const response = await axios.post("/api/user/google-login", { credential });
+            const response = await axios.post("http://localhost:4000/api/user/google-login", { credential });
 
             // Store the Received Token in Local Storage
             localStorage.setItem("accessToken", response.data.accessToken);
@@ -26,7 +26,7 @@ const GoogleSignInButton = () => {
 
         } catch (error) {
             console.error("Google Sign-In Error:", error);
-            alert("Failed to sign in with Google. Please try again.");            
+            alert("Failed to Sign in with Google. Please try again!");            
         }
     };
 

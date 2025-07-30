@@ -57,7 +57,74 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 } ;
 
 
-//Route 2 Controller - Register : Create New User & Store details
+//Route 2 Controller - Google Login
+export const googleLogin = async (req, res) => {
+    // Destructure req.body to get ID Token Code Credential
+    const { credential } = req.body ;
+
+    // Validate Credential
+    if(!credential) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Login Failed - Google Credential is Required!"
+        })
+    }
+
+    try {
+        // Verify ID Token
+        const ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+        });
+
+        // Get User Information
+        const userInfo = ticket.getPayload();
+
+        // Destructure User Info
+        const { email, name, picture, sub } = userInfo ;
+
+        // Check if Existing User
+        let user = await User.findOne({ email }) ;
+
+        // If Not Existing User - Register(Create) New User
+        if (!user) {
+            user = new User({
+                name,
+                email,
+                avatarUrl: picture || process.env.DEFAULT_AVATAR_URL,
+                isVerified: true,
+                accountType: "google",
+                googleId: sub,
+            })
+
+            await user.save() ;
+        }
+
+        // Generate JWT Access Token & Refresh Token
+        const accessToken = sendTokenResponse(res, user._id) ;
+
+        // Send Response to Frontend
+        return res.status(200).json({
+            status: "success",
+            message: "Google Login Successful!",
+            accessToken,
+            user: {
+                name: user.name,
+                avatarUrl: user.avatarUrl
+            }
+        }) ;
+
+    } catch (error) {
+        console.error("Google login error:", error.message);
+        res.status(500).json({ 
+            status: "failed",
+            message: "Internal Server Error", error: error.message 
+        });
+    }
+} ;
+
+
+//Route 3 Controller - Register : Create New User & Store details
 export const registerUser = async (req, res) => {
     // Access Input Data from Request Body
     const { email, password, name, avatarUrl } = req.body ;
@@ -157,7 +224,7 @@ export const registerUser = async (req, res) => {
 } ;
     
 
-//Route 3 Controller - Login Existing User
+//Route 4 Controller - Login Existing User
 export const loginUser = async (req, res) => {
     //Access Email & Password from Request Body
     const { email, password } = req.body ;
@@ -229,7 +296,7 @@ export const loginUser = async (req, res) => {
 };
 
 
-//Route 4 Controller - Register : Email OTP Verification
+//Route 5 Controller - Register : Email OTP Verification
 export const verifyOTP = async (req, res) => {
     // Destructure Request Body
     const { userId, otp } = req.body ;
@@ -334,7 +401,7 @@ export const verifyOTP = async (req, res) => {
 };
 
 
-// Route 5 Controller - Resend OTP
+// Route 6 Controller - Resend OTP
 export const resendOTP = async (req, res) => {
     // Destructure Request Body
     const { userId } = req.body ;
@@ -420,7 +487,7 @@ export const resendOTP = async (req, res) => {
 }
 
 
-//Route 6 Controller - Forgot Password : Link Generation
+//Route 7 Controller - Forgot Password : Link Generation
 export const forgotPasswordLink = async (req, res) => {
     // Destructure Request Body
     const { email } = req.body ;
@@ -461,7 +528,7 @@ export const forgotPasswordLink = async (req, res) => {
         await user.save() ;
 
         // Generate Frontend Reset Password Link
-        const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${resetPasswordToken}` ;
+        const resetPasswordLink = `${process.env.FRONTEND_URL}reset-password/${resetPasswordToken}` ;
 
         // Send Reset Password Email
         await sendEmail({
@@ -494,7 +561,7 @@ export const forgotPasswordLink = async (req, res) => {
 };
 
 
-//Route 7 Controller - Forgot Password : Reset Password
+//Route 8 Controller - Forgot Password : Reset Password
 export const resetPassword = async (req, res) => {
     // Destructure Request Body
     const { token, newPassword, userId } = req.body ;
@@ -595,7 +662,7 @@ export const resetPassword = async (req, res) => {
 } ;
 
 
-//Route 8 Controller - Generate New Access Token using Refresh Token : Refresh Access Token
+//Route 9 Controller - Generate New Access Token using Refresh Token : Refresh Access Token
 export const refreshAccessToken = (req, res) => {
     try {
         // Access Refresh Token from Cookie
@@ -639,7 +706,7 @@ export const refreshAccessToken = (req, res) => {
 } ;
 
 
-//Route 9 Controller - Check User Authentication 
+//Route 10 Controller - Check User Authentication 
 export const checkAuth = async (req, res) => {
     // Middleware will Verify the Access Token
     // If Verified , this controller will Run
@@ -658,7 +725,7 @@ export const checkAuth = async (req, res) => {
 }
 
 
-//Route 10 Controller - Logout 
+//Route 11 Controller - Logout 
 export const logout = async (req, res) => {
     try {
         // Clear the Tokens & Cookies
@@ -678,54 +745,3 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 } ;
-
-
-//Route 11 Controller - Google login
-export const googleLogin = async (req, res) => {
-    // Destructure req.body to get ID Token Code Credential
-    const { credential } = req.body ;
-
-    // Validate Credential
-    if(!credential) {
-        return res.status(400).json({
-            status: "failed",
-            message: "Google Credential is Required!"
-        })
-    }
-
-    try {
-        // Verify ID Token
-        const ticket = await googleClient.verifyIdToken({
-            idToken: credential,
-            audience: process.env.JOURNIVA_GOOGLE_CLIENT_ID,
-        });
-
-        // Get User Information
-        const userInfo = ticket.getPayload();
-
-        // Destructure User Info
-        const { email, name, profilePic, sub } = userInfo ;
-
-        // Check if Existing User
-        let user = await User.findOne({ email }) ;
-
-        // If Not Existing User - Register(Create) New User
-        if (!user) {
-            user = new User({
-                name,
-                email,
-                avatarUrl: profilePic || process.env.DEFAULT_AVATAR_URL,
-                isVerified: true,
-                accountType: google,
-                googleId: sub,
-            })
-
-            await user.save() ;
-        }
-        
-
-    } catch (error) {
-        
-    }
-
-}
