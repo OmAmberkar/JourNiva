@@ -16,18 +16,28 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: true,
     },
 
     avatarUrl: {
       type: String,
       default:
-        "https://images.unsplash.com/photo-1471623817296-aa07ae5c9f47?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://imagizer.imageshack.com/img924/4476/roJLyv.png",
     },
 
     isVerified: {
       type: Boolean,
       default: false,
+    },
+
+    accountType: {
+      type: String,
+      enum: ["journiva", "google"],
+      default: "journiva",
+    },
+
+    googleId: {
+      type: String,
+      default: null,
     },
 
     otp: {

@@ -7,8 +7,13 @@ import jwt from "jsonwebtoken" ;
 import dotenv from "dotenv" ;
 import validator from "validator" ;
 import sanitizeHtml from "sanitize-html" ;
+import { OAuth2Client } from "google-auth-library" ;
 
 dotenv.config() ;
+
+// Creating Google OAuth2 Client for Route  - Google Login
+const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
+
 
 // Route 1 Controller - Check Email
  export const checkEmail = async (req, res) => {
@@ -673,3 +678,54 @@ export const logout = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 } ;
+
+
+//Route 11 Controller - Google login
+export const googleLogin = async (req, res) => {
+    // Destructure req.body to get ID Token Code Credential
+    const { credential } = req.body ;
+
+    // Validate Credential
+    if(!credential) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Google Credential is Required!"
+        })
+    }
+
+    try {
+        // Verify ID Token
+        const ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+        });
+
+        // Get User Information
+        const userInfo = ticket.getPayload();
+
+        // Destructure User Info
+        const { email, name, profilePic, sub } = userInfo ;
+
+        // Check if Existing User
+        let user = await User.findOne({ email }) ;
+
+        // If Not Existing User - Register(Create) New User
+        if (!user) {
+            user = new User({
+                name,
+                email,
+                avatarUrl: profilePic || process.env.DEFAULT_AVATAR_URL,
+                isVerified: true,
+                accountType: google,
+                googleId: sub,
+            })
+
+            await user.save() ;
+        }
+        
+
+    } catch (error) {
+        
+    }
+
+}

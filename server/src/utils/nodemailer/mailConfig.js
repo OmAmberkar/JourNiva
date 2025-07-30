@@ -6,8 +6,8 @@ dotenv.config() ;
 
 // OAuth2 Configuration - Create OAuth2 Client
 const oAuth2Client = new google.auth.OAuth2(
-    process.env.JOURNIVA_CLIENT_ID,
-    process.env.JOURNIVA_CLIENT_SECRET,
+    process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+    process.env.JOURNIVA_GOOGLE_CLIENT_SECRET,
     process.env.REDIRECT_URI
 ) ;
 
@@ -30,8 +30,8 @@ const createTransporter = async () => {
             auth : {
                 type : "OAuth2",
                 user : process.env.JOURNIVA_GMAIL,
-                clientId : process.env.JOURNIVA_CLIENT_ID,
-                clientSecret : process.env.JOURNIVA_CLIENT_SECRET,
+                clientId : process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+                clientSecret : process.env.JOURNIVA_GOOGLE_CLIENT_SECRET,
                 refreshToken : process.env.REFRESH_TOKEN,
                 accessToken : accessToken?.token,
             }
