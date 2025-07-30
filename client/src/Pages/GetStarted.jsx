@@ -3,7 +3,7 @@ import axios from "axios";
 import { PiUserCircleFill } from "react-icons/pi";
 import SignIn from "../components/Get Started Components/SignIn";
 import SignUp from "../components/Get Started Components/SignUp";
-
+import GoogleSignInButton from "../components/Common Components/GoogleSignInButton";
 
 
 function GetStarted() {
@@ -50,7 +50,8 @@ function GetStarted() {
     <div className="w-full max-w-md mx-auto min-h-screen flex flex-col justify-center items-center bg-[#DCEFFF] p-4">
 
       {step === "start" && (
-        <><h1 className="text-4xl font-semibold text-[#3E5973] mb-6 text-center">Welcome, User</h1><form onSubmit={handleInitialSubmit} className="w-full space-y-6">
+        <><h1 className="text-4xl font-semibold text-[#3E5973] mb-6 text-center">Welcome, User</h1>
+        <form onSubmit={handleInitialSubmit} className="w-full space-y-6">
           <div className="flex items-center border-2 border-[#3E5973] bg-[#c3d7e8] rounded-[25px] px-4 h-[60px]">
             <PiUserCircleFill className="text-[#3E5973] mr-2 w-8 h-8" />
             <input
@@ -69,6 +70,9 @@ function GetStarted() {
           >
             {loading ? "Loading..." : "Get Started"}
           </button>
+            <div className="mb-4 w-full">
+              <GoogleSignInButton />
+            </div>
         </form></>
       )}
 

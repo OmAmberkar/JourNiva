@@ -6,14 +6,14 @@ dotenv.config() ;
 
 // OAuth2 Configuration - Create OAuth2 Client
 const oAuth2Client = new google.auth.OAuth2(
-    process.env.JOURNIVA_CLIENT_ID,
-    process.env.JOURNIVA_CLIENT_SECRET,
-    process.env.REDIRECT_URI
+    process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+    process.env.JOURNIVA_GOOGLE_CLIENT_SECRET,
+    process.env.GMAIL_REDIRECT_URI
 ) ;
 
 // Set Refresh Token
 oAuth2Client.setCredentials({
-    refresh_token: process.env.REFRESH_TOKEN,
+    refresh_token: process.env.JOURNIVA_GOOGLE_REFRESH_TOKEN,
 }) ;
 
 // Create Transporter with OAuth2
@@ -30,9 +30,9 @@ const createTransporter = async () => {
             auth : {
                 type : "OAuth2",
                 user : process.env.JOURNIVA_GMAIL,
-                clientId : process.env.JOURNIVA_CLIENT_ID,
-                clientSecret : process.env.JOURNIVA_CLIENT_SECRET,
-                refreshToken : process.env.REFRESH_TOKEN,
+                clientId : process.env.JOURNIVA_GOOGLE_CLIENT_ID,
+                clientSecret : process.env.JOURNIVA_GOOGLE_CLIENT_SECRET,
+                refreshToken : process.env.JOURNIVA_GOOGLE_REFRESH_TOKEN,
                 accessToken : accessToken?.token,
             }
         }) ;

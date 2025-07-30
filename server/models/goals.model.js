@@ -1,43 +1,55 @@
 import mongoose from "mongoose";
-import User from "./user.model";
+import User from "./user.model.js";
 
-const goal = new mongoose.Schema({
-  userId: {
+const goalSchema = new mongoose.Schema({
+  userID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: User,
+    ref: "User",
     required: true
   },
-  title: {
+  goalName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   startDate: {
     type: Date,
     required: true
   },
-  expectedDate: {
+  achieveByDate: {
     type: Date,
     required: true
   },
-  tags: {
-    type: [String],
-    required: true
+  icon: {
+    type: String, // optional URL or icon name
+    default: ""
   },
-  details: {
-    type: String
-  },
-  progress: {
-    type: Boolean, 
-    default: False
-  },
-  boardImages: {
+  goalDetails: {
     type: String,
-    default: "https://res.cloudinary.com/dqzg7xw6j/image/upload/v1718361234/default_avatar.png"
+    default: ""
   },
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  updatedAt: {
+    type: Date
+  },
+  checklist: [
+    {
+      date: {
+        type: Date,
+        required: true,
+        default: Date.now
+      },
+      status: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ]
 });
-const Goal = mongoose.model("Goal", goal);
-export default Goal;
+
+const Goals = mongoose.model("Goals", goalSchema);
+
+export default Goals;
