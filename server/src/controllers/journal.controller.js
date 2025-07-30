@@ -266,17 +266,6 @@ export const updateJournalById = async (req, res) => {
     });
 
   } catch (error) {
-<<<<<<< HEAD
-    console.error("Error updating Journal", error);
-    return res.status(500).json({
-      status: "error",
-      message: "Technical error—could not update journal.",
-    });
-  }
-};
-
-// Route - 7 delete one journal using Journal ID
-=======
       console.error("Error Updating Journal", error);
       return res.status(500).json({
         status: "error",
@@ -286,7 +275,6 @@ export const updateJournalById = async (req, res) => {
 }
 
 // Route 6 - Delete One Journal By Journal ID
->>>>>>> d683869638c1ebde4ed256da31c3c2b4945be9d9
 export const deleteOneJournal = async (req, res) => {
   // Taking userId from Middleware
   const userId = req.userId ;
