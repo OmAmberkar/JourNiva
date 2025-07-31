@@ -70,6 +70,7 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 //Route 2 Controller - Google Login
 export const googleLogin = async (req, res) => {
     // Destructure req.body to get ID Token Code Credential
+    console.log("Google Login Request Received") ;
     const { credential } = req.body ;
 
     // Validate Credential
@@ -218,7 +219,7 @@ export const registerUser = async (req, res) => {
                 successMessage: "Verify Email OTP Sent Successfully!"
             }) ;    
         } catch (error) {
-            console.error("Error sending welcome email:", e.message) ;
+            console.error("Error sending welcome email:", error.message) ;
         }
         
 
@@ -276,7 +277,7 @@ export const loginUser = async (req, res) => {
         }
 
         // Check Account Type of Existing User
-        if (existingUser.accountType === "google") {
+        if (user.accountType === "google") {
             return res.status(400).json({
                 status : "failed",
                 message: "Google Account Detected - Please Sign In with Google!"

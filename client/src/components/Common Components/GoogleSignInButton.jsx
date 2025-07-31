@@ -12,6 +12,7 @@ const GoogleSignInButton = () => {
     // Function to handle Google Sign-In Success
     const handleSuccess = async (credentialResponse) => {
         // Extract the credential from the response
+        console.log("Google Sign-In Successful:", credentialResponse);
         const { credential } = credentialResponse;
 
         try {
@@ -25,7 +26,7 @@ const GoogleSignInButton = () => {
             navigate("/dashboard");
 
         } catch (error) {
-            console.error("Google Sign-In Error:", error);
+            console.log("Google Sign-In Error:", error);
             alert("Failed to Sign in with Google. Please try again!");            
         }
     };
@@ -35,7 +36,7 @@ const GoogleSignInButton = () => {
             <GoogleLogin
                 onSuccess={handleSuccess}
                 onError={() => {
-                    console.error("Google Login Failed");
+                    console.log("Google Login Failed");
                     alert("Google Login failed. Please try again.");
 
                 }}
