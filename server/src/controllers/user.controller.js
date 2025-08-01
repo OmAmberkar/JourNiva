@@ -34,7 +34,17 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 
     try {
         const existingUser = await User.findOne({ email: temail }) ;
+
+        // Check Account Type of Existing User
         if (existingUser) {
+            if (existingUser.accountType === "google") {
+                return res.status(400).json({
+                    status : "failed",
+                    message: "Google Account Detected - Please Sign In with Google!"
+                }) ;
+            }
+
+            // If Existing User JourNiva Account Type - Response to Frontend
             return res.status(200).json({ 
                 status : 1,
                 message : "Existing User",
@@ -60,6 +70,7 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 //Route 2 Controller - Google Login
 export const googleLogin = async (req, res) => {
     // Destructure req.body to get ID Token Code Credential
+    console.log("Google Login Request Received") ;
     const { credential } = req.body ;
 
     // Validate Credential
@@ -98,6 +109,13 @@ export const googleLogin = async (req, res) => {
             })
 
             await user.save() ;
+        }
+
+        if (user.isVerified === false) {
+            return res.status(401).json({
+                status: "failed",
+                message: "Google Login Failed - User Unauthorized!"
+            }) ;
         }
 
         // Generate JWT Access Token & Refresh Token
@@ -201,7 +219,7 @@ export const registerUser = async (req, res) => {
                 successMessage: "Verify Email OTP Sent Successfully!"
             }) ;    
         } catch (error) {
-            console.error("Error sending welcome email:", e.message) ;
+            console.error("Error sending welcome email:", error.message) ;
         }
         
 
@@ -255,6 +273,14 @@ export const loginUser = async (req, res) => {
             return res.status(404).json({ 
                 status: "failed",
                 message: "Invalid Email or Password!" 
+            }) ;
+        }
+
+        // Check Account Type of Existing User
+        if (user.accountType === "google") {
+            return res.status(400).json({
+                status : "failed",
+                message: "Google Account Detected - Please Sign In with Google!"
             }) ;
         }
 
