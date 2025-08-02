@@ -70,9 +70,9 @@ function GetStarted() {
           >
             {loading ? "Loading..." : "Get Started"}
           </button>
-            <div className="mb-4 w-full">
-              <GoogleSignInButton />
-            </div>
+          <div className="mb-4 w-full">
+            <GoogleSignInButton />
+          </div>
         </form></>
       )}
 
