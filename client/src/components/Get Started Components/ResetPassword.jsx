@@ -4,55 +4,59 @@ import { IoLockClosedOutline, IoLockOpenOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router";
 import axios from "axios";
+import { toast } from 'sonner';
 
 function ResetPassword() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showCPassword, setShowCPassword] = useState(false);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const token  = searchParams.get("token");
     const userId = searchParams.get("id");
 
     if (!token || !userId) {
-        return (
-            error ? <p className="text-red-600 text-center">{error}</p> : <p className="text-red-600 text-center">Invalid or expired link.</p>
-            
-        )
+      toast.error("Invalid or expired link.")
     }
     console.log(token, userId);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
-        setSuccess(false);
-        if(password !== confirmPassword) {
-            setError("Passwords do not match.");
-            setLoading(false);
-            return;
-        }
-        try {
-            const res = await axios.post("http://localhost:4000/api/user/reset-password", {
-                token:token,
-                newPassword:password,
-                userId:userId,
-            });
-            if (res.status === 200) {
-      setSuccess(true);
-      navigate("/login"); 
+  e.preventDefault();
+  setLoading(true);
+ 
+
+  if (password !== confirmPassword) {
+    toast.error("Passwords do not match!");
+    setLoading(false);
+    return;
+  }
+
+  if (password.length < 6) {
+    toast.warning("Password must be at least 6 characters.");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const res = await axios.post("http://localhost:4000/api/user/reset-password", {
+      token,
+      newPassword: password,
+      userId,
+    });
+
+    if (res.status === 200) {
+      toast.success("Password reset successfully. Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
     }
-        } catch (error) {
-            console.error(error);
-            setError("Reset Password Failed. Please try again.");
-            setLoading(false);
-            return;
-        }
-    }
+  } catch (error) {
+    toast.error("Reset failed. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
     
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#c3d7e8] text-[#3E5973]">
@@ -82,7 +86,6 @@ function ResetPassword() {
                       />
                     )}
                   </div>
-                  {error && <p className="text-red-600 text-center">{error}</p>}
             
                   <div className="flex items-center border-2 border-[#3E5973] bg-[#c3d7e8] rounded-[25px] px-4 h-[60px]">
                     <IoLockOpenOutline className="text-[#3E5973] mr-2 w-6 h-6" />
@@ -106,7 +109,7 @@ function ResetPassword() {
                       />
                     )}
                   </div>
-                  {error && <p className="text-red-600 text-center">{error}</p>}
+
                   <button
         type="submit"
         disabled={loading}

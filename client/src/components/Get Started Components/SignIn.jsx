@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { PiUserCircleFill } from "react-icons/pi";
 import axios from "axios";
+import { toast } from "sonner";
 
 function SignIn({ email, avatarUrl, name }) {
   const [password, setPassword] = useState("");
@@ -12,31 +13,92 @@ function SignIn({ email, avatarUrl, name }) {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError(null);
+
+  //   try {
+
+  //     if(!email || !password){
+  //       toast.error("Email and Password are Required!")
+  //       setLoading(false)
+  //     }
+  //     const res = await axios.post("http://localhost:4000/api/user/login", {
+  //       email,
+  //       password,
+  //     });
+
+  //     if (res.status === 200) {
+  //       localStorage.setItem("accessToken",res.data.accessToken)
+  //       navigate("/dashboard");
+  //       setLoading(false);
+  //     }
+      
+  //   } catch (error) {
+      
+  //     const res = error.response?.status;;
+  //     // setError("Login Failed. Please try again.");
+  //     if(res.status === 400){
+  //         toast.info("Google Account Detected - Please Sign In with Google!")
+  //         setLoading(false)
+  //     } 
+  //     else if(res.status === 403) {
+  //       // setError("Invalid Credentails.");
+  //       toast.error("Invalid Email or Password !!");
+  //       setLoading(false);
+  //     }
+  //     else if(res.status === 401){
+  //       toast.error("Email Not Verified! - Please Verify Email")
+  //       setLoading(false);
+  //     }
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  e.preventDefault();
+  setLoading(true);
+  setError(null);
 
-    try {
-      const res = await axios.post("http://localhost:4000/api/user/login", {
-        email,
-        password,
-      });
+  if (!email || !password) {
+    toast.error("Email and Password are required!");
+    setLoading(false);
+    return; // ✅ Exit early
+  }
 
-      if (res.status === 200) {
-        localStorage.setItem("accessToken",res.data.accessToken)
-        navigate("/dashboard");
-        setLoading(false);
-      } else {
-        setError("Invalid Credentails.");
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Login Failed. Please try again.");
-      setLoading(false);
+  try {
+    const res = await axios.post("http://localhost:4000/api/user/login", {
+      email,
+      password,
+    });
+
+    if (res.status === 200) {
+      localStorage.setItem("accessToken", res.data.accessToken);
+      navigate("/dashboard");
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+
+    const status = error.response?.status;
+    const message = error.response?.data?.message || "Login failed";
+
+    if (status === 400) {
+      toast.info(message); // "Google Account Detected..."
+    } else if (status === 401) {
+      toast.error(message); // "Email Not Verified..."
+    } else if (status === 401 || status === 404) {
+      toast.error(message); // Invalid creds
+    } else {
+      toast.error("Unexpected error. Please try again.");
+    }
+
+    // setError(message); // Optional if you want inline error
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleForgotPassword = async(e) => {
     e.preventDefault();
@@ -95,6 +157,7 @@ function SignIn({ email, avatarUrl, name }) {
           placeholder="Enter password"
           className="w-full bg-transparent outline-none text-[#3E5973] text-lg"
           value={password}
+          autoComplete="current-password"
           onChange={(e) => setPassword(e.target.value)}
           required
         />

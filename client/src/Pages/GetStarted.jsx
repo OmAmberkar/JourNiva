@@ -4,6 +4,7 @@ import { PiUserCircleFill } from "react-icons/pi";
 import SignIn from "../components/Get Started Components/SignIn";
 import SignUp from "../components/Get Started Components/SignUp";
 import GoogleSignInButton from "../components/Common Components/GoogleSignInButton";
+import { toast } from "sonner";
 
 
 function GetStarted() {
@@ -19,11 +20,21 @@ function GetStarted() {
       const res = await axios.post("http://localhost:4000/api/user/check-email", {
         email: email.toLowerCase(),
       });
-      return res.data; // 0 = new user, 1 = existing user, avatrUrl too
+      return res.data; // 0 = new user, 1 = existing user, avatrUrl too 
     } catch (err) {
-      console.error("Error checking email:", err);
-      setError("Server error. Try again.");
-      return null;
+      const message = err?.response?.data?.message || "Unknown error";
+      if(message.includes("Google Account Detected - Please Sign In with Google!")){
+        toast.error("Google account found. Please use 'Sign in with Google'");
+      }
+      else if (message.includes("Invalid Email Format!")){
+        toast.error("Invalid Email Format!");
+      }
+      else if (message.includes("Email is required!")){
+        toast.error("Email is required!");
+      }
+      else {
+        toast.error("Server error.Please try again.")
+      }
     } finally {
       setLoading(false);
     }
@@ -33,16 +44,16 @@ function GetStarted() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     const res = await checkEmailExists(email);
+    const username = res?.user?.name;
     if (res?.status === 0) {
+      toast("Looks like you're new! Lets begin with Sign Up");
       setStep("signup");
     } else if (res?.status === 1) {
+      toast.success(`Welcome back ${username} !`)
       setStep("login");
       setAvatarUrl(res.user?.avatarUrl || "")
       setUsername(res.user?.name)
-    } else {
-      setError("Unexpected server response.");
     }
   };
 
