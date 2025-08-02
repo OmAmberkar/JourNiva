@@ -79,7 +79,7 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      navigate("/login");
+      navigate("/getstarted");
       return;
     } // or a protected route pattern
   }, [navigate]);

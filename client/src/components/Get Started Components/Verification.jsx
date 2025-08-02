@@ -1,17 +1,13 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
-import { motion } from "framer-motion";
-import { ClockIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 function Verification() {
   const [otp, setOtp] = useState("");
   const [resendTimer, setResendTimer] = useState(30);
   const [verifying, setVerifying] = useState(false);
-  const [error, setError] = useState("");
-  const [verified, setVerified] = useState(false);
   const [otpExpiryTimer, setOtpExpiryTimer] = useState(120); // 2 mins (in seconds)
 
   const navigate = useNavigate();
@@ -43,38 +39,45 @@ function Verification() {
   }, [otpExpiryTimer]);
 
   // Auto-verifies OTP when 6 digits are entered
-  useEffect(() => {
-    if (otp.length === 6) {
-      const verifyOtp = async () => {
-        setVerifying(true);
-        setError("");
-        try {
-          const res = await axios.post(
-            "http://localhost:4000/api/user/verify-otp",
-            {
-              userId,
-              otp,
-            }
-          );
+useEffect(() => {
+  if (otp.length === 6) {
+    const verifyOtp = async () => {
+      setVerifying(true);
 
-          if (res.data.status === "success") {
-            setVerified(true);
-            setTimeout(() => {
-              navigate("/dashboard", { state: { user: res.data.user } });
-            }, 2000);
+      const verifyingToastId = toast.loading("Verifying OTP...");
+
+      try {
+        const res = await axios.post(
+          "http://localhost:4000/api/user/verify-otp",
+          {
+            userId,
+            otp,
           }
-        } catch (err) {
-          console.error("OTP verification failed:", err);
-          setError("Invalid or expired OTP. Please try again.");
-          setOtp("");
-        } finally {
-          setVerifying(false);
-        }
-      };
+        );
 
-      verifyOtp();
-    }
-  }, [otp, userId, navigate]);
+        if (res.data.status === "success") {
+          
+          toast.success("OTP Verified Successfully!", { id: verifyingToastId });
+
+          setTimeout(() => {
+            navigate("/dashboard", { state: { user: res.data.user } });
+          }, 1500);
+        }
+      } catch (err) {
+        console.error("OTP verification failed:", err);
+        toast.error("Invalid or expired OTP. Please try again.", {
+          id: verifyingToastId,
+        });
+        setOtp("");
+      } finally {
+        setVerifying(false);
+      }
+    };
+
+    verifyOtp();
+  }
+}, [otp, userId, navigate]);
+
 
   // Resend OTP API
   const handleResend = async () => {
@@ -82,14 +85,17 @@ function Verification() {
 
     setResendTimer(30);
     setOtp("");
-    setError("");
     setOtpExpiryTimer(120);
+    toast.loading("Sending OTP...");
 
     try {
       await axios.post("http://localhost:4000/api/user/resend-otp", { userId });
+      toast.dismiss();
+      toast.success("OTP sent successfully to your email!");
     } catch (err) {
+      toast.dismiss();
       console.error("Resend OTP failed:", err);
-      setError("Failed to resend OTP. Try again later.");
+      toast.error("Failed to resend OTP.");
     }
   };
 
@@ -102,7 +108,7 @@ function Verification() {
       </div>
       <div className="bg-[#c3d7e8] border-2 border-[#3E5973] shadow-lg rounded-xl p-8 max-w-xl h-100 w-full text-center  ">
         <div className="text-md font-semibold text-[#3E5973] mb-20">
-          Please enter the otp received on your valid {email}
+          Please enter the otp received on your valid <br />{email}
         </div>
 
         <OTPInput
@@ -131,36 +137,7 @@ function Verification() {
           </span>
         </div>
 
-        {verifying && (
-          <div>
-          <motion.div
-            initial={{ scale: 1, rotate: 0 }}
-            animate={{ scale: [1, 1.05, 1], rotate: [0, 360] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="mt-4 flex flex-col items-center text-blue-700"
-          >
-            <div className="text-3xl">
-              <ClockIcon />
-            </div>
-          </motion.div>
-          <p className="text-blue-500">Hold on we are verifying</p>
-          </div>
-        )}
-
-        {verified && (
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1.2, opacity: 1 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            className="mt-4 text-green-800 bg-green-500 rounded p-2 font-semibold"
-          >
-            ✅ Verified Successfully
-          </motion.div> 
-        )}
-
-        {error && <p className="mt-3 text-red-600 text-sm">{error}</p>}
-
-        <div className="mt-20">
+        <div className="mt-10">
           <button
             onClick={handleResend}
             disabled={resendTimer > 0 || verifying}

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { Toaster } from "sonner";
 import ScrollToTop from "./components/Landing Page Components/ScrollToTop";
 import AboutUsPage from "./Pages/AboutUsPage";
 import LandingPage from "./Pages/LandingPage";
@@ -47,6 +48,15 @@ const App = () => {
           {/* Add more routes as needed */}
         </Routes>
       </Router>
+      <Toaster
+        position="top-center"
+        richColors
+        gap={5}
+        duration={5000}
+        theme="system"
+        expand
+        visibleToasts={3}
+      />
     </div>
   );
 };
