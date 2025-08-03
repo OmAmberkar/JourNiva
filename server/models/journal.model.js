@@ -7,8 +7,14 @@ export const MoodList = [
   "Bright",
   "Loved",
   "Tired",
-  "Smile","Neutral","Sad"
+  "Smile",
+  "Neutral",
+  "Sad",
+  "Angry",
+  "Chill",
 ];
+
+
 
 //optionally mentioned so that if needed we could refer one
 // export const MOOD_TYPES = [
@@ -48,6 +54,7 @@ const journalSchema = new mongoose.Schema(
       type: String,
       enum: MoodList,
       default: "Happy",
+      set: v => v.trim()
     },
     iconUrl: {
       type: String,

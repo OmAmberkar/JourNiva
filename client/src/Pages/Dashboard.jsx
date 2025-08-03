@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-// src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import MoodDropdown from "../components/Dashboard Components/MoodDropDown";
 import LeftBar from "../components/Dashboard Components/LeftBar";
@@ -8,8 +7,9 @@ import RightBar from "../components/Dashboard Components/RightBar";
 import { Link } from "react-router-dom";
 import { FiTrendingUp } from "react-icons/fi";
 import { VisionBoardCanvas } from "../components/VisionBoard Components/VisionBoardCanvas";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { createJournal } from "../api/journalApi";
+import {toast} from 'sonner'
 
 const formatDate = (dateObj) =>
   dateObj.toLocaleDateString("en-GB", {
@@ -118,35 +118,37 @@ const Dashboard = () => {
   const [iconUrl, setIconUrl] = useState("");
   const [location, setLocation] = useState("");
 
-  const token = localStorage.getItem("accessToken");
 
   const handleSave = async () => {
-    if (!mood || !mood.value) return;
+    if (!mood) {
+  toast.error("Please select a mood before saving.");
+  return;
+}
+    
+    const journalData = {
+      title: title.trim(),
+      date: today,
+      mood: mood,
+      content: content.trim(),
+      iconUrl: iconUrl.trim(),
+      location: location.trim(),
+    };
+    
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/journal/create",
-        {
-          title: title,
-          date: today,
-          mood: mood,
-          content: content,
-          iconUrl: iconUrl,
-          location: location,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (res.status === 201) {
-        alert("Journal saved successfully!");
+      const res = await createJournal(journalData)
+      // if(res.status===201){
+        toast.success(res.message || "Journal created successfully")
+        console.log("Journal data saved:", res.data);
         setTitle("");
-      }
+        setContent("");
+        setLocation("");
+        setIconUrl("");
+        setMood("")
+    //   }else {
+    //   toast.error("Unexpected error. Try again.");
+    // }
     } catch (error) {
-      console.error("Error saving journal:", error);
-      alert("Failed to save journal. Please try again.");
+        toast.error(error?.response?.data?.message || error?.message || "Failed to create journal");
     }
   };
 
