@@ -3,121 +3,46 @@ import { FiEyeOff, FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { PiUserCircleFill } from "react-icons/pi";
-import axios from "axios";
 import { toast } from "sonner";
+import { LhandleForgetPassword, LhandleSubmitApi } from "../../api/userApi";
 
 function SignIn({ email, avatarUrl, name }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   setError(null);
-
-  //   try {
-
-  //     if(!email || !password){
-  //       toast.error("Email and Password are Required!")
-  //       setLoading(false)
-  //     }
-  //     const res = await axios.post("http://localhost:4000/api/user/login", {
-  //       email,
-  //       password,
-  //     });
-
-  //     if (res.status === 200) {
-  //       localStorage.setItem("accessToken",res.data.accessToken)
-  //       navigate("/dashboard");
-  //       setLoading(false);
-  //     }
-      
-  //   } catch (error) {
-      
-  //     const res = error.response?.status;;
-  //     // setError("Login Failed. Please try again.");
-  //     if(res.status === 400){
-  //         toast.info("Google Account Detected - Please Sign In with Google!")
-  //         setLoading(false)
-  //     } 
-  //     else if(res.status === 403) {
-  //       // setError("Invalid Credentails.");
-  //       toast.error("Invalid Email or Password !!");
-  //       setLoading(false);
-  //     }
-  //     else if(res.status === 401){
-  //       toast.error("Email Not Verified! - Please Verify Email")
-  //       setLoading(false);
-  //     }
-  //     setLoading(false);
-  //   }
-  // };
-
+  //Login/SignIn Route 1
   const handleSubmit = async (e) => {
   e.preventDefault();
-  setLoading(true);
-  setError(null);
-
-  if (!email || !password) {
-    toast.error("Email and Password are required!");
-    setLoading(false);
-    return; // ✅ Exit early
-  }
-
-  try {
-    const res = await axios.post("http://localhost:4000/api/user/login", {
-      email,
-      password,
-    });
-
+  const res = await LhandleSubmitApi({
+    email,
+    password,
+    setLoading,
+  })
     if (res.status === 200) {
       localStorage.setItem("accessToken", res.data.accessToken);
       navigate("/dashboard");
     }
-  } catch (error) {
-    console.error("Login error:", error);
-
-    const status = error.response?.status;
-    const message = error.response?.data?.message || "Login failed";
-
-    if (status === 400) {
-      toast.info(message); // "Google Account Detected..."
-    } else if (status === 401) {
-      toast.error(message); // "Email Not Verified..."
-    } else if (status === 401 || status === 404) {
-      toast.error(message); // Invalid creds
-    } else {
-      toast.error("Unexpected error. Please try again.");
-    }
-
-    // setError(message); // Optional if you want inline error
-  } finally {
-    setLoading(false);
-  }
+ 
 };
 
 
+//Login/SignIn Route 2
   const handleForgotPassword = async(e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
     
-    try {
-      const res = await axios.post("http://localhost:4000/api/user/forgot-password-link", {
-        email: email.toLowerCase(),
-      });
+    const res = await LhandleForgetPassword({
+      email,
+      setLoading,
+    })
       if (res.status === 200) {
-        navigate("/reset-password");
+        navigate("/forgot-password-sent");
       } else {
-        setError("Failed to send reset password link.");
+        toast.error("Failed to send reset password link.");
       }
-    } catch (error) {
-      console.error(error);
-      setError("Failed to send reset password link. Please try again.");
-    }
+    
   };
 
 

@@ -16,6 +16,8 @@ import VisionBoardInfo from "./components/Journiva info/VisionBoardInfo";
 import VisionBoard from "./Pages/VisionBoard";
 import Verification from "./components/Get Started Components/Verification";
 import ResetPassword from "./components/Get Started Components/ResetPassword";
+import CheckEmail from "./Pages/CheckEmail";
+import SignIn from "./components/Get Started Components/SignIn";
 
 const App = () => {
   useEffect(() => {
@@ -44,7 +46,9 @@ const App = () => {
           <Route path="/HabitTracker" element={<HabitTracker />} />
           <Route path="/visionboardinfo" element={<VisionBoardInfo />} />
           <Route path="/verify" element={<Verification />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/forgot-password-sent" element={<CheckEmail/>}/>
+          <Route path="/login" element={<SignIn/>} />
           {/* Add more routes as needed */}
         </Routes>
       </Router>

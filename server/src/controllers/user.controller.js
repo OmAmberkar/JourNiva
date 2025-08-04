@@ -555,7 +555,7 @@ export const forgotPasswordLink = async (req, res) => {
         await user.save() ;
 
         // Generate Frontend Reset Password Link
-        const resetPasswordLink = `${process.env.FRONTEND_URL}reset-password/${resetPasswordToken}` ;
+        const resetPasswordLink = `${process.env.FRONTEND_URL}reset-password/${resetPasswordToken}?id=${user._id}` ;
 
         // Send Reset Password Email
         await sendEmail({

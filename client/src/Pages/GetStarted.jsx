@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
 import { PiUserCircleFill } from "react-icons/pi";
@@ -5,6 +6,7 @@ import SignIn from "../components/Get Started Components/SignIn";
 import SignUp from "../components/Get Started Components/SignUp";
 import GoogleSignInButton from "../components/Common Components/GoogleSignInButton";
 import { toast } from "sonner";
+import { checkEmailExistsApi, handleInitialSubmitApi } from "../api/userApi";
 
 
 function GetStarted() {
@@ -15,46 +17,30 @@ function GetStarted() {
   const [avatarUrl ,setAvatarUrl] = useState("")
   const [username, setUsername] = useState("")
 
+  //GetStarted Route 1
   const checkEmailExists = async (email) => {
     try {
-      const res = await axios.post("http://localhost:4000/api/user/check-email", {
-        email: email.toLowerCase(),
-      });
-      return res.data; // 0 = new user, 1 = existing user, avatrUrl too 
-    } catch (err) {
-      const message = err?.response?.data?.message || "Unknown error";
-      if(message.includes("Google Account Detected - Please Sign In with Google!")){
-        toast.error("Google account found. Please use 'Sign in with Google'");
-      }
-      else if (message.includes("Invalid Email Format!")){
-        toast.error("Invalid Email Format!");
-      }
-      else if (message.includes("Email is required!")){
-        toast.error("Email is required!");
-      }
-      else {
-        toast.error("Server error.Please try again.")
-      }
+      const res = await checkEmailExistsApi(email)
+      setLoading(false)
+      return res;
+    } catch (error) {
+      toast.error("Error in function ",error)
+      setLoading(false)
     } finally {
       setLoading(false);
     }
   };
 
+  //GetStarted Route 2
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    const res = await checkEmailExists(email);
-    const username = res?.user?.name;
-    if (res?.status === 0) {
-      toast("Looks like you're new! Lets begin with Sign Up");
-      setStep("signup");
-    } else if (res?.status === 1) {
-      toast.success(`Welcome back ${username} !`)
-      setStep("login");
-      setAvatarUrl(res.user?.avatarUrl || "")
-      setUsername(res.user?.name)
-    }
+    await handleInitialSubmitApi({
+      email,
+      setStep,
+      setUsername,
+      setAvatarUrl,
+      setLoading,
+    })
   };
 
   return (
@@ -71,6 +57,7 @@ function GetStarted() {
               className="w-full bg-transparent outline-none text-[#3E5973] placeholder-[#3E5973] text-lg"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="true"
               required />
           </div>
           {error && <p className="text-red-600 text-center">{error}</p>}

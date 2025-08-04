@@ -136,7 +136,8 @@ const Dashboard = () => {
     
     try {
       const res = await createJournal(journalData)
-      // if(res.status===201){
+      // if(res.status===201)
+      {
         toast.success(res.message || "Journal created successfully")
         console.log("Journal data saved:", res.data);
         setTitle("");
@@ -144,7 +145,8 @@ const Dashboard = () => {
         setLocation("");
         setIconUrl("");
         setMood("")
-    //   }else {
+      }
+    //   else {
     //   toast.error("Unexpected error. Try again.");
     // }
     } catch (error) {
