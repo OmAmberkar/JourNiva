@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-import User from "./user.model";
+import mongoose from "mongoose";
+import User from "./user.model.js";
+
 const checklist = new mongoose.Schema({
   date: {
     type: Date,
@@ -14,25 +15,35 @@ const checklist = new mongoose.Schema({
 const habit = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: User,
+    ref: 'User',
     required: true
   },
-  name: {
+  
+  habitName: {
     type: String,
     required: true
   },
+
   icon: {
     type: String
   },
+
   startDate: {
     type: Date,
     required: true
   },
+
+  habitDetail: {
+    type: String,
+    required: true
+  },
+
   checklist: [checklist],
+
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Habit', habit);
+export default mongoose.model('Habit', habit);

@@ -3,9 +3,10 @@ import User from "../../models/user.model.js";
 
 //Route - 1 Goal Creation
 export const createGoal = async (req , res) => {
-     const { userID } = req.params ;
-
-    if(!userID) {
+  // Taking userId from Middleware
+  const userId = req.userId ;
+  
+    if(!userId) {
         return res.status(400).json({
             status: "failed",
             message: "User ID is required."
@@ -23,7 +24,7 @@ export const createGoal = async (req , res) => {
 
     try {
   
-    const user = await User.findById(userID).select("name");
+    const user = await User.findById(userId).select("name");
     if (!user) {
       return res.status(404).json({
         status: "Failed",
@@ -63,9 +64,10 @@ export const createGoal = async (req , res) => {
 // Route 2 - Get Todays Checklist for All Goals by User ID
 
 export const getGoalsToday = async (req, res) => {
-  const { userID } = req.params;
+  // Taking userId from Middleware
+  const userId = req.userId ;
 
-  if (!userID) {
+  if (!userId) {
     return res.status(400).json({
       status: "failed",
       message: "User ID is required",
@@ -73,7 +75,7 @@ export const getGoalsToday = async (req, res) => {
   }
 
   try {
-    const goals = await Goals.find({ userID: userID });
+    const goals = await Goals.find({ userID: userId});
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to 00:00 for comparison
 
@@ -127,10 +129,11 @@ export const getGoalsToday = async (req, res) => {
 // Route 3 - Get All Goals Checklist for a Week by User ID
 
 export const getGoalsWeek = async (req, res) => {
-  const { userID } = req.params;
+  // Taking userId from Middleware
+  const userId = req.userId ;
   const { date } = req.query;
 
-  if (!userID || !date) {
+  if (!userId || !date) {
     return res.status(400).json({
       status: "failed",
       message: "User ID and start date are required.",
@@ -142,12 +145,10 @@ export const getGoalsWeek = async (req, res) => {
     const endDate = new Date(date);
     endDate.setDate(startDate.getDate() + 6); // 7-day range
 
-    const userGoals = await Goals.find({ userID: userID });
+    const userGoals = await Goals.find({ userID: userId });
 
     const filteredGoals = userGoals.map((goal) => {
-      // if(!Array.isArray(goal.checklist)){
-      //   goal.checklist = [];
-      // }
+     
       const weeklyChecklist = goal.checklist.filter((entry) => {
         const entryDate = new Date(entry.date);
         return entryDate >= startDate && entryDate <= endDate;
@@ -181,6 +182,10 @@ export const getGoalsWeek = async (req, res) => {
 
 // Route 4 - Update a Goal by Goal ID
 export const updateGoal = async (req, res) => {
+
+  // Taking userId from Middleware
+  const userId = req.userId;
+
   const { goalID } = req.params;
   const { goalName, startDate, achieveByDate, icon, goalDetails } = req.body;
 
@@ -222,6 +227,9 @@ export const updateGoal = async (req, res) => {
 
 //Route - 5 Delete the Goal
 export const deleteGoal = async (req, res) => {
+  // Taking userId from Middleware
+  const userId = req.userId;
+
   const { goalID } = req.params;
 
   if (!goalID) {
@@ -255,8 +263,11 @@ export const deleteGoal = async (req, res) => {
 
 
 // Route 6 - Goal Checklist Toggle
-// Route - Checklist Toggle
 export const goalChecklist = async (req, res) => {
+
+  // Taking userId from Middleware
+  const userId = req.userId;
+
   const { goalID } = req.params;
   const { date, status } = req.body;
 

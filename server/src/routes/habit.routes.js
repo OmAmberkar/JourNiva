@@ -1,14 +1,9 @@
 import express from "express";
-
+import { createHabit } from "../controllers/habit.controller.js";
 const router = express.Router();
 
 // Route 1 - Create Habit
-router.post("/create/:userID" , (req, res) => {
-    const { userID } = req.params ;
-    const { habitName, startDate, icon, habitDetails, createdAt } = req.body;
-
-    res.status(201).json({message : "Habit Created Successfully !"});
-});
+router.post("/create/:userID" , createHabit);
 
 
 // Route 2 - Get Todays Checklist for All Habits by User ID
