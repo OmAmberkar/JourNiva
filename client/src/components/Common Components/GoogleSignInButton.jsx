@@ -27,6 +27,7 @@ const GoogleSignInButton = () => {
 
       // Store accessToken in localStorage
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user",JSON.stringify(user))
 
       // Show toast message
       toast.success(message || "Google Login Successful!");
