@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import { toast } from "sonner";
 import { IoLockClosedOutline, IoLockOpenOutline } from "react-icons/io5";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { PiUserCircleFill } from "react-icons/pi";
+import { RhandleSubmitApi } from "../../services/userServices";
 
 const avatars = [
   "https://imagizer.imageshack.com/img924/4476/roJLyv.png",
@@ -30,23 +31,25 @@ function SignUp({ email }) {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      toast.error("Passwords do not match!");
       setLoading(false);
       return;
     } else if (!avatarUrl) {
-      setError("Please select an avatar.");
+      toast.warning("Please select an avatar.");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await axios.post("http://localhost:4000/api/user/register", {
-        email: email.toLowerCase(),
-        name: username,
-        password,
-        avatarUrl,
-      });
+      const res = await RhandleSubmitApi(email, username, password, avatarUrl);
+
+      if (password.length < 6) {
+        toast.error("Password must be at least 6 characters long");
+      }
+
       if (res.status === 201) {
+        toast.success("Registered successfully! Please verify your email.");
+        localStorage.setItem("accessToken", res.data.accessToken);
         navigate("/verify", {
           state: {
             userId: res.data.user.userId,
@@ -56,23 +59,32 @@ function SignUp({ email }) {
           },
         });
       } else {
-        console.log("Check the entered filleds");
+        toast.error("Something went wrong. Check the entered fields.");
         setLoading(false);
       }
     } catch (error) {
-      console.log(error);
-      setError("Signup Failed. Please try again.");
+      const status = error.response?.status;
+      const message = error.response?.data?.message || "Signup failed.";
+
+      if (status === 400) {
+        toast.warning(message);
+      } else if (status === 409) {
+        toast.error("User already exists. Try logging in.");
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
       setLoading(false);
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-6">
       <div className="flex items-center">
         <img
           src={
             avatarUrl && avatarUrl.trim() !== ""
-            ? avatarUrl
-            : "https://imagizer.imageshack.com/img924/4476/roJLyv.png"
+              ? avatarUrl
+              : "https://imagizer.imageshack.com/img924/4476/roJLyv.png"
           }
           onClick={() => setIsModalOpen(true)}
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"

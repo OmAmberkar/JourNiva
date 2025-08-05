@@ -42,7 +42,7 @@ export const createJournal = async (req, res) => {
       _uid: user.id,
       nameSnapshot: user.name,
       title: title.trim(),
-      content,
+      content:content.trim(),
       date: date ? new Date(date) : new Date(),
       mood,
       iconUrl,

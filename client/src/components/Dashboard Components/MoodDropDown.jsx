@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const moodOptions = [
-  { value: "sad", label: "Sad", icon: "/src/assets/blue_mood.png" },
+  { value: "Sad", label: "Sad", icon: "/src/assets/blue_mood.png" },
   { value: "Angry", label: "Angry", icon: "/src/assets/green_mood.png" },
-  { value: "happy", label: "Happy", icon: "/src/assets/peach_mood.png" },
+  { value: "Happy", label: "Happy", icon: "/src/assets/peach_mood.png" },
   {
-    value: "chill",
+    value: "Chill",
     label: "Chill",
     icon: "/src/assets/purple_mood.png",
   },
-  { value: "love", label: "Love", icon: "/src/assets/pink_mood.png" },
+  { value: "Love", label: "Love", icon: "/src/assets/pink_mood.png" },
 ];
 
 const MoodDropdown = ({ onMoodSelect }) => {

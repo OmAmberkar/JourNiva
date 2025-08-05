@@ -3,60 +3,63 @@ import { FiEyeOff, FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { PiUserCircleFill } from "react-icons/pi";
-import axios from "axios";
+import { toast } from "sonner";
+import {
+  LhandleForgetPassword,
+  LhandleSubmitApi,
+} from "../../services/userServices";
 
 function SignIn({ email, avatarUrl, name }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
   const navigate = useNavigate();
 
+  //Login/SignIn Route 1
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    const res = await LhandleSubmitApi({
+      email,
+      password,
+      setLoading,
+    });
 
-    try {
-      const res = await axios.post("http://localhost:4000/api/user/login", {
-        email,
-        password,
+    //imp for passing the data
+    const user = res.data.user;
+    if (res.status === 200) {
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.name,
+          avatarUrl: user.avatarUrl || "",
+        })
+      );
+      navigate("/dashboard", {
+        state: {
+          name: user.name,
+          avatarUrl: user.avatarUrl,
+        },
       });
-
-      if (res.status === 200) {
-        navigate("/dashboard");
-        setLoading(false);
-      } else {
-        setError("Invalid Credentails.");
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Login Failed. Please try again.");
-      setLoading(false);
     }
   };
 
-  const handleForgotPassword = async(e) => {
+  //Login/SignIn Route 2
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const res = await axios.post("http://localhost:4000/api/user/forgot-password-link", {
-        email: email.toLowerCase(),
-      });
-      if (res.status === 200) {
-        navigate("/reset-password");
-      } else {
-        setError("Failed to send reset password link.");
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Failed to send reset password link. Please try again.");
+
+    const res = await LhandleForgetPassword({
+      email,
+      setLoading,
+    });
+    if (res.status === 200) {
+      navigate("/forgot-password-sent");
+    } else {
+      toast.error("Failed to send reset password link.");
     }
   };
-
 
   return (
     <form className="w-full space-y-6 text-center">
@@ -94,6 +97,7 @@ function SignIn({ email, avatarUrl, name }) {
           placeholder="Enter password"
           className="w-full bg-transparent outline-none text-[#3E5973] text-lg"
           value={password}
+          autoComplete="current-password"
           onChange={(e) => setPassword(e.target.value)}
           required
         />

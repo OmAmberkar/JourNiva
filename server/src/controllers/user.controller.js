@@ -70,6 +70,7 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 //Route 2 Controller - Google Login
 export const googleLogin = async (req, res) => {
     // Destructure req.body to get ID Token Code Credential
+    console.log("Google Login Request Received") ;
     const { credential } = req.body ;
 
     // Validate Credential
@@ -218,7 +219,7 @@ export const registerUser = async (req, res) => {
                 successMessage: "Verify Email OTP Sent Successfully!"
             }) ;    
         } catch (error) {
-            console.error("Error sending welcome email:", e.message) ;
+            console.error("Error sending welcome email:", error.message) ;
         }
         
 
@@ -276,7 +277,7 @@ export const loginUser = async (req, res) => {
         }
 
         // Check Account Type of Existing User
-        if (existingUser.accountType === "google") {
+        if (user.accountType === "google") {
             return res.status(400).json({
                 status : "failed",
                 message: "Google Account Detected - Please Sign In with Google!"
@@ -287,7 +288,8 @@ export const loginUser = async (req, res) => {
         if (user.isVerified === false) {
             return res.status(401).json({
                 status: "failed",
-                message: "Email Not Verified! - Please Verify Email" 
+                // message: "Email Not Verified! - Please Verify Email" 
+                message:"Invalid Email or Password!"
             }) ;
         }
 
@@ -553,7 +555,7 @@ export const forgotPasswordLink = async (req, res) => {
         await user.save() ;
 
         // Generate Frontend Reset Password Link
-        const resetPasswordLink = `${process.env.FRONTEND_URL}reset-password/${resetPasswordToken}` ;
+        const resetPasswordLink = `${process.env.FRONTEND_URL}reset-password/${resetPasswordToken}?id=${user._id}` ;
 
         // Send Reset Password Email
         await sendEmail({

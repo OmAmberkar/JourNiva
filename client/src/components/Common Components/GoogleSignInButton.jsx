@@ -1,48 +1,68 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "sonner";
 
 const GoogleSignInButton = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-    // Navigate Hook for Redirecting
-    const navigate = useNavigate();
+  const handleSuccess = async (credentialResponse) => {
+    const { credential } = credentialResponse;
 
-    // Function to handle Google Sign-In Success
-    const handleSuccess = async (credentialResponse) => {
-        // Extract the credential from the response
-        const { credential } = credentialResponse;
+    if (!credential) {
+      toast.error("Login failed. No Google credential received.");
+      return;
+    }
 
-        try {
-            // Send the Credential to the server for verification
-            const response = await axios.post("http://localhost:4000/api/user/google-login", { credential });
+    setLoading(true);
+    try {
+      const res = await axios.post("http://localhost:4000/api/user/google-login", {
+        credential,
+      });
 
-            // Store the Received Token in Local Storage
-            localStorage.setItem("accessToken", response.data.accessToken);
+      const { accessToken, user, message } = res.data;
 
-            // Redirect the User to Dashboard
-            navigate("/dashboard");
+      // Store accessToken in localStorage
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user",JSON.stringify(user))
 
-        } catch (error) {
-            console.error("Google Sign-In Error:", error);
-            alert("Failed to Sign in with Google. Please try again!");            
-        }
-    };
+      // Show toast message
+      toast.success(message || "Google Login Successful!");
 
-    return (
-        <div>
-            <GoogleLogin
-                onSuccess={handleSuccess}
-                onError={() => {
-                    console.error("Google Login Failed");
-                    alert("Google Login failed. Please try again.");
+      // Navigate to dashboard with user data
+      navigate("/dashboard", { state: { user } });
+    } catch (error) {
+      console.error("Google login error:", error.response?.data || error.message);
 
-                }}
-                useOneTap
-            />  
-        </div>
-    );
+      const errorMsg =
+        error.response?.data?.message ||
+        "Something went wrong with Google Login.";
+
+      toast.error(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex justify-center">
+      <GoogleLogin
+        onSuccess={handleSuccess}
+        onError={() => {
+          toast.error("Google login was cancelled or failed.");
+        }}
+        useOneTap
+        shape="pill"
+        theme="outline"
+        width="280"
+        size="large"
+        logo_alignment="center"
+      />
+    </div>
+  );
 };
 
 export default GoogleSignInButton;
