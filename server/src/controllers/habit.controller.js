@@ -3,9 +3,9 @@ import User from "../../models/user.model.js";
 
 //Route - 1 habit Creation.
 export const createHabit = async (req , res) => {
-     const { userID } = req.params ;
+     const userId = req.userId;
 
-    if(!userID) {
+    if(!userId) {
         return res.status(400).json({
             status: "failed",
             message: "User ID is required."
@@ -23,7 +23,7 @@ export const createHabit = async (req , res) => {
 
     try {
   
-    const user = await User.findById(userID).select("name");
+    const user = await User.findById(userId).select("name");
     if (!user) {
       return res.status(404).json({
         status: "Failed",
@@ -33,7 +33,7 @@ export const createHabit = async (req , res) => {
 
     // creating the new habit if user exists
     const today = new Date();
-    const newHabit = await Habits.create({
+    const newHabit = await Habit.create({
       userID: user._id,
       habitName,
       startDate: startDate ? new Date(startDate) : new Date(),
@@ -60,9 +60,10 @@ export const createHabit = async (req , res) => {
 // Route 2 - Get Todays Checklist for All Habits by User ID
 
 export const getHabitsToday = async (req, res) => {
-  const { userID } = req.params;
+ // Taking userId from Middleware
+  const userId = req.userId ;
 
-  if (!userID) {
+  if (!userId) {
     return res.status(400).json({
       status: "failed",
       message: "User ID is required",
@@ -70,7 +71,7 @@ export const getHabitsToday = async (req, res) => {
   }
 
   try {
-    const habits = await Habits.find({ userID: userID });
+    const habits = await Habit.find({ userID: userId });
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to 00:00 for comparison
 
@@ -122,10 +123,11 @@ export const getHabitsToday = async (req, res) => {
 
 // Route 3 - Get All Habits Checklist for a Week by User ID
 export const getHabitsWeek = async (req, res) => {
-  const { userID } = req.params;
-  const { date } = req.query;
+ // Taking userId from Middleware
+  const userId = req.userId ;
+    const { date } = req.query;
 
-  if (!userID || !date) {
+  if (!userId || !date) {
     return res.status(400).json({
       status: "failed",
       message: "User ID and start date are required.",
@@ -137,7 +139,7 @@ export const getHabitsWeek = async (req, res) => {
     const endDate = new Date(date);
     endDate.setDate(startDate.getDate() + 6); // 7-day range
 
-    const userHabits = await Habits.find({ userID: userID });
+    const userHabits = await Habit.find({ userID: userId });
 
     const filteredHabits = userHabits.map((habit) => {
       const weeklyChecklist = habit.checklist.filter((entry) => {
@@ -171,6 +173,9 @@ export const getHabitsWeek = async (req, res) => {
 
 // Route 4 - Update a habit by Habit ID
 export const updateHabit = async (req, res) => {
+ // Taking userId from Middleware
+  const userId = req.userId ;
+
   const { habitID } = req.params;
   const { habitName, startDate, icon, habitDetails } = req.body;
 
@@ -182,7 +187,7 @@ export const updateHabit = async (req, res) => {
   }
 
   try {
-    const updateHabit = await Habits.findByIdAndUpdate(
+    const updateHabit = await Habit.findByIdAndUpdate(
       habitID,
       { habitName, startDate, icon, habitDetails },
       { new: true }
@@ -212,6 +217,9 @@ export const updateHabit = async (req, res) => {
 
 //Route - 5 Delete the Habit
 export const deleteHabit = async (req, res) => {
+   // Taking userId from Middleware
+  const userId = req.userId ;
+
   const { habitID } = req.params;
 
   if (!habitID) {
@@ -245,6 +253,9 @@ export const deleteHabit = async (req, res) => {
 
 // Route 6 - Habit Checklist Toggle
 export const habitChecklist = async (req, res) => {
+   // Taking userId from Middleware
+  const userId = req.userId ;
+
   const { habitID } = req.params;
   const { date, status } = req.body;
 
@@ -256,7 +267,7 @@ export const habitChecklist = async (req, res) => {
   }
 
   try {
-    const habit = await Habits.findById(habitID);
+    const habit = await Habit.findById(habitID);
     if (!habit) {
       return res.status(404).json({
         status: "failed",
