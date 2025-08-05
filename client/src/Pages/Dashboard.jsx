@@ -1,15 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import MoodDropdown from "../components/Dashboard Components/MoodDropDown";
 import LeftBar from "../components/Dashboard Components/LeftBar";
 import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
 import RightBar from "../components/Dashboard Components/RightBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiTrendingUp } from "react-icons/fi";
 import { VisionBoardCanvas } from "../components/VisionBoard Components/VisionBoardCanvas";
 import { useNavigate } from "react-router-dom";
-import { createJournal } from "../api/journalApi";
-import {toast} from 'sonner'
+import { createJournal } from "../services/journalServices";
+import { toast } from "sonner";
 
 const formatDate = (dateObj) =>
   dateObj.toLocaleDateString("en-GB", {
@@ -44,7 +45,23 @@ const greetings = [
 ];
 
 const Dashboard = () => {
-  const [user, setUser] = useState({ name: "username", avatarUrl: "" });
+  const loc = useLocation();
+  const passedUser = loc.state?.user;
+
+  const [user, setUser] = useState(() => {
+    const fromState = loc.state?.user;
+    if (fromState) return fromState;
+
+    try {
+      const stored = localStorage.getItem("user");
+      if (stored) return JSON.parse(stored);
+    } catch (err) {
+      console.warn("Failed to parse user from localStorage");
+    }
+
+    return { name: "Master", avatarUrl: "" };
+  });
+
   const [today, setToday] = useState(formatDate(new Date()));
   const [greetingMessage, setGreetingMessage] = useState("");
 
@@ -68,8 +85,26 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) setUser(JSON.parse(stored));
+    try {
+      const stored = localStorage.getItem("user");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.name) {
+          setUser(parsed);
+        } else {
+          toast.warning("User data incomplete. Please re-login.");
+          navigate("/getstarted");
+        }
+      } else {
+        toast.warning("User not found. Redirecting to login.");
+        navigate("/getstarted");
+      }
+    } catch (error) {
+      console.error("Error parsing user:", error);
+      toast.error("Corrupted user data. Please re-login.");
+      localStorage.removeItem("user");
+      navigate("/getstarted");
+    }
 
     const index = getDayOfYear() % greetings.length;
     setGreetingMessage(greetings[index]);
@@ -117,14 +152,14 @@ const Dashboard = () => {
   const [content, setContent] = useState("");
   const [iconUrl, setIconUrl] = useState("");
   const [location, setLocation] = useState("");
-
+  const [profileUpdate , setProfileUpdate] = useState(false);
 
   const handleSave = async () => {
     if (!mood) {
-  toast.error("Please select a mood before saving.");
-  return;
-}
-    
+      toast.error("Please select a mood before saving.");
+      return;
+    }
+
     const journalData = {
       title: title.trim(),
       date: today,
@@ -133,24 +168,28 @@ const Dashboard = () => {
       iconUrl: iconUrl.trim(),
       location: location.trim(),
     };
-    
+
     try {
-      const res = await createJournal(journalData)
+      const res = await createJournal(journalData);
       // if(res.status===201)
       {
-        toast.success(res.message || "Journal created successfully")
+        toast.success(res.message || "Journal created successfully");
         console.log("Journal data saved:", res.data);
         setTitle("");
         setContent("");
         setLocation("");
         setIconUrl("");
-        setMood("")
+        setMood("");
       }
-    //   else {
-    //   toast.error("Unexpected error. Try again.");
-    // }
+      //   else {
+      //   toast.error("Unexpected error. Try again.");
+      // }
     } catch (error) {
-        toast.error(error?.response?.data?.message || error?.message || "Failed to create journal");
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to create journal"
+      );
     }
   };
 
@@ -170,23 +209,22 @@ const Dashboard = () => {
       >
         <div
           className={`
-            flex-1 transition-all duration-300 px-4 sm:px-6 md:px-10 lg:px-16 py-4
+            flex-1 transition-all duration-300 px-4 sm:px-6 md:px-10 lg:px-16 py-2
             ${sidebarOpen && isLargeScreen ? "lg:ml-64" : "lg:ml-0"}
           `}
         >
-          <header className="flex flex-col sm:flex-row items-center justify-between ml-5 gap-4 bg-[var(--color-background)]/60 p-1 rounded-md">
-            <div className="flex items-center gap-4 text-center sm:text-left">
-              {user.avatarUrl && (
-                <img
-                  src={user.avatarUrl}
-                  alt="avatar"
-                  className="w-12 h-12 rounded-full object-cover ring-2 ring-[var(--color-dark)]"
-                />
-              )}
-              <h1 className="text-2xl sm:text-3xl font-semibold">
-                Hello {user.name}, {greetingMessage}
-              </h1>
-            </div>
+          <header className="flex flex-col sm:flex-row items-center justify-between ml-5 gap-4 bg-[var(--color-background)]/60 px-1 rounded-md">
+            <h1 className="text-2xl sm:text-3xl font-semibold">
+              Hello {user.name}, {greetingMessage}
+            </h1>
+
+            {user.avatarUrl && (
+              <img
+                src={user.avatarUrl}
+                alt="avatar"
+                className="w-15 h-15 rounded-full object-cover ring-2 ring-[var(--color-dark)]"
+              />
+            )}
           </header>
 
           <div className="mt-4 h-[1px] w-full bg-[var(--color-background)] rounded-full" />

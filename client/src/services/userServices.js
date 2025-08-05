@@ -1,4 +1,4 @@
-import { axiosInstance } from "../utils/axiosInstance";
+import { axiosInstance } from "../api/axiosInstance";
 import { toast } from "sonner";
 
 //GetStarted Route 1
@@ -54,6 +54,40 @@ export const handleInitialSubmitApi = async ({
   }
 };
 
+//Register/SignUp Route 1
+export const RhandleSubmitApi = async (
+  email,
+  username,
+  password,
+  avatarUrl
+) => {
+  try {
+    const res = await axiosInstance.post("/user/register", {
+      email: email.toLowerCase(),
+      name: username,
+      password,
+      avatarUrl,
+    });
+    return res;
+  } catch (error) {
+    toast.error("API endpoint error", error);
+    throw error;
+  }
+};
+
+//Verification Route 1
+export const verifyOtpApi = async (userId, otp) => {
+  const res = await axiosInstance.post("/user/verify-otp", { userId, otp });
+  return res;
+};
+
+//Verification Route 2
+export const handleResendApi = async (userId) => {
+  const res = await axiosInstance.post("/user/resend-otp", { userId });
+  return res;
+};
+
+
 //Login/SignIn Route 1
 export const LhandleSubmitApi = async ({ email, password, setLoading }) => {
   if (!email || !password) {
@@ -62,11 +96,9 @@ export const LhandleSubmitApi = async ({ email, password, setLoading }) => {
     return;
   }
   try {
-    setLoading(true)
+    setLoading(true);
     const res = axiosInstance.post("/user/login", { email, password });
     return res;
-
-    
   } catch (error) {
     const status = error.response?.status;
     const message = error.response?.data?.message || "Login failed";
@@ -86,26 +118,25 @@ export const LhandleSubmitApi = async ({ email, password, setLoading }) => {
 };
 
 //Login/SignIn Route 2
-export const LhandleForgetPassword = async ({
-  setLoading,
-  email,
-}) =>{
-
-  if(!email){
+export const LhandleForgetPassword = async ({ setLoading, email }) => {
+  if (!email) {
     toast.error("Email is required to send reset link.");
     return { status: 400 };
   }
   try {
-    setLoading(true)
-    const res = await axiosInstance.post("/user/forgot-password-link",{
-      email : email.toLowerCase(),
-    })
-    return res
+    setLoading(true);
+    const res = await axiosInstance.post("/user/forgot-password-link", {
+      email: email.toLowerCase(),
+    });
+    return res;
   } catch (error) {
     const message = error?.response?.data?.message || "Request failed";
     toast.error(message);
-    return { status: error?.response?.status || 500 }
-  }finally{
-    setLoading(false)
+    return { status: error?.response?.status || 500 };
+  } finally {
+    setLoading(false);
   }
-}
+};
+
+//Reset password to be handled once deployed
+

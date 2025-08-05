@@ -12,6 +12,7 @@ export const MoodList = [
   "Sad",
   "Angry",
   "Chill",
+  "Love",
 ];
 
 

@@ -1,4 +1,4 @@
-import { axiosInstance } from "../utils/axiosInstance";
+import { axiosInstance } from "../api/axiosInstance";
 import { toast } from "sonner";
 
 export const createJournal = async (journalData) =>{
@@ -6,6 +6,7 @@ export const createJournal = async (journalData) =>{
         const res = await axiosInstance.post("/journal/create",journalData);
         return res.data;
     } catch (error) {
+        console.error("Journal creation failed", error);
         toast.error("API error",error)
         throw error
     }

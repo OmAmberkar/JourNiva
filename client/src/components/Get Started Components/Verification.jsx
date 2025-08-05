@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { toast } from "sonner";
+import { handleResendApi, verifyOtpApi } from "../../services/userServices";
 
 function Verification() {
   const [otp, setOtp] = useState("");
@@ -43,20 +43,12 @@ useEffect(() => {
   if (otp.length === 6) {
     const verifyOtp = async () => {
       setVerifying(true);
-
       const verifyingToastId = toast.loading("Verifying OTP...");
 
       try {
-        const res = await axios.post(
-          "http://localhost:4000/api/user/verify-otp",
-          {
-            userId,
-            otp,
-          }
-        );
+        const res = await verifyOtpApi(userId, otp);
 
         if (res.data.status === "success") {
-          
           toast.success("OTP Verified Successfully!", { id: verifyingToastId });
 
           setTimeout(() => {
@@ -81,23 +73,23 @@ useEffect(() => {
 
   // Resend OTP API
   const handleResend = async () => {
-    if (resendTimer > 0 || verifying) return;
+  if (resendTimer > 0 || verifying) return;
 
-    setResendTimer(30);
-    setOtp("");
-    setOtpExpiryTimer(120);
-    toast.loading("Sending OTP...");
+  setResendTimer(30);
+  setOtp("");
+  setOtpExpiryTimer(120);
+  toast.loading("Sending OTP...");
 
-    try {
-      await axios.post("http://localhost:4000/api/user/resend-otp", { userId });
-      toast.dismiss();
-      toast.success("OTP sent successfully to your email!");
-    } catch (err) {
-      toast.dismiss();
-      console.error("Resend OTP failed:", err);
-      toast.error("Failed to resend OTP.");
-    }
-  };
+  try {
+    await handleResendApi(userId);
+    toast.dismiss();
+    toast.success("OTP sent successfully to your email!");
+  } catch (err) {
+    toast.dismiss();
+    console.error("Resend OTP failed:", err);
+    toast.error("Failed to resend OTP.");
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#c3d7e8] px-4">

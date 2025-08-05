@@ -6,7 +6,7 @@ import SignIn from "../components/Get Started Components/SignIn";
 import SignUp from "../components/Get Started Components/SignUp";
 import GoogleSignInButton from "../components/Common Components/GoogleSignInButton";
 import { toast } from "sonner";
-import { checkEmailExistsApi, handleInitialSubmitApi } from "../api/userApi";
+import { checkEmailExistsApi, handleInitialSubmitApi } from "../services/userServices";
 
 
 function GetStarted() {

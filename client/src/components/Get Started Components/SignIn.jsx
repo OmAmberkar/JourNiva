@@ -4,7 +4,10 @@ import { useNavigate } from "react-router";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { PiUserCircleFill } from "react-icons/pi";
 import { toast } from "sonner";
-import { LhandleForgetPassword, LhandleSubmitApi } from "../../api/userApi";
+import {
+  LhandleForgetPassword,
+  LhandleSubmitApi,
+} from "../../services/userServices";
 
 function SignIn({ email, avatarUrl, name }) {
   const [password, setPassword] = useState("");
@@ -15,36 +18,48 @@ function SignIn({ email, avatarUrl, name }) {
 
   //Login/SignIn Route 1
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const res = await LhandleSubmitApi({
-    email,
-    password,
-    setLoading,
-  })
+    e.preventDefault();
+    setLoading(true);
+    const res = await LhandleSubmitApi({
+      email,
+      password,
+      setLoading,
+    });
+
+    //imp for passing the data
+    const user = res.data.user;
     if (res.status === 200) {
       localStorage.setItem("accessToken", res.data.accessToken);
-      navigate("/dashboard");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.name,
+          avatarUrl: user.avatarUrl || "",
+        })
+      );
+      navigate("/dashboard", {
+        state: {
+          name: user.name,
+          avatarUrl: user.avatarUrl,
+        },
+      });
     }
- 
-};
+  };
 
-
-//Login/SignIn Route 2
-  const handleForgotPassword = async(e) => {
+  //Login/SignIn Route 2
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
-    
+
     const res = await LhandleForgetPassword({
       email,
       setLoading,
-    })
-      if (res.status === 200) {
-        navigate("/forgot-password-sent");
-      } else {
-        toast.error("Failed to send reset password link.");
-      }
-    
+    });
+    if (res.status === 200) {
+      navigate("/forgot-password-sent");
+    } else {
+      toast.error("Failed to send reset password link.");
+    }
   };
-
 
   return (
     <form className="w-full space-y-6 text-center">
