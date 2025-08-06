@@ -73,6 +73,8 @@ export const googleLogin = async (req, res) => {
     console.log("Google Login Request Received") ;
     const { credential } = req.body ;
 
+    const { rememberMe = false } = req.body ;
+
     // Validate Credential
     if(!credential) {
         return res.status(400).json({
@@ -119,7 +121,7 @@ export const googleLogin = async (req, res) => {
         }
 
         // Generate JWT Access Token & Refresh Token
-        const accessToken = sendTokenResponse(res, user._id) ;
+        const accessToken = sendTokenResponse(res, user._id, rememberMe) ;
 
         // Send Response to Frontend
         return res.status(200).json({
@@ -248,6 +250,9 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body ;
     const temail = sanitizeHtml(email.trim().toLowerCase()) ;
 
+    const { rememberMe = false } = req.body ;
+
+
     //Validate Email & Password
     if (!temail || !password) {
         return res.status(400).json({ 
@@ -302,7 +307,7 @@ export const loginUser = async (req, res) => {
             }) ;
         } else {
             // Generate JWT Access Token & Refresh Token
-            const accessToken = sendTokenResponse(res, user._id) ;
+            const accessToken = sendTokenResponse(res, user._id, rememberMe) ;
 
             //Send Respone 
             return res.status(200).json({
@@ -327,6 +332,9 @@ export const loginUser = async (req, res) => {
 export const verifyOTP = async (req, res) => {
     // Destructure Request Body
     const { userId, otp } = req.body ;
+
+    const { rememberMe = false } = req.body ;
+
 
     // Trim userId
     const tuserId = sanitizeHtml(userId.trim()) ;
@@ -392,7 +400,7 @@ export const verifyOTP = async (req, res) => {
         await user.save() ;
 
         // Generate JWT Access Token & Refresh Token
-        const accessToken = sendTokenResponse(res, user._id) ;
+        const accessToken = sendTokenResponse(res, user._id, rememberMe) ;
 
         // Send Welcome Email
         try {

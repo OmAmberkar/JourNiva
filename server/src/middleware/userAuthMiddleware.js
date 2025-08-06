@@ -6,7 +6,7 @@ export const verifyAccessToken = (req, res, next) => {
 
     // Validate Authorization Header
     if (!authHeader?.startsWith("Bearer ")) {
-        return res.status(401).json({
+        return res.status(403).json({
             status: "failed",
             message: "Unauthorized User - No Token!"
         }) ;
@@ -14,7 +14,7 @@ export const verifyAccessToken = (req, res, next) => {
 
     // Access Token from Authorization Header
     const token = authHeader.split(" ")[1] ;
-
+    // Authorization: Bearer gddsbcjdbchdbhhdvhhfvhfb hbhf .vfvfvf.vfvfvvvfvf
     try {
         // Verify Token
         const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET) ;
@@ -27,7 +27,7 @@ export const verifyAccessToken = (req, res, next) => {
             }) ;
         }
 
-        // If Token Authenticated then will return the Payload (UserId)
+        // If Token Authenticated & Not Expired then will return the Payload (UserId)
         // This payload we will set to the req.userId so that it can be used by the next function
         req.userId = decoded.userId ;
 
@@ -35,8 +35,18 @@ export const verifyAccessToken = (req, res, next) => {
         next() ;
 
     } catch (error) {
-        console.error("Error in Verifying Token: ", error) ;
-        return res.status(500).json({ message: "Internal Server Error" }) ;
+        // Handle JWT Token Expiry Error
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({
+                status: "failed",
+                message: "User Unauthorised - Token Expired!"
+            });
+        }
         
+        console.error("JWT Verification Error:", error);
+        return res.status(403).json({
+            status: "failed",
+            message: "User Unauthorised - Invalid Token!"
+        });
     }
 } ;
