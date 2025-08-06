@@ -71,9 +71,7 @@ const googleClient = new OAuth2Client(process.env.JOURNIVA_GOOGLE_CLIENT_ID) ;
 export const googleLogin = async (req, res) => {
     // Destructure req.body to get ID Token Code Credential
     console.log("Google Login Request Received") ;
-    const { credential } = req.body ;
-
-    const { rememberMe = false } = req.body ;
+    const { credential, rememberMe = false } = req.body ;
 
     // Validate Credential
     if(!credential) {
@@ -247,11 +245,8 @@ export const registerUser = async (req, res) => {
 //Route 4 Controller - Login Existing User
 export const loginUser = async (req, res) => {
     //Access Email & Password from Request Body
-    const { email, password } = req.body ;
+    const { email, password, rememberMe = false } = req.body ;
     const temail = sanitizeHtml(email.trim().toLowerCase()) ;
-
-    const { rememberMe = false } = req.body ;
-
 
     //Validate Email & Password
     if (!temail || !password) {
@@ -331,10 +326,7 @@ export const loginUser = async (req, res) => {
 //Route 5 Controller - Register : Email OTP Verification
 export const verifyOTP = async (req, res) => {
     // Destructure Request Body
-    const { userId, otp } = req.body ;
-
-    const { rememberMe = false } = req.body ;
-
+    const { userId, otp, rememberMe = false } = req.body ;
 
     // Trim userId
     const tuserId = sanitizeHtml(userId.trim()) ;
