@@ -63,7 +63,7 @@ const Navbar = () => {
             className="bg-[var(--color-dark)] text-white px-4 py-1 rounded-md hover:bg-[#9aa7c1]"
             onClick={() => window.open("/getstarted", "_blank")}
           >
-            Get Started !
+            Get Started
           </button>
         </li>
       </ul>

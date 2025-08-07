@@ -90,6 +90,9 @@ function SignUp({ email }) {
           className="w-20 h-20 rounded-full border-2 border-[#3E5973] cursor-pointer"
           alt="avatar"
         />
+        <div className="flex flex-col text-[34px]">
+          <p className="text-[#3E5973]">Welcome to JourNiva!</p>
+        </div>
       </div>
 
       {isModalOpen && (
@@ -176,7 +179,7 @@ function SignUp({ email }) {
       {error && <p className="text-red-600 text-center">{error}</p>}
 
       <div className="flex items-center border-2 border-[#3E5973] bg-[#c3d7e8] rounded-[25px] px-4 h-[60px]">
-        <IoLockOpenOutline className="text-[#3E5973] mr-2 w-6 h-6" />
+        <IoLockClosedOutline className="text-[#3E5973] mr-2 w-6 h-6" />
         <input
           type={showCPassword ? "text" : "password"}
           placeholder="Confirm password"
@@ -202,7 +205,7 @@ function SignUp({ email }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#3E5973] text-white py-3 rounded-[25px]"
+        className="w-full bg-[#3E5973] text-white py-3 rounded-[25px] cursor-pointer"
       >
         {loading ? "Registering..." : "Register"}
       </button>
