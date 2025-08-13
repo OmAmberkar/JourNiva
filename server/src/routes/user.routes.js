@@ -37,4 +37,10 @@ router.get("/check-auth" ,  verifyAccessToken, checkAuth) ;
 //Route 11 - Logout
 router.post("/logout" , logout) ;
 
+//Route 12 - Profile : Get User Details
+router.get("/profile" , verifyAccessToken, getUserProfile) ;
+
+//Route 13 - Profile : Update User Details
+router.put("/profile" , verifyAccessToken, updateUserProfile) ;
+
 export default router ;

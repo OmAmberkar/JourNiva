@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
+    isProfileComplete: {
+      type: Boolean,
+      default: false,
+    },
+
     otp: {
       type: String,
       default: null,

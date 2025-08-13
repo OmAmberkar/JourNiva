@@ -106,6 +106,7 @@ export const googleLogin = async (req, res) => {
                 isVerified: true,
                 accountType: "google",
                 googleId: sub,
+                isProfileComplete: false
             })
 
             await user.save() ;
@@ -128,7 +129,8 @@ export const googleLogin = async (req, res) => {
             accessToken,
             user: {
                 name: user.name,
-                avatarUrl: user.avatarUrl
+                avatarUrl: user.avatarUrl,
+                isProfileComplete: user.isProfileComplete
             }
         }) ;
 
