@@ -245,7 +245,7 @@ export const updateJournalById = async (req, res) => {
 
     //  Update Journal
     const updatedJournal = await journals.findByIdAndUpdate(
-      journalID,
+      journalId,
       { date, title, mood, content, iconUrl },
       { new: true }
     );

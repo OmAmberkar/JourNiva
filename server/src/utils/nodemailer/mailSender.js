@@ -6,7 +6,7 @@ import { dirname } from "path" ;
 
 // Define __dirname 
 const __filename = fileURLToPath(import.meta.url) ;
-const __dirname = path.dirname(__filename) ;
+const __dirname = dirname(__filename) ;
 
 // Create sendEmail Function 
 export const sendEmail = async ({ to, subject, templateName, templateData, successMessage }) => {

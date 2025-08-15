@@ -1,5 +1,6 @@
 import express from "express"
 import { checkEmail, googleLogin, registerUser, loginUser, verifyOTP, resendOTP, forgotPasswordLink, resetPassword, refreshAccessToken, checkAuth, logout } from "../controllers/user.controller.js" 
+import { getUserProfile, changeEmailRequest, verifyChangeEmailOtp, changePassword, updateUserProfile  } from "../controllers/userProfile.controller.js";
 import { verifyAccessToken } from "../middleware/userAuthMiddleware.js";
 
 const router = express.Router();
@@ -40,7 +41,16 @@ router.post("/logout" , logout) ;
 //Route 12 - Profile : Get User Details
 router.get("/profile" , verifyAccessToken, getUserProfile) ;
 
-//Route 13 - Profile : Update User Details
-router.put("/profile" , verifyAccessToken, updateUserProfile) ;
+//Route 13 - Profile : Change Email Request
+router.post("/change-email-request" , verifyAccessToken, changeEmailRequest) ;
+
+//Route 14 - Profile : Verify Change Email OTP
+router.post("/change-email-verify" , verifyAccessToken, verifyChangeEmailOtp) ;
+
+//Route 15 - Profile : Change Password
+router.post("/change-password" , verifyAccessToken, changePassword) ; 
+
+//Route 16 - Profile : Update User Details
+router.patch("/profile" , verifyAccessToken, updateUserProfile) ;
 
 export default router ;
