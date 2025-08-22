@@ -5,7 +5,7 @@ import validator from "validator";
 import { sendEmail } from "../utils/nodemailer/mailSender.js";
 import crypto from "crypto";
 
-//Route 12 - Profile : Get User Details - name & avatarUrl
+//Route 12 - Profile : Get User Details - name, email, avatarUrl & accountType
 export const getUserProfile = async (req , res) => {
     // Taking userId from Middleware
     const userId = req.userId ;
