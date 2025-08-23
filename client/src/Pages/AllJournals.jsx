@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LeftBar from "../components/Dashboard Components/LeftBar";
 import MobileLeftBar from "../components/Dashboard Components/MobileLeftBar";
+import Calendar from "../components/All Journals Components/Calendar";
 
 const AllJournals = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -39,6 +40,21 @@ const AllJournals = () => {
       >
         <h1 className="text-3xl font-bold mb-4">All Journals</h1>
         {/* Add your journal content here */}
+        <div className="relative ">
+          <div className="grid grid-cols-2 max-h-screen">
+            <div className="border-2 rounded-2xl  h-150">
+              <h1 className="text-[var(--color-dark)] text-4xl text-center">Check your Journals</h1>
+              <div>
+                <p>No journal was written on this date</p>
+              </div>
+            </div>
+            <div className=" border-2 rounded-2xl max-h-fit flex justify-center align-middle">
+              <div className="bg-[#D0E6F8] rounded-2xl w-[80%] mt-[20%]">
+                <Calendar/>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

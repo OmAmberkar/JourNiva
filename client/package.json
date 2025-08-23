@@ -17,6 +17,7 @@
     "aos": "^2.3.4",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.6",
+    "lucide-react": "^0.541.0",
     "react": "^19.1.0",
     "react-color": "^2.19.3",
     "react-dom": "^19.1.0",
