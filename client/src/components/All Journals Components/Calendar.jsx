@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Calendar = () => {
+
+  // Calendar content
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -97,24 +99,27 @@ const Calendar = () => {
   };
 
   return (
-    <div className="w-full h-full bg-transparent">
+    <div className="w-full h-full bg-transparent shadow-md px-4 py-2 rounded-2xl">
       <div className="w-full bg-transparent">
         {/* Calendar Header */}
         <div className="px-4 py-3 flex items-center justify-between">
+          {/* previous button */}
           <button
             onClick={() => navigateMonth('prev')}
-            className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-[var(--color-dark)] hover:bg-[var(--color-drop)] transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          
-          <h2 className="text-lg font-medium text-gray-600">
+
+          {/* month and year */}
+          <h2 className="text-xl !font-medium text-[var(--color-dark)]">
             {months[currentMonth]} {currentYear}
           </h2>
           
+          {/* next button */}
           <button
             onClick={() => navigateMonth('next')}
-            className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+            className="w-8 h-8 flex items-center justify-center bg-[var(--color-background)] rounded-full text-[var(--color-dark)] hover:bg-[var(--color-drop)] transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -125,7 +130,7 @@ const Calendar = () => {
           {weekdays.map((weekday, index) => (
             <div
               key={index}
-              className="h-8 flex items-center justify-center text-sm font-medium text-gray-400"
+              className="h-8 flex items-center justify-center text-md !font-medium text-[var(--color-dark)]"
             >
               {weekday}
             </div>
@@ -142,17 +147,17 @@ const Calendar = () => {
                 key={index}
                 onClick={() => handleDateClick(day)}
                 className={`
-                  h-10 flex items-center justify-center text-sm transition-all duration-200 rounded-lg
+                  h-10 flex items-center justify-center !font-medium !text-sm shadow-sm transition-all duration-200 rounded-lg
                   ${isBlank 
                     ? 'text-transparent cursor-default' 
-                    : 'text-gray-600 hover:bg-gray-100 cursor-pointer'
+                    : 'text-[var(--color-dark)] hover:bg-[var(--color-drop)] cursor-pointer'
                   }
                   ${isToday 
-                    ? 'bg-blue-500 text-white font-medium shadow-sm hover:bg-blue-600' 
+                    ? 'bg-[var(--color-dark)] !text-[var(--color-background)] font-medium  hover:bg-[var(--color-background)] hover:!text-[var(--color-dark)]' 
                     : ''
                   }
                   ${isSelected && !isToday 
-                    ? 'bg-blue-100 text-blue-700 font-medium' 
+                    ? 'bg-[var(--color-drop)] text-blue-700 font-medium' 
                     : ''
                   }
                 `}
